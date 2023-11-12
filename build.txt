@@ -1,0 +1,4 @@
+displayName = tVoice
+author = Cyrilly
+version = 0.1
+dllReferences = NAudio, NAudio.Core, NAudio.WinMM, NAudio.Wasapi
