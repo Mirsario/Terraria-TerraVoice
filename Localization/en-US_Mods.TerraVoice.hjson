@@ -1,1 +1,52 @@
-Keybinds.PushToTalk.DisplayName: Push To Talk
+Keybinds.TalkKeybind.DisplayName: Voice Chat Keybind
+
+Configs: {
+	VoiceConfig: {
+		DisplayName: Voice Config
+
+		VoiceAttenuationDistance: {
+			Label: Voice Attenuation Distance
+			Tooltip: ""
+		}
+
+		VoiceAttenuation: {
+			Label: Voice Attenuation
+			Tooltip: ""
+		}
+	}
+
+	PersonalConfig: {
+		DisplayName: Personal Config
+
+		BgmFadeOut: {
+			Label: Bgm Fade Out
+			Tooltip: ""
+		}
+
+		VoiceVolume: {
+			Label: Voice Volume
+			Tooltip: ""
+		}
+
+		HearYourself: {
+			Label: Hear Yourself
+			Tooltip: ""
+		}
+
+		TalkMode: {
+			Label: Talk Mode
+			Tooltip: ""
+		}
+
+		MicrophoneIcon: {
+			Label: Microphone Icon
+			Tooltip: ""
+		}
+	}
+
+	TalkMode: {
+		Tooltip: ""
+		Push.Label: Push
+		Toggle.Label: Toggle
+	}
+}

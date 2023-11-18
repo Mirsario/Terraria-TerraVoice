@@ -3,6 +3,8 @@ using System.Linq;
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
+using TerraVoice.Core;
+using TerraVoice.Misc;
 
 namespace TerraVoice;
 
