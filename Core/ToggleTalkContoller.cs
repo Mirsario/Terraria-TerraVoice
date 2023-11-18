@@ -1,6 +1,5 @@
 ﻿using System;
 using Steamworks;
-using Terraria;
 using Terraria.ModLoader;
 using TerraVoice.Misc;
 

@@ -42,6 +42,11 @@ Configs: {
 			Label: Microphone Icon
 			Tooltip: ""
 		}
+
+		ShowWave: {
+			Label: Show Wave
+			Tooltip: ""
+		}
 	}
 
 	TalkMode: {

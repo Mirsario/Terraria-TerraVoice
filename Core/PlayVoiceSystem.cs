@@ -11,10 +11,21 @@ namespace TerraVoice.Core;
 [Autoload(Side = ModSide.Client)]
 public class PlayVoiceSystem : ModSystem
 {
+    [Autoload(Side = ModSide.Client)]
+    private class ModPlayerForEnterWorldHook : ModPlayer
+    {
+        public override void OnEnterWorld() {
+            foreach (var playerSpeaker in _playerSpeakers) {
+                playerSpeaker?.ClearBuffer();
+            }
+        }
+    }
+
     private static readonly byte[] VoiceDataBuffer = new byte[10000];
     private static readonly byte[] DataDecompressedBuffer = new byte[50 * 1024];
     private static PlayerSpeaker[] _playerSpeakers;
     internal const uint SampleRate = 22050; // 44100;
+    private static WaveGraphRenderer _waveGraphRenderer;
 
     /// <summary>
     /// 向音频缓存区中添加数据，不要将缓存区填满
@@ -50,6 +61,7 @@ public class PlayVoiceSystem : ModSystem
 
     public override void Load() {
         _playerSpeakers = new PlayerSpeaker[Main.maxPlayers];
+        _waveGraphRenderer = new WaveGraphRenderer();
     }
 
     public override void Unload() {
@@ -58,6 +70,8 @@ public class PlayVoiceSystem : ModSystem
         }
 
         _playerSpeakers = null;
+        _waveGraphRenderer?.Dispose();
+        _waveGraphRenderer = null;
     }
 
     public static void ReceiveVoiceBuffer(int sender, byte[] buffer, uint dataSize) {
@@ -76,7 +90,10 @@ public class PlayVoiceSystem : ModSystem
         //     Main.NewText("Yes");
         // }
 
-        if (PersonalConfig.Instance.HearYourself)
-            ReceiveVoiceBuffer(Main.myPlayer, VoiceDataBuffer, dataSize);
+        if (PersonalConfig.Instance.HearYourself || PersonalConfig.Instance.ShowWave) {
+            SteamUser.DecompressVoice(VoiceDataBuffer, dataSize, DataDecompressedBuffer,
+                (uint) DataDecompressedBuffer.Length, out uint bytesWritten, SampleRate);
+            _waveGraphRenderer.AddSamples(DataDecompressedBuffer, 0, (int) bytesWritten);
+        }
     }
 }

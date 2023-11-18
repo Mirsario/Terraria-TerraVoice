@@ -1,6 +1,5 @@
 ﻿using System;
 using NAudio.Wave.SampleProviders;
-using Terraria;
 
 namespace TerraVoice.Core;
 

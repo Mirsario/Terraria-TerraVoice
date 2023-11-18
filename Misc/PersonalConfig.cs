@@ -36,6 +36,9 @@ public class PersonalConfig : ModConfig
 
     [DefaultValue(false)]
     public bool HearYourself;
+
+    [DefaultValue(false)]
+    public bool ShowWave;
     
     public static PersonalConfig Instance;
 

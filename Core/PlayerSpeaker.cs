@@ -6,8 +6,6 @@ namespace TerraVoice.Core;
 /// <summary>
 /// 某个玩家的语音播放器
 /// </summary>
-/// <param name="WaveOut">播放器</param>
-/// <param name="BufferedWaveProvider">5s缓存区</param>
 public class PlayerSpeaker
 {
     /// <summary>
@@ -27,7 +25,9 @@ public class PlayerSpeaker
 
     public PlayerSpeaker() {
         WaveOut = new WaveOutEvent();
-        _bufferedWaveProvider = new BufferedWaveProvider(new WaveFormat((int) PlayVoiceSystem.SampleRate, 1));
+        _bufferedWaveProvider = new BufferedWaveProvider(new WaveFormat((int) PlayVoiceSystem.SampleRate, 1)) {
+            DiscardOnBufferOverflow = true
+        };
         WaveProvider = new PanningSampleProvider(_bufferedWaveProvider.ToSampleProvider()) {
             PanStrategy = new SinPanStrategyWithVolume()
         };
@@ -37,6 +37,10 @@ public class PlayerSpeaker
 
     public void AddSamples(byte[] data, int position, int len) {
         _bufferedWaveProvider.AddSamples(data, position, len);
+    }
+
+    public void ClearBuffer() {
+        _bufferedWaveProvider.ClearBuffer();
     }
 
     public void Dispose() {
