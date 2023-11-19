@@ -8,6 +8,16 @@ namespace TerraVoice.Core;
 [Autoload(Side = ModSide.Client)]
 public class ToggleTalkContoller : ModPlayer
 {
+    [Autoload(Side = ModSide.Client)]
+    private class ModSystemForPreQuitHook : ModSystem
+    {
+        public override void PreSaveAndQuit() {
+            if (SteamUser.GetAvailableVoice(out _) is not EVoiceResult.k_EVoiceResultNotRecording
+                and not EVoiceResult.k_EVoiceResultNotInitialized)
+                SteamUser.StopVoiceRecording();
+        }
+    }
+
     private static ModKeybind _talkKeybind;
 
     public override void Load() {
