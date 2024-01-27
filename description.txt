@@ -1,1 +1,28 @@
-tVoice is a pretty cool mod, it does...this. Modify this file with a description of your mod.
+tVoice Mod allows you and your friends to chat via voice directly in Terraria, with no need for any third-party software!
+Currently, it only supports basic voice chat features (similar to those in CSGO), but more features will be added in the future, such as sound attenuation: mapping players' voices directly to the game world. The closer the player, the louder the voice
+
+How to use:
+1. Subscribe to this Mod
+2. Enter the game, go to "Controls", scroll to the bottom, and set a keybind for "Voice Chat"
+3. By default, press and hold the key to speak, and your friends will be able to hear you
+4. You can set more custom options in the mod config
+
+Notes:
+- The voice function uses the Steam API, which theoretically can provide better voice quality than direct recording, but the game must be downloaded from Steam
+- Voice chat will cause a certain network load, and if your network is poor, it may cause game lag
+- The voice quality of this mod does not outperform professional third-party voice software, such as Teamspeak, Discord, etc.
+
+泰拉语音聊天模组，允许你和朋友们直接通过泰拉语音聊天，不需要任何第三方软件！
+目前仅支持基础的语音聊天功能（如果你玩过CSGO，跟那里面的语音功能基本类似）
+后续会加入更多功能，如声音衰减功能：将玩家语音直接映射到游戏世界中，玩家离得越近声音就越大
+
+使用方法：
+1. 订阅此Mod
+2. 进入游戏，进入“控件”，拉到底下，为“语音按键”设置一个快捷键
+3. 默认情况下，按住此快捷键说话，你的好友就能听到
+4. 你可以在模组配置中设置更多自定义选项
+
+注：
+- 语音功能使用了Steam API，理论上能够提供比直接录制声音更好的语音质量，但要求游戏必须是在Steam下载的
+- 语音聊天会导致一定网络负担，如果你的网络不好，可能会造成游戏卡顿
+- 本模组的语音质量比不上专业的第三方语音软件，如Teamspeak、Discord等

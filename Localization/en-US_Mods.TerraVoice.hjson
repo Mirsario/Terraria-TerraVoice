@@ -1,51 +1,77 @@
-Keybinds.TalkKeybind.DisplayName: Voice Chat Keybind
+Keybinds.TalkKeybind.DisplayName: Voice Chat
 
 Configs: {
 	VoiceConfig: {
-		DisplayName: Voice Config
+		DisplayName: 语音配置
 
 		VoiceAttenuationDistance: {
-			Label: Voice Attenuation Distance
-			Tooltip: ""
+			Label: 语音衰减距离(物块)
+			Tooltip:
+				'''
+				其他玩家的语音音量将在多少格外衰减为0
+				原版泰拉中，从屏幕中心到屏幕边缘是60格
+				'''
 		}
 
 		VoiceAttenuation: {
-			Label: Voice Attenuation
-			Tooltip: ""
+			Label: 语音衰减
+			Tooltip:
+				'''
+				玩家的语音会根据该玩家到屏幕中心的距离而衰减
+				语音会模拟空间效果，若玩家在屏幕左侧说话，声音会主要从左声道传出
+				一个十分有趣的特性
+				'''
 		}
 	}
 
 	PersonalConfig: {
-		DisplayName: Personal Config
+		DisplayName: Config
 
 		BgmFadeOut: {
-			Label: Bgm Fade Out
-			Tooltip: ""
+			Label: Background Music Ducking
+			Tooltip:
+				'''
+				The volume of the game's background music will be lowered
+				when someone is speaking.
+                '''
 		}
 
 		VoiceVolume: {
-			Label: Voice Volume
-			Tooltip: ""
+			Label: Voice Chat Volume (%)
+			Tooltip: Adjust the volume of all the voices you hear. The default value is 100%
 		}
 
 		HearYourself: {
 			Label: Hear Yourself
-			Tooltip: ""
+			Tooltip:
+				'''
+				Useful when testing your microphone.
+				'''
 		}
 
 		TalkMode: {
-			Label: Talk Mode
-			Tooltip: ""
+			Label: Voice Chat Activation Mode
+			Tooltip:
+				'''
+				Choose the activation method for voice calls according to your preference. The default mode is "Hold"
+				- Hold: The microphone is activated while holding down the voice chat key and is deactivated when released
+				- Toggle: Tap the voice chat key to turn the microphone on/off
+				'''
 		}
 
 		MicrophoneIcon: {
 			Label: Microphone Icon
-			Tooltip: ""
+			Tooltip:
+				'''
+				If on and "Voice Chat Activation Mode" is "Toggle"
+				A microphone icon will appear at the bottom right corner of the screen
+				to indicate whether you have turned on the microphone.
+				'''
 		}
 
 		ShowWave: {
-			Label: Show Wave
-			Tooltip: ""
+			Label: Sound Waves
+			Tooltip: The sound wave of the recorded sound is displayed in the center of the screen for testing purposes
 		}
 	}
 
