@@ -33,7 +33,8 @@ Configs: {
 				'''
 				The volume of the game's background music will be lowered
 				when someone is speaking.
-                '''
+				            
+				'''
 		}
 
 		VoiceVolume: {
@@ -43,10 +44,7 @@ Configs: {
 
 		HearYourself: {
 			Label: Hear Yourself
-			Tooltip:
-				'''
-				Useful when testing your microphone.
-				'''
+			Tooltip: Useful when testing your microphone.
 		}
 
 		TalkMode: {

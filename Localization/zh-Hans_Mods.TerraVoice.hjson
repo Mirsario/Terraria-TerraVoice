@@ -29,10 +29,7 @@ Configs: {
 
 		BgmFadeOut: {
 			Label: 音乐音量自动调节
-			Tooltip:
-				'''
-				当有玩家在说话时，游戏背景音乐的音量将会减小
-				'''
+			Tooltip: 当有玩家在说话时，游戏背景音乐的音量将会减小
 		}
 
 		VoiceVolume: {
