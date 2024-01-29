@@ -3,9 +3,10 @@ using Terraria.ModLoader.Config;
 
 namespace TerraVoice.Misc;
 
-// 阉割版隐藏了声音衰减功能
-public class VoiceConfig
+public class VoiceConfig : ModConfig
 {
+    public override ConfigScope Mode => ConfigScope.ServerSide;
+
     [DefaultValue(false)]
     public bool VoiceAttenuation;
 
@@ -15,5 +16,9 @@ public class VoiceConfig
     [Increment(5)]
     public int VoiceAttenuationDistance;
     
-    public static VoiceConfig Instance = new ();
+    public static VoiceConfig Instance;
+
+    public VoiceConfig() {
+        Instance = this;
+    }
 }

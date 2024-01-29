@@ -1,6 +1,10 @@
 tVoice Mod allows you and your friends to chat via voice directly in Terraria, with no need for any third-party software!
 Currently, it only supports basic voice chat features (similar to those in CSGO), but more features will be added in the future, such as sound attenuation: mapping players' voices directly to the game world. The closer the player, the louder the voice
 
+Here are some benefits of using this mod:
+- Background Music Ducking, which automatically lowers the volume of the game's background music when someone is speaking.
+- Proximity Chat, which introduces a positional effect to voices, and the closer the player, the louder the voice.
+
 How to use:
 1. Subscribe to this Mod
 2. Enter the game, go to "Controls", scroll to the bottom, and set a keybind for "Voice Chat"
@@ -15,6 +19,10 @@ Notes:
 泰拉语音聊天模组，允许你和朋友们直接通过泰拉语音聊天，不需要任何第三方软件！
 目前仅支持基础的语音聊天功能（如果你玩过CSGO，跟那里面的语音功能基本类似）
 后续会加入更多功能，如声音衰减功能：将玩家语音直接映射到游戏世界中，玩家离得越近声音就越大
+
+这个Mod相比语音软件有以下优点：
+- 音乐音量自动调节，当有人在说话时，自动降低游戏背景音乐的音量
+- 空间语音，玩家离得越近声音就越大
 
 使用方法：
 1. 订阅此Mod
