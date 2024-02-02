@@ -1,50 +1,41 @@
-﻿using NAudio.Wave;
-using NAudio.Wave.SampleProviders;
+﻿using Microsoft.Xna.Framework.Audio;
+using System;
 
 namespace TerraVoice.Core;
 
-/// <summary>
-/// 某个玩家的语音播放器
-/// </summary>
-public class PlayerSpeaker
+public class PlayerSpeaker : IDisposable
 {
-    /// <summary>
-    /// The WaveOut instance to play the sound
-    /// </summary>
-    public WaveOutEvent WaveOut;
+    public float Volume
+    {
+        get => soundEffectInstance.Volume;
+        set => soundEffectInstance.Volume = value;
+    }
 
-    /// <summary>
-    /// A dummy provider to help convert buffer into SampleProvider for PanningSampleProvider
-    /// </summary>
-    private readonly BufferedWaveProvider _bufferedWaveProvider;
+    public float Pan
+    {
+        get => soundEffectInstance.Pan;
+        set => soundEffectInstance.Pan = value;
+    }
 
-    /// <summary>
-    /// Ability to change the pan (where the sound plays, aka 3D sound effect)
-    /// </summary>
-    public PanningSampleProvider WaveProvider;
+    private DynamicSoundEffectInstance soundEffectInstance;
 
     public PlayerSpeaker() {
-        WaveOut = new WaveOutEvent();
-        _bufferedWaveProvider = new BufferedWaveProvider(new WaveFormat((int) PlayVoiceSystem.SampleRate, 1)) {
-            DiscardOnBufferOverflow = true
-        };
-        WaveProvider = new PanningSampleProvider(_bufferedWaveProvider.ToSampleProvider()) {
-            PanStrategy = new SinPanStrategyWithVolume()
-        };
-        WaveOut.Init(WaveProvider);
-        WaveOut.Play();
+
+        soundEffectInstance = new DynamicSoundEffectInstance(VoiceInputSystem.SampleRate, AudioChannels.Mono);
+        soundEffectInstance.Play();
     }
 
-    public void AddSamples(byte[] data, int position, int len) {
-        _bufferedWaveProvider.AddSamples(data, position, len);
+    public void SubmitBuffer(byte[] data) => soundEffectInstance.SubmitBuffer(data);
+
+    public void Reset() 
+    {
+        soundEffectInstance.Stop();
+        soundEffectInstance.Play();
     }
 
-    public void ClearBuffer() {
-        _bufferedWaveProvider.ClearBuffer();
-    }
-
-    public void Dispose() {
-        WaveOut.Dispose();
-        WaveOut = null;
+    public void Dispose() 
+    {
+        soundEffectInstance?.Dispose();
+        soundEffectInstance = null;
     }
 }

@@ -5,7 +5,6 @@ using Microsoft.Xna.Framework.Graphics;
 using Steamworks;
 using Terraria;
 using Terraria.DataStructures;
-using Terraria.GameContent;
 using Terraria.ModLoader;
 using Terraria.UI;
 
@@ -73,36 +72,6 @@ public class DrawingSystem : ModSystem
         Main.spriteBatch.End();
     }
 
-    private bool DrawWave() {
-        if (!PersonalConfig.Instance.ShowWave) return true;
-
-        var datas = WaveDatas.ToArray();
-        float x = Main.screenWidth / 2f - 600;
-        for (var i = 0; i < datas.Length - 1; i++) {
-            var waveData = datas[i];
-            var waveDataNext = datas[i + 1];
-            float factor = 200f;
-            var start = new Vector2(x, Main.screenHeight / 2f + waveData * factor);
-            var end = new Vector2(x + 2, Main.screenHeight / 2f + waveDataNext * factor);
-            DrawLine(start, end);
-            x += 2;
-        }
-
-        return true;
-    }
-
-    public static void DrawLine(Vector2 start, Vector2 end) {
-        float distance = Vector2.Distance(start, end);
-        var v = (end - start) / distance;
-        var pos = start;
-        float rotation = v.ToRotation();
-        for (float step = 0.0f; step <= distance; step += 1f) {
-            Main.spriteBatch.Draw(TextureAssets.MagicPixel.Value, pos, new Rectangle(0, 0, 2, 2), Color.White, rotation,
-                Vector2.Zero, 1f, SpriteEffects.None, 0.0f);
-            pos = start + step * v;
-        }
-    }
-
     private bool DrawSpeakingPlayers() {
         if (VoiceConfig.Instance.VoiceAttenuation) return true;
 
@@ -153,12 +122,10 @@ public class DrawingSystem : ModSystem
             new LegacyGameInterfaceLayer("TerraVoice: Speaking Players", DrawSpeakingPlayers, InterfaceScaleType.UI);
         var microphoneIconLayer =
             new LegacyGameInterfaceLayer("TerraVoice: Microphone Icon", DrawMicrophoneIcon, InterfaceScaleType.UI);
-        var waveLayer =
-            new LegacyGameInterfaceLayer("TerraVoice: Sound Wave", DrawWave, InterfaceScaleType.UI);
 
         int index = layers.FindIndex(l => l.Name is "Vanilla: Player Chat");
         if (index != -1)
-            layers.InsertRange(index, new[] {speakingPlayersLayer, microphoneIconLayer, waveLayer});
+            layers.InsertRange(index, new[] {speakingPlayersLayer, microphoneIconLayer });
     }
 
     public override void Load() {

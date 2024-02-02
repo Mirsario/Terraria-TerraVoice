@@ -33,12 +33,6 @@ public class PersonalConfig : ModConfig
 
     [DefaultValue(true)]
     public bool MicrophoneIcon;
-
-    [DefaultValue(false)]
-    public bool HearYourself;
-
-    [DefaultValue(false)]
-    public bool ShowWave;
     
     public static PersonalConfig Instance;
 

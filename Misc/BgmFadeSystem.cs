@@ -31,6 +31,7 @@ public class BgmFadeSystem : ModSystem
         }
 
         bool anyPlayerSpeaking = DrawingSystem.PlayerSpeaking.Any(s => s > 0);
+
         if (anyPlayerSpeaking)
             _bgmFadeOut += 0.06f;
         else

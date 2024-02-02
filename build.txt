@@ -1,4 +1,4 @@
 displayName = tVoice
-author = Cyrilly, 轩天一夏
-version = 1.0.1
-dllReferences = NAudio, NAudio.Core, NAudio.WinMM, NAudio.Wasapi
+author = Cyrilly, 轩天一夏, Oli
+version = 1.1.0
+dllReferences = P-OpusCore, NAudio, NAudio.Core, NAudio.WinMM, NAudio.Wasapi

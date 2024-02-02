@@ -36,5 +36,16 @@
     <Reference Include="NAudio.WinMM">
       <HintPath>lib\NAudio.WinMM.dll</HintPath>
     </Reference>
+    <Reference Include="P-OpusCore">
+      <HintPath>lib\P-OpusCore.dll</HintPath>
+    </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <None Update="lib\libopus.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
+    <None Update="lib\librnnoise.dll">
+      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
+    </None>
   </ItemGroup>
 </Project>
