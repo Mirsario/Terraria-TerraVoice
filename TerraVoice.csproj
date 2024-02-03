@@ -41,10 +41,10 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Update="lib\libopus.dll">
+    <None Update="lib\Native\win64\libopus.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
-    <None Update="lib\librnnoise.dll">
+    <None Update="lib\Native\win64\librnnoise.dll">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </None>
   </ItemGroup>

@@ -1,12 +1,11 @@
 ﻿using System.Collections.Generic;
 using System.IO;
-using System.Reflection;
 using Terraria.ModLoader;
-using Terraria.ModLoader.Core;
 using System.Linq;
 using System.Runtime.InteropServices;
 using static Terraria.ModLoader.Core.TmodFile;
 using System;
+using Terraria.ModLoader.UI;
 
 namespace TerraVoice.Native;
 
@@ -16,15 +15,16 @@ internal class NativeFeatureSystem : ModSystem
 
     public override void Load()
     {
-        Terraria.ModLoader.UI.Interface.loadMods.SetLoadStage($"TerraVoice: Installing native libraries...", -1);
+        Interface.loadMods.SetLoadStage($"TerraVoice: Installing native libraries...", -1);
 
         Directory.CreateDirectory(TerraVoice.CachePath);
 
-        CopyLibFromTmod(TerraVoice.CachePath, "librnnoise.dll", out string rnnoise);
-        CopyLibFromTmod(TerraVoice.CachePath, "libopus.dll", out string opus);
+        List<string> binaries = ExtractPlatformBinaries();
 
-        loadedLibs.Add(NativeLibrary.Load(rnnoise));
-        loadedLibs.Add(NativeLibrary.Load(opus));
+        foreach (string path in binaries)
+        {
+            loadedLibs.Add(NativeLibrary.Load(path));
+        }
     }
 
     public override void Unload()
@@ -35,27 +35,50 @@ internal class NativeFeatureSystem : ModSystem
         }
     }
 
-    private void CopyLibFromTmod(string cachePath, string lib, out string finalPath)
+    private void CopyLibFromTmod(FileEntry entry, string path)
     {
-        finalPath = Path.Combine(cachePath, lib);
+        using Stream stream = Mod.File.GetStream(entry);
 
-        if (File.Exists(finalPath))
-            return;
-
-        IDictionary<string, FileEntry> files = typeof(TmodFile)
-            .GetField("files", BindingFlags.NonPublic | BindingFlags.Instance)
-            .GetValue(Mod.File) as IDictionary<string, FileEntry>;
-
-        FileEntry rnnoise = files.First(f => f.Key == $"lib/{lib}").Value;
-
-        using Stream stream = Mod.File.GetStream(rnnoise);
-
-        byte[] bytes = new byte[rnnoise.Length];
+        byte[] bytes = new byte[entry.Length];
 
         stream.Read(bytes, 0, bytes.Length);
 
-        File.WriteAllBytes(finalPath, bytes);
+        File.WriteAllBytes(path, bytes);
 
-        Mod.Logger.Info($"{lib} successfully copied to {cachePath}.");
+        Mod.Logger.Info($"Successfully installed native library: {path}.");
+    }
+
+    private List<string> ExtractPlatformBinaries()
+    {
+        List<string> binaries = new();
+
+        // Don't need to use system path separators as this only refers to the tmod file.
+        string path = $"lib/Native/";
+
+        // No macOS for the forseeable future.
+        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        {
+            path += "win64";
+        }
+        else if (RuntimeInformation.IsOSPlatform(OSPlatform.Linux))
+        {
+            path += "linux64";
+        }
+
+        IEnumerable<FileEntry> nativeLibraries = Mod.File.files.Where(f => f.Key.StartsWith(path)).Select(f => f.Value);
+
+        foreach (FileEntry fileEntry in nativeLibraries)
+        {
+            string destinationPath = Path.Combine(TerraVoice.CachePath, Path.GetFileName(fileEntry.Name));
+
+            binaries.Add(destinationPath);
+
+            if (!File.Exists(destinationPath))
+            {
+                CopyLibFromTmod(fileEntry, destinationPath);
+            }
+        }
+
+        return binaries;
     }
 }

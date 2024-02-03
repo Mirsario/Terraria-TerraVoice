@@ -13,7 +13,7 @@ using FilePtr = IntPtr;
 /// </summary>
 internal sealed class rnnoise
 {
-    private const string DllPath = "librnnoise.dll";
+    private const string DllPath = "librnnoise";
 
     private const int rnnoise_frame_size = 480;
 

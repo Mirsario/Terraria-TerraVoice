@@ -23,12 +23,15 @@ internal class VoiceOutputSystem : ModSystem
 
     public override void Unload()
     {
-        foreach (PlayerSpeaker playerSpeaker in playerSpeakers)
+        Main.QueueMainThreadAction(() =>
         {
-            playerSpeaker?.Dispose();
-        }
+            foreach (PlayerSpeaker playerSpeaker in playerSpeakers)
+            {
+                playerSpeaker?.Dispose();
+            }
 
-        playerSpeakers = null;
+            playerSpeakers = null;
+        });
     }
 
     public void RecieveBuffer(byte[] buffer, int sender)
@@ -56,7 +59,7 @@ internal class VoiceOutputSystem : ModSystem
 
         // In tests, pan and volume are irrelevant.
         if (whoAmI == Main.myPlayer)
-        {
+        { 
             speaker.Volume = 1;
             speaker.Pan = 0;
 
