@@ -22,9 +22,7 @@ internal class VoiceProcessingSystem : ModSystem
 
     public override void PostSetupContent()
     {
-        // TODO: package rnnoise for multiple platforms. Currently only supports windows x64.
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            rnnoise.rnnoise_create();
+        rnnoise.rnnoise_create();
 
         encoder = new(SamplingRate.Sampling48000, Channels.Mono);
 
@@ -33,8 +31,7 @@ internal class VoiceProcessingSystem : ModSystem
 
     public override void Unload()
     {
-        if (RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
-            rnnoise.rnnoise_destroy();
+        rnnoise.rnnoise_destroy();
     }
 
     public override void PreSaveAndQuit()
@@ -60,7 +57,7 @@ internal class VoiceProcessingSystem : ModSystem
 
     public void SubmitBuffer(byte[] buffer)
     {
-        if (NoiseSuppression && RuntimeInformation.IsOSPlatform(OSPlatform.Windows))
+        if (NoiseSuppression)
             rnnoise.rnnoise_process_frame(buffer);
 
         Span<short> pcmBuffer = MemoryMarshal.Cast<byte, short>(buffer);
