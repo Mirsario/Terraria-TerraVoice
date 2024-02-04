@@ -55,14 +55,12 @@ internal class VoiceProcessingSystem : ModSystem
         }
     }
 
-    public void SubmitBuffer(byte[] buffer)
+    public void SubmitBuffer(short[] buffer)
     {
         if (NoiseSuppression)
             rnnoise.rnnoise_process_frame(buffer);
 
-        Span<short> pcmBuffer = MemoryMarshal.Cast<byte, short>(buffer);
-
-        byte[] encoded = encoder.Encode(pcmBuffer);
+        byte[] encoded = encoder.Encode(buffer);
 
         // When testing, submit the encoded buffer as though it was recieved as a packet.
         // This is more accurate for testing purposes as it factors in the encode/decode other players will hear.

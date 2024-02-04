@@ -27,14 +27,8 @@
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.5" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="NAudio">
-      <HintPath>lib\NAudio.dll</HintPath>
-    </Reference>
-    <Reference Include="NAudio.Core">
-      <HintPath>lib\NAudio.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="NAudio.WinMM">
-      <HintPath>lib\NAudio.WinMM.dll</HintPath>
+    <Reference Include="OpenTK.Audio.OpenAL">
+      <HintPath>lib\OpenTK.Audio.OpenAL.dll</HintPath>
     </Reference>
     <Reference Include="P-OpusCore">
       <HintPath>lib\P-OpusCore.dll</HintPath>

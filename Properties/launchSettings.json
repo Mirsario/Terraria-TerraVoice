@@ -3,7 +3,7 @@
     "Terraria": {
       "commandName": "Executable",
       "executablePath": "$(DotNetPath)",
-      "commandLineArgs": "$(tMLPath)",
+      "commandLineArgs": "$(tMLPath) /gldevice:OpenGL",
       "workingDirectory": "$(tMLSteamPath)",
       "nativeDebugging": true
     },

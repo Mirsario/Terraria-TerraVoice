@@ -28,42 +28,34 @@ internal sealed class rnnoise
 
     // A few things about rnnoise are important to understand this - it can only process float data (but with a range of -32767..32767).
     // Additionally, it only works in chunks of sample length 480 (10ms).
-    // Since the audio format is 48KHz 16-bit PCM, it has to first interpret a byte array as a short[], before casting to a float and splitting it into chunks.
-    // These chunks are then individually de-noised and converted back into shorts, with the unsafe code allowing seamless converstion back to a byte[].
-    public static void rnnoise_process_frame(byte[] buffer)
+    // Since the audio format is 48KHz 16-bit PCM, it has to convert the short values into floats and split it into 480-length chunks.
+    // These chunks are then individually de-noised.
+    public static void rnnoise_process_frame(short[] buffer)
     {
-        int toRead = buffer.Length / 2;
+        int toRead = buffer.Length;
         int offset = 0;
 
-        unsafe
+        while (toRead > 0)
         {
-            fixed (byte* bufferPointer = buffer)
+            int nextRead = Math.Min(toRead, rnnoise_frame_size);
+
+            for (int i = 0; i < nextRead; i++)
             {
-                short* pcmSamples = (short*)bufferPointer;
-
-                while (toRead > 0)
-                {
-                    int nextRead = Math.Min(toRead, rnnoise_frame_size);
-
-                    for (int i = 0; i < nextRead; i++)
-                    {
-                        ProcessBuffer[i] = pcmSamples[offset + i];
-                    }
-
-                    if (nextRead < rnnoise_frame_size)
-                        Array.Clear(ProcessBuffer, nextRead, rnnoise_frame_size - nextRead);
-
-                    rnnoise_process_frame(denoiseState, ProcessBuffer, ProcessBuffer);
-
-                    for (int i = 0; i < nextRead; i++)
-                    {
-                        pcmSamples[offset + i] = (short)ProcessBuffer[i];
-                    }
-
-                    toRead -= nextRead;
-                    offset += nextRead;
-                }
+                ProcessBuffer[i] = buffer[offset + i];
             }
+
+            if (nextRead < rnnoise_frame_size)
+                Array.Clear(ProcessBuffer, nextRead, rnnoise_frame_size - nextRead);
+
+            rnnoise_process_frame(denoiseState, ProcessBuffer, ProcessBuffer);
+
+            for (int i = 0; i < nextRead; i++)
+            {
+                buffer[offset + i] = (short)ProcessBuffer[i];
+            }
+
+            toRead -= nextRead;
+            offset += nextRead;
         }
     }
 
