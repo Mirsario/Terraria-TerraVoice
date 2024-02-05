@@ -33,7 +33,9 @@ internal sealed class VoiceInputSystem : ModSystem
     }
 
     public override void PostSetupContent()
-        => processingSystem = ModContent.GetInstance<VoiceProcessingSystem>();
+    {
+        processingSystem = ModContent.GetInstance<VoiceProcessingSystem>();
+    }
 
     public override void Unload()
     {
@@ -42,7 +44,9 @@ internal sealed class VoiceInputSystem : ModSystem
     }
 
     public override void PreSaveAndQuit()
-        => MicrophoneEnabled = false;
+    {
+        MicrophoneEnabled = false;
+    }
 
     public override void PostUpdateEverything()
     {
@@ -65,12 +69,6 @@ internal sealed class VoiceInputSystem : ModSystem
 
     public override void PostUpdateInput()
     {
-        if (Main.keyState.IsKeyDown(Keys.J) && Main.oldKeyState.IsKeyUp(Keys.J))
-        {
-            MicrophoneEnabled = !MicrophoneEnabled;
-            Main.NewText("Mic: " + MicrophoneEnabled);
-        }
-
         if (Main.keyState.IsKeyDown(Keys.L) && Main.oldKeyState.IsKeyUp(Keys.L))
         {
             deviceIndex++;
@@ -87,7 +85,9 @@ internal sealed class VoiceInputSystem : ModSystem
     }
 
     private void HandleAudioInputBuffer(short[] buffer)
-        => processingSystem.SubmitBuffer(buffer);
+    {
+        processingSystem.SubmitBuffer(buffer);
+    }
 
     private void SwitchAudioDevice(int i)
     {

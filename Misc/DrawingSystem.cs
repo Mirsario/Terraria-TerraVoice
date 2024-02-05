@@ -13,7 +13,6 @@ namespace TerraVoice.Misc;
 [Autoload(Side = ModSide.Client)]
 public class DrawingSystem : ModSystem
 {
-    internal static Queue<float> WaveDatas = new(610);
     internal static int[] PlayerSpeaking = new int[Main.maxPlayers];
     private static float[] _iconOpacity = new float[Main.maxPlayers];
     private static int _iconAnimationTimer = 0;
@@ -92,10 +91,6 @@ public class DrawingSystem : ModSystem
 
             position.X += frame.Width + 4;
             DrawPlayerHead(Main.player[i], ref position, opacity, 0.8f, Color.White);
-
-            // var position = player.Center - Main.screenPosition + new Vector2(0, -player.height / 2 - 10);
-            // Main.spriteBatch.Draw(frame, position, null, Color.White * opacity, 0f, frame.Size() / 2, 1f,
-            //     SpriteEffects.None, 0f);}
         }
 
         return true;

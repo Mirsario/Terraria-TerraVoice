@@ -15,7 +15,7 @@ internal class NativeFeatureSystem : ModSystem
 
     public override void Load()
     {
-        Interface.loadMods.SetLoadStage($"TerraVoice: Installing native libraries...", -1);
+        Interface.loadMods.SetLoadStage($"TerraVoice: Loading native libraries...", -1);
 
         Directory.CreateDirectory(TerraVoice.CachePath);
 

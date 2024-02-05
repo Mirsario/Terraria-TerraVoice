@@ -23,7 +23,7 @@
     <DotNetPath Condition=" '$(DotNetPath)' == '' ">dotnet</DotNetPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Solaestas.tModLoader.ModBuilder" Version="1.1.2" />
+	 <PackageReference Include="Solaestas.tModLoader.ModBuilder" Version="1.1.2" />
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.5" />
   </ItemGroup>
   <ItemGroup>
@@ -35,11 +35,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <None Update="lib\Native\win64\libopus.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
-    <None Update="lib\Native\win64\librnnoise.dll">
-      <CopyToOutputDirectory>Always</CopyToOutputDirectory>
-    </None>
+    <Folder Include="Assets\UI\" />
   </ItemGroup>
 </Project>

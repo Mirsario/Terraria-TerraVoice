@@ -11,6 +11,7 @@ public partial class TerraVoice : Mod
 {
     private VoiceOutputSystem outputSystem;
 
+    // Sends a voice packet from this client to the server.
     public void PushVoiceBuffer(byte[] buffer) {
         DrawingSystem.PlayerSpeaking[Main.myPlayer] = 20;
 
@@ -28,6 +29,7 @@ public partial class TerraVoice : Mod
     public override void PostSetupContent()
         => outputSystem = ModContent.GetInstance<VoiceOutputSystem>();
 
+    // Upon recieving a client voice packet, distribute it to all clients except the sender.
     public override void HandlePacket(BinaryReader reader, int whoAmI) {
         switch (reader.ReadByte()) {
             // 传输中 - audio transmission packet type.

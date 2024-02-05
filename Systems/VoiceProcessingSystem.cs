@@ -1,8 +1,6 @@
 ﻿using Microsoft.Xna.Framework.Input;
 using POpusCodec;
 using POpusCodec.Enums;
-using System;
-using System.Runtime.InteropServices;
 using Terraria;
 using Terraria.ModLoader;
 using TerraVoice.Native;

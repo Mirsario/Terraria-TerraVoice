@@ -12,7 +12,6 @@ How to use:
 4. You can set more custom options in the mod config
 
 Notes:
-- The voice function uses the Steam API, which theoretically can provide better voice quality than direct recording, but the game must be downloaded from Steam
 - Voice chat will cause a certain network load, and if your network is poor, it may cause latency issues.
 - The voice quality of this mod does not outperform professional third-party voice software, such as Teamspeak, Discord, etc.
 
@@ -31,6 +30,5 @@ Notes:
 4. 你可以在模组配置中设置更多自定义选项
 
 注：
-- 语音功能使用了Steam API，理论上能够提供比直接录制声音更好的语音质量，但要求游戏必须是在Steam下载的
 - 语音聊天会导致一定网络负担，如果你的网络不好，可能会造成游戏卡顿
 - 本模组的语音质量比不上专业的第三方语音软件，如Teamspeak、Discord等

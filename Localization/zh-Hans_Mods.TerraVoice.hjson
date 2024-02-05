@@ -1,4 +1,7 @@
-Keybinds.TalkKeybind.DisplayName: 语音按键
+Keybinds: {
+	TalkKeybind.DisplayName: 语音按键
+	// Keybinds.TalkKeybind.DisplayName.DisplayName: Keybinds. Talk Keybind. Display Name
+}
 
 Configs: {
 	VoiceConfig: {
