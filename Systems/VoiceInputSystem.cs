@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using Terraria;
 using Terraria.ModLoader;
+using TerraVoice.Native;
 
 namespace TerraVoice.Core;
 
@@ -13,7 +14,7 @@ internal sealed class VoiceInputSystem : ModSystem
     // Needed due to the required P-Opus frame size being 20ms.
     public const int MicrophoneInputDurationMs = 20;
 
-    private bool MicrophoneEnabled { get; set; }
+    public bool MicrophoneEnabled { get; set; }
 
     private VoiceProcessingSystem processingSystem;
 

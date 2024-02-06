@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace TerraVoice;
+namespace TerraVoice.Native;
 
 // Wrapper class for OpenTK's OpenAL bindings.
 // This allows the audio input devices to be enumerated, and initialised.
@@ -78,7 +78,7 @@ internal class ALMono16Microphone : IDisposable
         ALC.CaptureCloseDevice(device);
     }
 
-    public static List<string> GetDevices() 
+    public static List<string> GetDevices()
         => ALC.GetString(ALDevice.Null, AlcGetStringList.CaptureDeviceSpecifier);
 
     public delegate void BufferReady(short[] buffer);

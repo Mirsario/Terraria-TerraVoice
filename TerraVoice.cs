@@ -1,4 +1,6 @@
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using ReLogic.Content;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
@@ -13,13 +15,13 @@ namespace TerraVoice;
 
 public partial class TerraVoice : Mod
 {
+    public static SpriteFont Font { get; private set; }
+
     public static readonly string CachePath = Path.Combine(Main.SavePath, "TerraVoice");
 
     public static readonly Color Cyan = new(130, 233, 229);
 
     public static readonly Color Pink = new(226, 114, 175);
-
-    public static readonly Color Background = new(34, 31, 38);
 
     private static ModKeybind voiceBind;
 
@@ -30,6 +32,8 @@ public partial class TerraVoice : Mod
         Instance = this;
 
         voiceBind = KeybindLoader.RegisterKeybind(this, "Keybinds.TalkKeybind.DisplayName", "J");
+
+        Font = Assets.Request<SpriteFont>("Assets/Fonts/MP3-11", AssetRequestMode.ImmediateLoad).Value;
     }
 
     public override void Unload() 

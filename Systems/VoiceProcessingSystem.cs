@@ -1,5 +1,4 @@
-﻿using Microsoft.Xna.Framework.Input;
-using POpusCodec;
+﻿using POpusCodec;
 using POpusCodec.Enums;
 using Terraria;
 using Terraria.ModLoader;
@@ -10,9 +9,9 @@ namespace TerraVoice.Core;
 [Autoload(Side = ModSide.Client)]
 internal class VoiceProcessingSystem : ModSystem
 {
-    private bool NoiseSuppression { get; set; }
+    public bool NoiseSuppression { get; set; }
 
-    private bool TestMode { get; set; }
+    public bool TestMode { get; set; }
 
     private OpusEncoder encoder;
 
@@ -36,21 +35,6 @@ internal class VoiceProcessingSystem : ModSystem
     {
         NoiseSuppression = false;
         TestMode = false;
-    }
-
-    public override void PostUpdateInput()
-    {
-        if (Main.keyState.IsKeyDown(Keys.N) && Main.oldKeyState.IsKeyUp(Keys.N))
-        {
-            NoiseSuppression = !NoiseSuppression;
-            Main.NewText("NS: " + NoiseSuppression);
-        }
-
-        if (Main.keyState.IsKeyDown(Keys.T) && Main.oldKeyState.IsKeyUp(Keys.T))
-        {
-            TestMode = !TestMode;
-            Main.NewText("Test: " + TestMode);
-        }
     }
 
     public void SubmitBuffer(short[] buffer)

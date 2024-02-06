@@ -35,6 +35,6 @@
     </Reference>
   </ItemGroup>
   <ItemGroup>
-    <Folder Include="Assets\UI\" />
+    <Folder Include="Assets\Sounds\UI\" />
   </ItemGroup>
 </Project>
