@@ -14,6 +14,8 @@ internal sealed class VoiceInputSystem : ModSystem
     // Needed due to the required P-Opus frame size being 20ms.
     public const int MicrophoneInputDurationMs = 20;
 
+    public bool HasValidAudioInput => audioDevices.Count > 0;
+
     public bool MicrophoneEnabled { get; set; }
 
     private VoiceProcessingSystem processingSystem;

@@ -1,5 +1,6 @@
 ﻿using POpusCodec;
 using POpusCodec.Enums;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 using TerraVoice.Native;
@@ -12,6 +13,8 @@ internal class VoiceProcessingSystem : ModSystem
     public bool NoiseSuppression { get; set; }
 
     public bool TestMode { get; set; }
+
+    public event Action<short[]> OnTestBufferReceived;
 
     private OpusEncoder encoder;
 
@@ -47,7 +50,10 @@ internal class VoiceProcessingSystem : ModSystem
         // When testing, submit the encoded buffer as though it was recieved as a packet.
         // This is more accurate for testing purposes as it factors in the encode/decode other players will hear.
         if (TestMode)
+        {
             outputSystem.RecieveBuffer(encoded, Main.myPlayer);
+            OnTestBufferReceived?.Invoke(buffer);
+        }
 
         TerraVoice.Instance.PushVoiceBuffer(encoded);
     }

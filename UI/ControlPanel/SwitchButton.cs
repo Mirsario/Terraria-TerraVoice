@@ -38,7 +38,7 @@ internal class SwitchButton : SmartUIElement
         spriteBatch.Draw(texture, position, Color.White);
 
         // Offset needs to be an even number to prevent weird scaling issues.
-        float stringWidth = MathF.Floor(TerraVoice.Font.MeasureString(label).X / 2f) * 2;
+        float stringWidth = TerraVoice.Font.MeasureString(label).RoundEven().X;
         Vector2 textPosition = position + new Vector2((Width.Pixels / 2) - (stringWidth / 2), Height.Pixels - 12);
 
         spriteBatch.DrawString(TerraVoice.Font, label, textPosition, TerraVoice.Pink);

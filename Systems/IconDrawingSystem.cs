@@ -4,5 +4,5 @@ namespace TerraVoice.Systems;
 
 internal class IconDrawingSystem : ModSystem
 {
-    public bool DrawIcons { get; set; }
+    public bool NoIcons { get; set; }
 }

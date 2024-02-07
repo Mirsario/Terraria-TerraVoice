@@ -42,12 +42,13 @@ internal class VoiceControlPanel : SmartUIElement
             ModAsset.Microphone.Value
         };
 
+        // TODO: Localise this
         string[] labels = new string[]
         {
             "Mic",
-            "Denoise",
             "Test",
-            "Icons"
+            "Denoise",
+            "No icons"
         };
 
         for (int i = 0; i < 4; i++)
@@ -79,7 +80,7 @@ internal class VoiceControlPanel : SmartUIElement
         inputSystem.MicrophoneEnabled = switches[MicrophoneSwitch].Enabled;
         processingSystem.TestMode = switches[TestSwitch].Enabled;
         processingSystem.NoiseSuppression = switches[NoiseSuppressionSwitch].Enabled;
-        iconDrawingSystem.DrawIcons = switches[IconSwitch].Enabled;
+        iconDrawingSystem.NoIcons = switches[IconSwitch].Enabled;
     }
 
     public override void DrawSelf(SpriteBatch spriteBatch)
