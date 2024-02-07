@@ -1,6 +1,10 @@
 Keybinds: {
 	TalkKeybind.DisplayName: 语音按键
-	// Keybinds.TalkKeybind.DisplayName.DisplayName: Keybinds. Talk Keybind. Display Name
+
+	VoiceControlPanel: {
+		// $parentVal: Voice Control Panel
+		// DisplayName: Voice Control Panel
+	}
 }
 
 Configs: {
@@ -82,4 +86,14 @@ Configs: {
 		Push.Label: 按住
 		Toggle.Label: 切换
 	}
+}
+
+UI: {
+	// NoInputDevice: No Input Device Detected
+	// EnableTestMode: Enable Microphone and Test Mode to Visualize
+	// Mic: Mic
+	// Test: Test
+	// Denoise: Denoise
+	// NoIcons: No Icons
+	// AudioVisualizer: Input Visualizer
 }

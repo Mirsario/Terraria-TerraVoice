@@ -6,6 +6,7 @@ using TerraVoice.Native;
 
 namespace TerraVoice.Core;
 
+[Autoload(Side = ModSide.Client)]
 internal sealed class VoiceInputSystem : ModSystem
 {
     // The rnnoise library only works with a sampling rate of 48KHz.

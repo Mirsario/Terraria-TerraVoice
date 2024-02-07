@@ -1,6 +1,10 @@
 Keybinds: {
 	TalkKeybind.DisplayName: Voice Chat Menu
-	Keybinds.TalkKeybind.DisplayName.DisplayName: Keybinds. Talk Keybind. Display Name
+
+	VoiceControlPanel: {
+		$parentVal: Voice Control Panel
+		DisplayName: Voice Control Panel
+	}
 }
 
 Configs: {
@@ -79,4 +83,14 @@ Configs: {
 		Push.Label: Push
 		Toggle.Label: Toggle
 	}
+}
+
+UI: {
+	NoInputDevice: No Input Device Detected
+	EnableTestMode: Enable Microphone and Test Mode to Visualize
+	Mic: Mic
+	Test: Test
+	Denoise: Denoise
+	NoIcons: No Icons
+	AudioVisualizer: Input Visualizer
 }

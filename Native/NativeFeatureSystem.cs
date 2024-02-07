@@ -9,6 +9,7 @@ using Terraria.ModLoader.UI;
 
 namespace TerraVoice.Native;
 
+[Autoload(Side = ModSide.Client)]
 internal class NativeFeatureSystem : ModSystem
 {
     private readonly List<IntPtr> loadedLibs = new();

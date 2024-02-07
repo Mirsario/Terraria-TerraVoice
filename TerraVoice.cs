@@ -1,11 +1,13 @@
 using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Content;
+using ReLogic.Graphics;
 using System.IO;
 using Terraria;
 using Terraria.Audio;
+using Terraria.GameContent;
 using Terraria.GameInput;
 using Terraria.ID;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using TerraVoice.Misc;
 using TerraVoice.UI;
@@ -15,7 +17,9 @@ namespace TerraVoice;
 
 public partial class TerraVoice : Mod
 {
-    public static SpriteFont Font { get; private set; }
+    public static DynamicSpriteFont Font => Language.ActiveCulture.Name == "en-US" ? customFont : FontAssets.MouseText.Value;
+
+    private static DynamicSpriteFont customFont;
 
     public static readonly string CachePath = Path.Combine(Main.SavePath, "TerraVoice");
 
@@ -31,9 +35,12 @@ public partial class TerraVoice : Mod
     {
         Instance = this;
 
-        voiceBind = KeybindLoader.RegisterKeybind(this, "Keybinds.TalkKeybind.DisplayName", "J");
+        if (!Main.dedServ)
+        {
+            voiceBind = KeybindLoader.RegisterKeybind(this, "VoiceControlPanel", "J");
 
-        Font = Assets.Request<SpriteFont>("Assets/Fonts/MP3-11", AssetRequestMode.ImmediateLoad).Value;
+            customFont = Assets.Request<DynamicSpriteFont>("Assets/Fonts/MP3-12", AssetRequestMode.ImmediateLoad).Value;
+        }
     }
 
     public override void Unload() 

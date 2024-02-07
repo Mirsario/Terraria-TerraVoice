@@ -1,8 +1,9 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Microsoft.Xna.Framework.Graphics.PackedVector;
+using ReLogic.Graphics;
 using System;
 using Terraria.GameContent;
+using Terraria.Localization;
 using Terraria.ModLoader;
 using TerraVoice.Core;
 using TerraVoice.UI.Abstract;
@@ -28,32 +29,7 @@ internal class AudioVisualiserWidget : SmartUIElement
 
         spriteBatch.Draw(ModAsset.AudioVisualiserWidget.Value, position, Color.White);
 
-        Vector2 middle = position + new Vector2(Width.Pixels / 2, Height.Pixels / 2);
-
-        VoiceInputSystem inputSystem = ModContent.GetInstance<VoiceInputSystem>();
-        VoiceProcessingSystem processingSystem = ModContent.GetInstance<VoiceProcessingSystem>();
-
-        string text = "";
-
-        // TODO: Localise this
-        if (!inputSystem.HasValidAudioInput)
-        {
-            text = "No input device detected";
-        }
-        else if  (!processingSystem.TestMode || !inputSystem.MicrophoneEnabled)
-        {
-            text = "Enable test mode to visualise";
-        }
-
-        // Offset needs to be an even number to prevent weird scaling issues.
-        Vector2 halfTextSize = TerraVoice.Font.MeasureString(text).RoundEven() / 2;
-
-        spriteBatch.DrawString(TerraVoice.Font, text, middle - halfTextSize, TerraVoice.Cyan);
-
-        if (processingSystem.TestMode && inputSystem.HasValidAudioInput && inputSystem.MicrophoneEnabled)
-        {
-            DrawAudioBars(spriteBatch, position + new Vector2(4));
-        }
+        DrawScreen(spriteBatch, position);
     }
 
     private void DrawAudioBars(SpriteBatch spriteBatch, Vector2 position)
@@ -97,5 +73,47 @@ internal class AudioVisualiserWidget : SmartUIElement
     private void SubmitTestBuffer(short[] buffer)
     {
         Buffer.BlockCopy(buffer, 0, testBuffer, 0, buffer.Length * sizeof(short));
+    }
+
+    private void DrawScreen(SpriteBatch spriteBatch, Vector2 position)
+    {
+        Vector2 middle = position + new Vector2(Width.Pixels / 2, Height.Pixels / 2);
+
+        VoiceInputSystem inputSystem = ModContent.GetInstance<VoiceInputSystem>();
+        VoiceProcessingSystem processingSystem = ModContent.GetInstance<VoiceProcessingSystem>();
+
+        string text = "";
+
+        if (!inputSystem.HasValidAudioInput)
+        {
+            text = Language.GetTextValue("Mods.TerraVoice.UI.NoInputDevice");
+        }
+        else if (!processingSystem.TestMode || !inputSystem.MicrophoneEnabled)
+        {
+            text = Language.GetTextValue("Mods.TerraVoice.UI.EnableTestMode");
+        }
+
+        // Offset needs to be an even number to prevent weird scaling issues.
+        Vector2 halfTextSize = TerraVoice.Font.MeasureString(text).RoundEven() / 2;
+
+        spriteBatch.DrawString(TerraVoice.Font, text, middle - halfTextSize, TerraVoice.Cyan);
+
+        if (processingSystem.TestMode && inputSystem.HasValidAudioInput && inputSystem.MicrophoneEnabled)
+        {
+            DrawAudioBars(spriteBatch, position + new Vector2(4));
+        }
+
+        spriteBatch.DrawString(TerraVoice.Font, text, middle - halfTextSize, TerraVoice.Cyan);
+    }
+
+    private void DrawLabel(SpriteBatch spriteBatch, Vector2 position)
+    {
+        string label = Language.GetTextValue("Mods.TerraVoice.UI.AudioVisualizer");
+
+        float labelWidth = TerraVoice.Font.MeasureString(label).X;
+
+        Vector2 labelPosition = position + new Vector2((Width.Pixels / 2) - (labelWidth / 2), Height.Pixels - 3);
+
+        spriteBatch.DrawString(TerraVoice.Font, label, labelPosition, TerraVoice.Pink);
     }
 }

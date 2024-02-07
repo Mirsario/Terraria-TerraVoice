@@ -1,5 +1,6 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
 using Terraria;
 using Terraria.ModLoader;
 using TerraVoice.Core;
@@ -10,10 +11,10 @@ namespace TerraVoice.UI.ControlPanel;
 
 internal class VoiceControlPanel : SmartUIElement
 {
+    public const int Spacing = 16;
+
     private const int PanelWidth = 640;
     private const int PanelHeight = 448;
-
-    private const int Spacing = 16;
 
     private const int MicrophoneSwitch = 0;
     private const int TestSwitch = 1;
@@ -34,34 +35,9 @@ internal class VoiceControlPanel : SmartUIElement
 
         int y = Spacing;
 
-        Texture2D[] icons = new Texture2D[]
-        {
-            ModAsset.Microphone.Value,
-            ModAsset.Microphone.Value,
-            ModAsset.Microphone.Value,
-            ModAsset.Microphone.Value
-        };
+        InitialiseSwitches(y);
 
-        // TODO: Localise this
-        string[] labels = new string[]
-        {
-            "Mic",
-            "Test",
-            "Denoise",
-            "No icons"
-        };
-
-        for (int i = 0; i < 4; i++)
-        {
-            SwitchButton panelSwitch = new(icons[i], labels[i]);
-            panelSwitch.Left.Set(Spacing + ((Spacing + SwitchButton.SwitchWidth) * i), 0);
-            panelSwitch.Top.Set(y, 0);
-            Append(panelSwitch);
-
-            switches[i] = panelSwitch;
-        }
-
-        y += (int)switches[0].Height.Pixels + Spacing;
+        y += (int)switches[0].Height.Pixels + Spacing + 4;
 
         AudioVisualiserWidget audioVisualiser = new();
         audioVisualiser.Left.Set(Spacing, 0);
@@ -69,6 +45,13 @@ internal class VoiceControlPanel : SmartUIElement
         audioVisualiser.Width.Set(PanelWidth - (Spacing * 2), 0);
         audioVisualiser.Height.Set(56, 0);
         Append(audioVisualiser);
+
+        y += (int)audioVisualiser.Height.Pixels + Spacing;
+
+        ProximitySlider slider = new();
+        slider.Left.Set(Spacing, 0);
+        slider.Top.Set(y, 0);
+        Append(slider);
     }
 
     public override void SafeUpdate(GameTime gameTime)
@@ -122,5 +105,24 @@ internal class VoiceControlPanel : SmartUIElement
     private void DrawMainPanel(Vector2 position, SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(ModAsset.MainPanel.Value, position, Color.White);
+    }
+
+    private void InitialiseSwitches(int y)
+    {
+        int index = 0;
+
+        AddSwitch(index++, y, ModAsset.Mic.Value, "Mic");
+        AddSwitch(index++, y, ModAsset.Test.Value, "Test");
+        AddSwitch(index++, y, ModAsset.Denoise.Value, "Denoise");
+        AddSwitch(index, y, ModAsset.NoIcons.Value, "NoIcons");
+    }
+
+    private void AddSwitch(int i, int y, Texture2D icon, string label)
+    {
+        SwitchButton panelSwitch = new(icon, label);
+        panelSwitch.Left.Set(Spacing + ((Spacing + SwitchButton.SwitchWidth) * i), 0);
+        panelSwitch.Top.Set(y, 0);
+        switches[i] = panelSwitch;
+        Append(panelSwitch);
     }
 }
