@@ -57,7 +57,7 @@ internal class SwitchButton : SmartUIElement
     private void DrawLabel(SpriteBatch spriteBatch, Vector2 position)
     {
         // Offset needs to be an even number to prevent weird scaling issues.
-        float stringWidth = TerraVoice.Font.MeasureString(label).RoundEven().X;
+        float stringWidth = TerraVoice.Font.MeasureString(label).X;
         Vector2 textPosition = position + new Vector2((Width.Pixels / 2) - (stringWidth / 2), Height.Pixels - 3);
 
         spriteBatch.DrawString(TerraVoice.Font, label, textPosition, TerraVoice.Pink);

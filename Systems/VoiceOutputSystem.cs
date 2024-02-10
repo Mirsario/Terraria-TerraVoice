@@ -9,7 +9,7 @@ using TerraVoice.Misc;
 namespace TerraVoice.Core;
 
 [Autoload(Side = ModSide.Client)]
-internal class VoiceOutputSystem : ModSystem
+internal sealed class VoiceOutputSystem : ModSystem
 {
     private static PlayerSpeaker[] playerSpeakers;
 

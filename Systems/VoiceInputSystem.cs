@@ -1,6 +1,4 @@
-﻿using Microsoft.Xna.Framework.Input;
-using System.Collections.Generic;
-using Terraria;
+﻿using System.Collections.Generic;
 using Terraria.ModLoader;
 using TerraVoice.Native;
 
@@ -68,23 +66,6 @@ internal sealed class VoiceInputSystem : ModSystem
             microphone.OnBufferReady -= HandleAudioInputBuffer;
 
             recording = false;
-        }
-    }
-
-    public override void PostUpdateInput()
-    {
-        if (Main.keyState.IsKeyDown(Keys.L) && Main.oldKeyState.IsKeyUp(Keys.L))
-        {
-            deviceIndex++;
-
-            if (deviceIndex >= audioDevices.Count)
-            {
-                deviceIndex = 0;
-            }
-
-            SwitchAudioDevice(deviceIndex);
-
-            Main.NewText("Device: " + audioDevices[deviceIndex]);
         }
     }
 

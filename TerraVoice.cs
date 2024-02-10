@@ -9,6 +9,7 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
+using TerraVoice.Core;
 using TerraVoice.Misc;
 using TerraVoice.UI;
 using TerraVoice.UI.ControlPanel;
@@ -28,8 +29,11 @@ public partial class TerraVoice : Mod
     public static readonly Color Pink = new(226, 114, 175);
 
     private static ModKeybind voiceBind;
+    private static ModKeybind pushToTalk;
 
     public static TerraVoice Instance { get; private set; }
+
+    public static bool PushToTalkActivated { get; private set; }
 
     public override void Load() 
     {
@@ -38,6 +42,7 @@ public partial class TerraVoice : Mod
         if (!Main.dedServ)
         {
             voiceBind = KeybindLoader.RegisterKeybind(this, "VoiceControlPanel", "J");
+            pushToTalk = KeybindLoader.RegisterKeybind(this, "PushToTalk", "V");
 
             customFont = Assets.Request<DynamicSpriteFont>("Assets/Fonts/MP3-12", AssetRequestMode.ImmediateLoad).Value;
         }
@@ -54,15 +59,23 @@ public partial class TerraVoice : Mod
     {
         public override void ProcessTriggers(TriggersSet triggersSet)
         {
+            VoiceControlState state = TerraVoiceUILoader.GetUIState<VoiceControlState>();
+            VoiceInputSystem inputSystem = ModContent.GetInstance<VoiceInputSystem>();
+
             if (voiceBind.JustPressed)
             {
-                VoiceControlState state = TerraVoiceUILoader.GetUIState<VoiceControlState>();
-
                 state.Visible = !state.Visible;
 
                 state.Recalculate();
 
                 SoundEngine.PlaySound(state.Visible ? SoundID.MenuOpen : SoundID.MenuClose);
+            }
+
+            PushToTalkActivated = false;
+
+            if (pushToTalk.Current)
+            {
+                PushToTalkActivated = true;
             }
         }
     }

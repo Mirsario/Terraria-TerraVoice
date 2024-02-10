@@ -1,12 +1,3 @@
-Keybinds: {
-	TalkKeybind.DisplayName: 语音按键
-
-	VoiceControlPanel: {
-		// $parentVal: Voice Control Panel
-		// DisplayName: Voice Control Panel
-	}
-}
-
 Configs: {
 	VoiceConfig: {
 		DisplayName: 语音配置
@@ -96,4 +87,9 @@ UI: {
 	// Denoise: Denoise
 	// NoIcons: No Icons
 	// AudioVisualizer: Input Visualizer
+}
+
+Keybinds: {
+	// VoiceControlPanel.DisplayName: Voice Control Panel
+	// PushToTalk.DisplayName: Push To Talk
 }

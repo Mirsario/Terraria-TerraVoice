@@ -1,43 +1,51 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using System;
+using System.Collections.Generic;
 using Terraria;
-using Terraria.ModLoader;
-using TerraVoice.Core;
-using TerraVoice.Systems;
 using TerraVoice.UI.Abstract;
 
 namespace TerraVoice.UI.ControlPanel;
 
 internal class VoiceControlPanel : SmartUIElement
 {
+    public const int MicrophoneSwitch = 0;
+    public const int TestSwitch = 1;
+    public const int NoiseSuppressionSwitch = 2;
+    public const int IconSwitch = 3;
+
+    public const int PushToTalkRadioButton = 1;
+
     public const int Spacing = 16;
 
     private const int PanelWidth = 640;
     private const int PanelHeight = 448;
 
-    private const int MicrophoneSwitch = 0;
-    private const int TestSwitch = 1;
-    private const int NoiseSuppressionSwitch = 2;
-    private const int IconSwitch = 3;
+    public SwitchButton[] Switches { get; private set; }
+
+    public Knob Amplification { get; private set; }
+
+    public Knob Threshold { get; private set; }
+
+    public List<RadioButton> RadioButtons { get; private set; }
 
     private float oldScale;
 
     private readonly VoiceControlState parent;
 
-    private readonly SwitchButton[] switches;
-
     public VoiceControlPanel(VoiceControlState parent)
     {
         this.parent = parent;
 
-        switches = new SwitchButton[4];
+        Recalculate();
+
+        Switches = new SwitchButton[4];
+        RadioButtons = new();
 
         int y = Spacing;
 
         InitialiseSwitches(y);
 
-        y += (int)switches[0].Height.Pixels + Spacing + 4;
+        y += (int)Switches[0].Height.Pixels + Spacing + 4;
 
         AudioVisualiserWidget audioVisualiser = new();
         audioVisualiser.Left.Set(Spacing, 0);
@@ -48,22 +56,35 @@ internal class VoiceControlPanel : SmartUIElement
 
         y += (int)audioVisualiser.Height.Pixels + Spacing;
 
-        ProximitySlider slider = new();
+        // TODO: Replace magic number with max proximity range.
+        Slider slider = new(96);
         slider.Left.Set(Spacing, 0);
         slider.Top.Set(y, 0);
         Append(slider);
-    }
 
-    public override void SafeUpdate(GameTime gameTime)
-    {
-        VoiceInputSystem inputSystem = ModContent.GetInstance<VoiceInputSystem>();
-        VoiceProcessingSystem processingSystem = ModContent.GetInstance<VoiceProcessingSystem>();
-        IconDrawingSystem iconDrawingSystem = ModContent.GetInstance<IconDrawingSystem>();
+        y += (int)slider.Height.Pixels + Spacing;
 
-        inputSystem.MicrophoneEnabled = switches[MicrophoneSwitch].Enabled;
-        processingSystem.TestMode = switches[TestSwitch].Enabled;
-        processingSystem.NoiseSuppression = switches[NoiseSuppressionSwitch].Enabled;
-        iconDrawingSystem.NoIcons = switches[IconSwitch].Enabled;
+        Amplification = new(0.5f, 3);
+        Amplification.Left.Set(Spacing, 0);
+        Amplification.Top.Set(y, 0);
+        Append(Amplification);
+
+        RadioButton openMic = new(RadioButtons, true);
+        openMic.Left.Set(Width.Pixels - Spacing - RadioButton.ButtonWidth, 0);
+        openMic.Top.Set(y, 0);
+        Append(openMic);
+
+        y += (int)Amplification.Height.Pixels + Spacing;
+
+        Threshold = new(-20, 60);
+        Threshold.Left.Set(Spacing, 0);
+        Threshold.Top.Set(y, 0);
+        Append(Threshold);
+
+        RadioButton pushToTalk = new(RadioButtons, false);
+        pushToTalk.Left.Set(Width.Pixels - Spacing - RadioButton.ButtonWidth, 0);
+        pushToTalk.Top.Set(y, 0);
+        Append(pushToTalk);
     }
 
     public override void DrawSelf(SpriteBatch spriteBatch)
@@ -122,7 +143,7 @@ internal class VoiceControlPanel : SmartUIElement
         SwitchButton panelSwitch = new(icon, label);
         panelSwitch.Left.Set(Spacing + ((Spacing + SwitchButton.SwitchWidth) * i), 0);
         panelSwitch.Top.Set(y, 0);
-        switches[i] = panelSwitch;
+        Switches[i] = panelSwitch;
         Append(panelSwitch);
     }
 }

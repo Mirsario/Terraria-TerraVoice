@@ -1,6 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
-using Terraria.GameContent;
 using TerraVoice.UI.Abstract;
 using ReLogic.Graphics;
 using System;
@@ -9,20 +8,23 @@ using Terraria;
 
 namespace TerraVoice.UI.ControlPanel;
 
-internal class ProximitySlider : SmartUIElement
+internal class Slider : SmartUIElement
 {
     private const int SliderWidth = 528;
     private const int SliderHeight = 32;
     private const int BaseHeight = 12;
     private const int KnobWidth = 12;
-    private const int MaxRange = 96;
+
+    private readonly int maxRange;
 
     private int sliderX;
 
     private bool sliding;
 
-    public ProximitySlider()
+    public Slider(int maxRange)
     {
+        this.maxRange = maxRange;
+
         Width.Set(SliderWidth, 0);
         Height.Set(SliderHeight, 0);
     }
@@ -68,13 +70,16 @@ internal class ProximitySlider : SmartUIElement
     {
         int yGap = (drawBox.Height - BaseHeight) / 2;
 
-        Rectangle baseArea = new(drawBox.X, drawBox.Y + yGap, SliderWidth, drawBox.Height - (yGap * 2));
+        Vector2 sliderBasePosition = new(drawBox.X, drawBox.Y + yGap);
 
-        spriteBatch.Draw(TextureAssets.MagicPixel.Value, baseArea, TerraVoice.Cyan);
+        spriteBatch.Draw(ModAsset.Slider.Value, sliderBasePosition, Color.White);
 
-        Rectangle slider = new(drawBox.X + sliderX, drawBox.Y, KnobWidth, drawBox.Height);
+        spriteBatch.Draw(ModAsset.RangeMarks.Value, sliderBasePosition + new Vector2(0, 12), Color.White);
+        spriteBatch.Draw(ModAsset.RangeMarks.Value, sliderBasePosition - new Vector2(0, 16), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.FlipVertically, 0);
 
-        spriteBatch.Draw(TextureAssets.MagicPixel.Value, slider, TerraVoice.Pink);
+        Vector2 sliderPosition = new(drawBox.X + sliderX, drawBox.Y);
+
+        spriteBatch.Draw(ModAsset.SliderKnob.Value, sliderPosition, Color.White);
     }
 
     private void DrawIndicator(SpriteBatch spriteBatch, Rectangle drawBox)
@@ -83,9 +88,9 @@ internal class ProximitySlider : SmartUIElement
 
         Rectangle indicatorBox = new(x, drawBox.Y, 64, drawBox.Height);
 
-        spriteBatch.Draw(TextureAssets.MagicPixel.Value, indicatorBox, TerraVoice.Pink);
+        spriteBatch.Draw(ModAsset.RangeWidget.Value, new Vector2(indicatorBox.X, indicatorBox.Y), Color.White);
 
-        int range = (int)Math.Floor((float)sliderX / (SliderWidth - KnobWidth) * MaxRange);
+        int range = (int)Math.Floor((float)sliderX / (SliderWidth - KnobWidth) * maxRange);
 
         string text = range == 0 ? "Inf." : range.ToString();
 

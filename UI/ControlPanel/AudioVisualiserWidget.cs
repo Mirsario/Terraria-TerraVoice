@@ -37,7 +37,7 @@ internal class AudioVisualiserWidget : SmartUIElement
         int blocks = ((int)Width.Pixels - 16) / 4;
         int currentBlock = 0;
         int visualiserHeight = (int)Height.Pixels - 8;
-        int sensitivity = 8;
+        int sensitivity = 6;
         int minHeight = 4;
 
         for (int offset = 0; offset < Width.Pixels - 16; offset += 6)

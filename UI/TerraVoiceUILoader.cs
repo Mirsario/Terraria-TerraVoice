@@ -12,7 +12,7 @@ using TerraVoice.UI.Abstract;
 namespace TerraVoice.UI;
 
 [Autoload(Side = ModSide.Client)]
-public class TerraVoiceUILoader : ModSystem
+internal sealed class TerraVoiceUILoader : ModSystem
 {
     /// <summary>
 	/// The collection of automatically created UserInterfaces for SmartUIStates.
@@ -25,7 +25,7 @@ public class TerraVoiceUILoader : ModSystem
     private static List<SmartUIState> UIStates = new();
 
     /// <summary>
-    /// Uses reflection to scan through and find all types extending SmartUIState that arent abstract, and loads an instance of them.
+    /// Uses reflection to scan through and find all types extending SmartUIState that aren't abstract, and loads an instance of them.
     /// </summary>
     public override void PostSetupContent()
     {
