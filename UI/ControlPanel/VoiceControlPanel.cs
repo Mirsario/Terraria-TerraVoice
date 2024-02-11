@@ -13,6 +13,7 @@ internal class VoiceControlPanel : SmartUIElement
     public const int NoiseSuppressionSwitch = 2;
     public const int IconSwitch = 3;
 
+    public const int OpenMicRadioButton = 0;
     public const int PushToTalkRadioButton = 1;
 
     public const int Spacing = 16;
@@ -49,7 +50,7 @@ internal class VoiceControlPanel : SmartUIElement
 
         AudioVisualiserWidget audioVisualiser = new();
         audioVisualiser.Left.Set(Spacing, 0);
-        audioVisualiser.Top.Set(y, 0);
+        audioVisualiser.Top.Set(y + 4, 0);
         audioVisualiser.Width.Set(PanelWidth - (Spacing * 2), 0);
         audioVisualiser.Height.Set(56, 0);
         Append(audioVisualiser);
@@ -64,24 +65,24 @@ internal class VoiceControlPanel : SmartUIElement
 
         y += (int)slider.Height.Pixels + Spacing;
 
-        Amplification = new(0.5f, 3);
+        Amplification = new(0.5f, 2.25f);
         Amplification.Left.Set(Spacing, 0);
         Amplification.Top.Set(y, 0);
         Append(Amplification);
 
-        RadioButton openMic = new(RadioButtons, true);
+        Threshold = new(-10, 60);
+        Threshold.Left.Set((Spacing * 2) + Knob.KnobWidth, 0);
+        Threshold.Top.Set(y, 0);
+        Append(Threshold);
+
+        RadioButton openMic = new(RadioButtons, true, ModAsset.OpenMic.Value);
         openMic.Left.Set(Width.Pixels - Spacing - RadioButton.ButtonWidth, 0);
         openMic.Top.Set(y, 0);
         Append(openMic);
 
-        y += (int)Amplification.Height.Pixels + Spacing;
+        y += (int)openMic.Height.Pixels + Spacing;
 
-        Threshold = new(-20, 60);
-        Threshold.Left.Set(Spacing, 0);
-        Threshold.Top.Set(y, 0);
-        Append(Threshold);
-
-        RadioButton pushToTalk = new(RadioButtons, false);
+        RadioButton pushToTalk = new(RadioButtons, false, ModAsset.PushToTalk.Value);
         pushToTalk.Left.Set(Width.Pixels - Spacing - RadioButton.ButtonWidth, 0);
         pushToTalk.Top.Set(y, 0);
         Append(pushToTalk);
@@ -126,6 +127,8 @@ internal class VoiceControlPanel : SmartUIElement
     private void DrawMainPanel(Vector2 position, SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(ModAsset.MainPanel.Value, position, Color.White);
+
+        DrawRadioButtonIndicators(spriteBatch);
     }
 
     private void InitialiseSwitches(int y)
@@ -145,5 +148,21 @@ internal class VoiceControlPanel : SmartUIElement
         panelSwitch.Top.Set(y, 0);
         Switches[i] = panelSwitch;
         Append(panelSwitch);
+    }
+
+    private void DrawRadioButtonIndicators(SpriteBatch spriteBatch)
+    {
+        Texture2D indicator = ModAsset.Indicator.Value;
+
+        foreach (RadioButton button in RadioButtons)
+        {
+            Vector2 buttonPosition = button.GetDimensions().Position();
+
+            buttonPosition += new Vector2(-40, 10);
+
+            Rectangle sourceRectangle = new(button.Enabled ? (indicator.Width / 2) : 0, 0, indicator.Width / 2, indicator.Height);
+
+            spriteBatch.Draw(ModAsset.Indicator.Value, buttonPosition, sourceRectangle, Color.White);
+        }
     }
 }

@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria.Audio;
-using Terraria.GameContent;
 using Terraria.UI;
 using TerraVoice.UI.Abstract;
 
@@ -17,9 +16,12 @@ internal class RadioButton : SmartUIElement
 
     private readonly List<RadioButton> buttons;
 
-    public RadioButton(List<RadioButton> buttons, bool enabled)
+    private readonly Texture2D icon;
+
+    public RadioButton(List<RadioButton> buttons, bool enabled, Texture2D icon)
     {
         this.buttons = buttons;
+        this.icon = icon;
 
         buttons.Add(this);
 
@@ -33,9 +35,16 @@ internal class RadioButton : SmartUIElement
     {
         base.DrawSelf(spriteBatch);
 
-        Rectangle drawBox = GetDimensions().ToRectangle();
+        Vector2 position = GetDimensions().Position();
 
-        spriteBatch.Draw(TextureAssets.MagicPixel.Value, drawBox, Enabled ? TerraVoice.Cyan : TerraVoice.Pink);
+        if (!Enabled)
+        {
+            position -= new Vector2(0, 8);
+        }
+
+        Rectangle sourceRectangle = new(Enabled ? 0 : (icon.Width / 2), 0, icon.Width / 2, icon.Height);
+
+        spriteBatch.Draw(icon, position, sourceRectangle, Color.White);
     }
 
     public override void SafeMouseDown(UIMouseEvent evt)

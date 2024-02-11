@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
+using Terraria.Audio;
 using Terraria.GameContent;
 using Terraria.UI;
 using TerraVoice.UI.Abstract;
@@ -10,13 +11,15 @@ namespace TerraVoice.UI.ControlPanel;
 
 internal class Knob : SmartUIElement
 {
-    public const int KnobWidth = 56;
-    public const int KnobHeight = 56;
+    public const int KnobWidth = 128;
+    public const int KnobHeight = 128;
 
     public float Volume => (float)MathHelper.Lerp(min, max, Math.Abs(InverseLerp(MinAngle, MaxAngle, angle)));
 
-    private const float MinAngle = MathHelper.Pi + MathHelper.PiOver4;
+    private const float MinAngle = MathHelper.Pi + MathHelper.PiOver2;
     private const float MaxAngle = -MathHelper.PiOver4;
+
+    private const float SpinSensitivity = 2;
 
     private float CursorOffsetFromCenterX => Main.MouseScreen.X - (GetDimensions().Position().X + GetDimensions().Width / 2);
 
@@ -27,6 +30,9 @@ internal class Knob : SmartUIElement
     private float startOffset;
 
     private float startAngle;
+
+    private int spriteX;
+    private int oldSpriteX;
 
     private readonly float min;
     private readonly float max;
@@ -46,11 +52,11 @@ internal class Knob : SmartUIElement
     {
         base.DrawSelf(spriteBatch);
 
-        Rectangle drawBox = GetDimensions().ToRectangle();
+        Vector2 position = GetDimensions().Position();
 
-        spriteBatch.Draw(TextureAssets.MagicPixel.Value, drawBox, TerraVoice.Pink);
+        spriteBatch.Draw(ModAsset.KnobBase.Value, position, Color.White);
 
-        DrawIndicator(spriteBatch, drawBox);
+        DrawIndicator(spriteBatch, position);
     }
 
     public override void SafeUpdate(GameTime gameTime)
@@ -65,12 +71,25 @@ internal class Knob : SmartUIElement
         {
             float currentOffset = CursorOffsetFromCenterX - startOffset;
 
-            float radiansOffset = -MathHelper.ToRadians(currentOffset / 1.5f);
+            float radiansOffset = -MathHelper.ToRadians(currentOffset / 1.5f) * SpinSensitivity;
 
             angle = startAngle + radiansOffset;
         }
 
         angle = MathHelper.Clamp(angle, MaxAngle, MinAngle);
+
+        if (spriteX != oldSpriteX)
+        {
+            SoundStyle sound = new("TerraVoice/Assets/Sounds/UI/SwitchOn")
+            {
+                Volume = 0.5f,
+                Pitch = 0.8f
+            };
+
+            SoundEngine.PlaySound(sound);
+
+            oldSpriteX = spriteX;
+        }
 
         base.SafeUpdate(gameTime);
     }
@@ -90,10 +109,14 @@ internal class Knob : SmartUIElement
 
     private float InverseLerp(float a, float b, float value) => (value - a) / (b - a);
 
-    private void DrawIndicator(SpriteBatch spriteBatch, Rectangle drawBox)
+    private void DrawIndicator(SpriteBatch spriteBatch, Vector2 position)
     {
-        Vector2 origin = ModAsset.Mic.Value.Size() / 2;
+        Texture2D turns = ModAsset.KnobTurns.Value;
 
-        spriteBatch.Draw(ModAsset.Mic.Value, drawBox.TopLeft() + (drawBox.Size() / 2), null, Color.White, MathHelper.PiOver2 - angle, origin, 1, SpriteEffects.None, 0);
+        spriteX = (int)Math.Ceiling(InverseLerp(MinAngle, MaxAngle, angle) * 7);
+
+        Rectangle sourceRectangle = new(turns.Width / 8 * spriteX, 0, turns.Width / 8, turns.Height);
+
+        spriteBatch.Draw(turns, position, sourceRectangle, Color.White);
     }
 }

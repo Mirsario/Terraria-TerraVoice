@@ -10,7 +10,7 @@ namespace TerraVoice.UI.ControlPanel;
 
 internal class Slider : SmartUIElement
 {
-    private const int SliderWidth = 528;
+    private const int SliderWidth = 530;
     private const int SliderHeight = 32;
     private const int BaseHeight = 12;
     private const int KnobWidth = 12;
@@ -74,17 +74,16 @@ internal class Slider : SmartUIElement
 
         spriteBatch.Draw(ModAsset.Slider.Value, sliderBasePosition, Color.White);
 
-        spriteBatch.Draw(ModAsset.RangeMarks.Value, sliderBasePosition + new Vector2(0, 12), Color.White);
-        spriteBatch.Draw(ModAsset.RangeMarks.Value, sliderBasePosition - new Vector2(0, 16), null, Color.White, 0, Vector2.Zero, 1, SpriteEffects.FlipVertically, 0);
+        spriteBatch.Draw(ModAsset.RangeMarks.Value, sliderBasePosition - new Vector2(0, 8), Color.White);
 
-        Vector2 sliderPosition = new(drawBox.X + sliderX, drawBox.Y);
+        Vector2 sliderKnobPosition = new(drawBox.X + sliderX, drawBox.Y - 6);
 
-        spriteBatch.Draw(ModAsset.SliderKnob.Value, sliderPosition, Color.White);
+        spriteBatch.Draw(ModAsset.SliderKnob.Value, sliderKnobPosition, Color.White);
     }
 
     private void DrawIndicator(SpriteBatch spriteBatch, Rectangle drawBox)
     {
-        int x = drawBox.X + drawBox.Width + VoiceControlPanel.Spacing;
+        int x = drawBox.X + drawBox.Width + VoiceControlPanel.Spacing - 2;
 
         Rectangle indicatorBox = new(x, drawBox.Y, 64, drawBox.Height);
 
