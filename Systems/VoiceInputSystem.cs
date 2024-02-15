@@ -10,7 +10,7 @@ internal sealed class VoiceInputSystem : ModSystem
     // The rnnoise library only works with a sampling rate of 48KHz.
     public const int SampleRate = 48_000;
 
-    // Needed due to the required P-Opus frame size being 20ms.
+    // Used for convenience as the opus default frame size is 20ms - https://wiki.xiph.org/Opus_Recommended_Settings.
     public const int MicrophoneInputDurationMs = 20;
 
     public bool HasValidAudioInput => audioDevices.Count > 0;

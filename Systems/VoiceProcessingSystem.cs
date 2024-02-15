@@ -23,6 +23,9 @@ internal sealed class VoiceProcessingSystem : ModSystem
 
     public event Action<short[]> OnTestBufferReceived;
 
+    // https://wiki.xiph.org/Opus_Recommended_Settings recommends 24Kb/s for fullband VoIP.
+    private const int VoIPBitrate = 24_000;
+
     private OpusEncoder encoder;
 
     private VoiceOutputSystem outputSystem;
@@ -33,7 +36,10 @@ internal sealed class VoiceProcessingSystem : ModSystem
     {
         rnnoise.rnnoise_create();
 
-        encoder = new(SamplingRate.Sampling48000, Channels.Mono);
+        encoder = new(SamplingRate.Sampling48000, Channels.Mono, OpusApplicationType.Voip, Delay.Delay20ms)
+        {
+            Bitrate = VoIPBitrate
+        };
 
         outputSystem = ModContent.GetInstance<VoiceOutputSystem>();
 

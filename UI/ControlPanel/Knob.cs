@@ -3,7 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System;
 using Terraria;
 using Terraria.Audio;
-using Terraria.GameContent;
+using Terraria.GameInput;
 using Terraria.UI;
 using TerraVoice.UI.Abstract;
 
@@ -54,13 +54,17 @@ internal class Knob : SmartUIElement
 
         Vector2 position = GetDimensions().Position();
 
-        spriteBatch.Draw(ModAsset.KnobBase.Value, position, Color.White);
+        DrawMarkings(spriteBatch, position);
+
+        spriteBatch.Draw(ModAsset.Knob.Value, position, Color.White);
 
         DrawIndicator(spriteBatch, position);
     }
 
     public override void SafeUpdate(GameTime gameTime)
     {
+        PlayerInput.LockVanillaMouseScroll("TerraVoice/VoiceControlState");
+
         if (!Main.mouseLeft && dragging)
         {
             dragging = false;
@@ -71,7 +75,7 @@ internal class Knob : SmartUIElement
         {
             float currentOffset = CursorOffsetFromCenterX - startOffset;
 
-            float radiansOffset = -MathHelper.ToRadians(currentOffset / 1.5f) * SpinSensitivity;
+            float radiansOffset = -MathHelper.ToRadians(currentOffset) * SpinSensitivity;
 
             angle = startAngle + radiansOffset;
         }
@@ -80,18 +84,28 @@ internal class Knob : SmartUIElement
 
         if (spriteX != oldSpriteX)
         {
-            SoundStyle sound = new("TerraVoice/Assets/Sounds/UI/SwitchOn")
-            {
-                Volume = 0.5f,
-                Pitch = 0.8f
-            };
-
-            SoundEngine.PlaySound(sound);
+            PlaySound();
 
             oldSpriteX = spriteX;
         }
 
         base.SafeUpdate(gameTime);
+    }
+
+    public override void SafeScrollWheel(UIScrollWheelEvent evt)
+    {
+        /*int sign = Math.Sign(evt.ScrollWheelValue);
+
+        float oldAngle = angle;
+
+        angle += (MaxAngle - MinAngle) / 7 * sign;
+
+        angle = MathHelper.Clamp(angle, MaxAngle, MinAngle);
+
+        if (oldAngle != angle)
+        {
+            PlaySound();
+        }*/
     }
 
     public override void SafeMouseDown(UIMouseEvent evt)
@@ -118,5 +132,25 @@ internal class Knob : SmartUIElement
         Rectangle sourceRectangle = new(turns.Width / 8 * spriteX, 0, turns.Width / 8, turns.Height);
 
         spriteBatch.Draw(turns, position, sourceRectangle, Color.White);
+    }
+
+    private void DrawMarkings(SpriteBatch spriteBatch, Vector2 position)
+    {
+        Texture2D markings = ModAsset.KnobMarkings.Value;
+
+        Vector2 halfSize = markings.Size() / 2;
+
+        spriteBatch.Draw(ModAsset.KnobMarkings.Value, position + halfSize, null, Color.White, angle, halfSize, 1, SpriteEffects.None, 0);
+    }
+
+    private void PlaySound()
+    {
+        SoundStyle sound = new("TerraVoice/Assets/Sounds/UI/SwitchOn")
+        {
+            Volume = 0.5f,
+            Pitch = 0.8f
+        };
+
+        SoundEngine.PlaySound(sound);
     }
 }
