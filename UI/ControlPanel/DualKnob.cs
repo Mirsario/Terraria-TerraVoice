@@ -14,9 +14,9 @@ internal class DualKnob : SmartUIElement
     public const int KnobWidth = 128;
     public const int KnobHeight = 128;
 
-    public int LargeKnobPosition { get; private set; }
-
     public float SmallKnobValue => (float)MathF.Round(MathHelper.Lerp(min, max, Math.Abs(InverseLerp(MinAngle, MaxAngle, angle))), 2);
+
+    public int LargeKnobPosition => channel.Value;
 
     private const float MinAngle = MathHelper.Pi + MathHelper.PiOver2;
     private const float MaxAngle = -MathHelper.PiOver2;
@@ -36,14 +36,18 @@ internal class DualKnob : SmartUIElement
     private readonly float min;
     private readonly float max;
 
-    public DualKnob(float min, float max, float smallValue, int channel)
+    private readonly Ref<float> smallValue;
+
+    private readonly Ref<int> channel;
+
+    public DualKnob(float min, float max, Ref<float> smallValue, Ref<int> channel)
     {
         this.min = min;
         this.max = max;
+        this.smallValue = smallValue;
+        this.channel = channel;
 
-        LargeKnobPosition = channel;
-
-        angle = MathHelper.Lerp(MinAngle, MaxAngle, InverseLerp(min, max, smallValue));
+        angle = MathHelper.Lerp(MinAngle, MaxAngle, InverseLerp(min, max, smallValue.Value));
 
         Width.Set(KnobWidth, 0);
         Height.Set(KnobHeight, 0);
@@ -83,6 +87,8 @@ internal class DualKnob : SmartUIElement
 
         angle = MathHelper.Clamp(angle, MaxAngle, MinAngle);
 
+        smallValue.Value = SmallKnobValue;
+
         base.SafeUpdate(gameTime);
     }
 
@@ -90,12 +96,12 @@ internal class DualKnob : SmartUIElement
     {
         int sign = Math.Sign(evt.ScrollWheelValue);
 
-        int oldPosition = LargeKnobPosition;
+        int oldPosition = channel.Value;
 
-        LargeKnobPosition += sign;
-        LargeKnobPosition = (int)MathHelper.Clamp(LargeKnobPosition, 0, 7);
+        channel.Value += sign;
+        channel.Value = (int)MathHelper.Clamp(channel.Value, 0, 7);
 
-        if (LargeKnobPosition != oldPosition)
+        if (channel.Value != oldPosition)
         {
             PlaySound();
         }
@@ -118,7 +124,7 @@ internal class DualKnob : SmartUIElement
     {
         Texture2D turns = ModAsset.KnobTurns.Value;
 
-        Rectangle sourceRectangle = new(turns.Width / 8 * LargeKnobPosition, 0, turns.Width / 8, turns.Height);
+        Rectangle sourceRectangle = new(turns.Width / 8 * channel.Value, 0, turns.Width / 8, turns.Height);
 
         spriteBatch.Draw(turns, position, sourceRectangle, Color.White);
     }

@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using System;
-using System.Reflection.Emit;
 using Terraria.GameContent;
 using Terraria.Localization;
 using Terraria.ModLoader;
@@ -57,7 +56,7 @@ internal class AudioVisualiserWidget : SmartUIElement
         {
             text = Language.GetTextValue("Mods.TerraVoice.UI.NoInputDevice");
         }
-        else if (!data.TestMode || !data.MicrophoneEnabled)
+        else if (!data.TestMode.Value || !data.MicrophoneEnabled.Value)
         {
             text = Language.GetTextValue("Mods.TerraVoice.UI.EnableTestMode");
         }
@@ -67,7 +66,7 @@ internal class AudioVisualiserWidget : SmartUIElement
 
         spriteBatch.DrawString(TerraVoice.Font, text, middle - halfTextSize, TerraVoice.Cyan);
 
-        if (data.TestMode && data.MicrophoneEnabled)
+        if (data.TestMode.Value && data.MicrophoneEnabled.Value)
         {
             DrawAudioBars(spriteBatch, position + new Vector2(4));
         }

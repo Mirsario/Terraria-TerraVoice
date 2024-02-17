@@ -1,4 +1,5 @@
-﻿using Terraria.ModLoader.IO;
+﻿using Terraria;
+using Terraria.ModLoader.IO;
 
 namespace TerraVoice.IO;
 
@@ -6,57 +7,60 @@ internal class UserDataStore : PersistentDataStore
 {
     public override string FileName => "voice_settings.dat";
 
-    // I would normally use properties here, but they cannot be used with the ref keyword.
-    public bool MicrophoneEnabled;
-    public bool TestMode;
-    public bool NoiseSuppression;
-    public bool NoIcons;
-    public bool PushToTalk = true;
+    // I would normally use properties here, but they cannot be used with the keyword.
+    public Ref<bool> MicrophoneEnabled = new();
+    public Ref<bool> TestMode = new();
+    public Ref<bool> NoiseSuppression = new();
+    public Ref<bool> NoIcons = new();
+    public Ref<bool> OpenMic = new();
+    public Ref<bool> PushToTalk = new(true);
 
-    public float Amplification = 1;
+    public Ref<float> Amplification = new(1);
 
-    public int ProximitySliderX;
-    public int Channel;
-
-    public string Device;
+    public Ref<int> ProximitySliderX = new();
+    public Ref<int> Channel = new();
+    
+    public Ref<string> Device = new();
 
     public override void LoadGlobal(TagCompound tag)
     {
-        LoadTag(tag, nameof(MicrophoneEnabled), ref MicrophoneEnabled);
-        LoadTag(tag, nameof(TestMode), ref TestMode);
-        LoadTag(tag, nameof(NoiseSuppression), ref NoiseSuppression);
-        LoadTag(tag, nameof(NoIcons), ref NoIcons);
-        LoadTag(tag, nameof(PushToTalk), ref PushToTalk);
+        LoadTag(tag, nameof(MicrophoneEnabled), MicrophoneEnabled);
+        LoadTag(tag, nameof(TestMode), TestMode);
+        LoadTag(tag, nameof(NoiseSuppression), NoiseSuppression);
+        LoadTag(tag, nameof(NoIcons), NoIcons);
+        LoadTag(tag, nameof(OpenMic), OpenMic);
+        LoadTag(tag, nameof(PushToTalk), PushToTalk);
 
-        LoadTag(tag, nameof(Amplification), ref Amplification);
+        LoadTag(tag, nameof(Amplification), Amplification);
 
-        LoadTag(tag, nameof(ProximitySliderX), ref ProximitySliderX);
-        LoadTag(tag, nameof(Channel), ref Channel);
+        LoadTag(tag, nameof(ProximitySliderX), ProximitySliderX);
+        LoadTag(tag, nameof(Channel), Channel);
 
-        LoadTag(tag, nameof(Device), ref Device);
+        LoadTag(tag, nameof(Device), Device);
     }
 
     public override void SaveGlobal(TagCompound tag)
     {
-        tag[nameof(MicrophoneEnabled)] = MicrophoneEnabled;
-        tag[nameof(TestMode)] = TestMode;
-        tag[nameof(NoiseSuppression)] = NoiseSuppression;
-        tag[nameof(NoIcons)] = NoIcons;
-        tag[nameof(PushToTalk)] = PushToTalk;
+        tag[nameof(MicrophoneEnabled)] = MicrophoneEnabled.Value;
+        tag[nameof(TestMode)] = TestMode.Value;
+        tag[nameof(NoiseSuppression)] = NoiseSuppression.Value;
+        tag[nameof(NoIcons)] = NoIcons.Value;
+        tag[nameof(OpenMic)] = OpenMic.Value;
+        tag[nameof(PushToTalk)] = PushToTalk.Value;
 
-        tag[nameof(Amplification)] = Amplification;
+        tag[nameof(Amplification)] = Amplification.Value;
 
-        tag[nameof(ProximitySliderX)] = ProximitySliderX;
-        tag[nameof(Channel)] = Channel;
+        tag[nameof(ProximitySliderX)] = ProximitySliderX.Value;
+        tag[nameof(Channel)] = Channel.Value;
 
-        tag[nameof(Device)] = Device;
+        tag[nameof(Device)] = Device.Value;
     }
 
-    private void LoadTag<T>(TagCompound tag, string name, ref T property)
+    private void LoadTag<T>(TagCompound tag, string name, Ref<T> property)
     {
         if (tag.ContainsKey(name))
         {
-            property = tag.Get<T>(name);
+            property.Value = tag.Get<T>(name);
         }
     }
 }

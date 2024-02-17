@@ -24,7 +24,7 @@ internal sealed class VoiceInputSystem : ModSystem
     {
         UserDataStore data = PersistentDataStoreSystem.GetDataStore<UserDataStore>();
 
-        SwitchAudioDevice(data.Device);
+        SwitchAudioDevice(data.Device.Value);
 
         processingSystem = ModContent.GetInstance<VoiceProcessingSystem>();
     }
@@ -47,7 +47,7 @@ internal sealed class VoiceInputSystem : ModSystem
     {
         UserDataStore data = PersistentDataStoreSystem.GetDataStore<UserDataStore>();
 
-        if (data.MicrophoneEnabled && !recording)
+        if (data.MicrophoneEnabled.Value && !recording)
         {
             microphone.OnBufferReady += HandleAudioInputBuffer;
             microphone.StartRecording();

@@ -73,7 +73,7 @@ internal class VoiceControlPanel : SmartUIElement
         ChannelAmplificationDualKnob.Top.Set(y, 0);
         Append(ChannelAmplificationDualKnob);
 
-        RadioButton openMic = new(RadioButtons, !data.PushToTalk, ModAsset.OpenMic.Value);
+        RadioButton openMic = new(RadioButtons, data.OpenMic, ModAsset.OpenMic.Value);
         openMic.Left.Set(Width.Pixels - Spacing - RadioButton.ButtonWidth, 0);
         openMic.Top.Set(y, 0);
         Append(openMic);
@@ -139,12 +139,11 @@ internal class VoiceControlPanel : SmartUIElement
         AddSwitch(index, y, ModAsset.NoIcons.Value, "NoIcons", data.NoIcons);
     }
 
-    private void AddSwitch(int i, int y, Texture2D icon, string label, bool activated)
+    private void AddSwitch(int i, int y, Texture2D icon, string label, Ref<bool> setting)
     {
-        SwitchButton panelSwitch = new(icon, label);
+        SwitchButton panelSwitch = new(icon, label, setting);
         panelSwitch.Left.Set(Spacing + ((Spacing + SwitchButton.SwitchWidth) * i), 0);
         panelSwitch.Top.Set(y, 0);
-        panelSwitch.Enabled = activated;
         Switches[i] = panelSwitch;
         Append(panelSwitch);
     }

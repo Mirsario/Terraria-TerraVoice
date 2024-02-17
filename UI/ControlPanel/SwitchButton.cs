@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
+using Terraria;
 using Terraria.Audio;
 using Terraria.Localization;
 using Terraria.UI;
@@ -10,8 +11,6 @@ namespace TerraVoice.UI.ControlPanel;
 
 internal class SwitchButton : SmartUIElement
 {
-    public bool Enabled { get; set; }
-
     public const int SwitchWidth = 140;
     public const int SwitchHeight = 120;
 
@@ -19,10 +18,13 @@ internal class SwitchButton : SmartUIElement
 
     private readonly string label;
 
-    public SwitchButton(Texture2D icon, string label)
+    private readonly Ref<bool> setting;
+
+    public SwitchButton(Texture2D icon, string label, Ref<bool> setting)
     {
         this.icon = icon;
         this.label = Language.GetTextValue($"Mods.TerraVoice.UI.{label}");
+        this.setting = setting;
 
         Width.Set(SwitchWidth, 0);
         Height.Set(SwitchHeight, 0);
@@ -34,7 +36,7 @@ internal class SwitchButton : SmartUIElement
 
         Vector2 position = GetDimensions().Position();
 
-        Texture2D texture = Enabled ? ModAsset.Switch_On.Value : ModAsset.Switch_Off.Value;
+        Texture2D texture = setting.Value ? ModAsset.Switch_On.Value : ModAsset.Switch_Off.Value;
 
         spriteBatch.Draw(texture, position, Color.White);
 
@@ -44,9 +46,9 @@ internal class SwitchButton : SmartUIElement
 
     public override void SafeMouseDown(UIMouseEvent evt)
     {
-        Enabled = !Enabled;
+        setting.Value = !setting.Value;
 
-        SoundStyle sound = new($"TerraVoice/Assets/Sounds/UI/Switch{(Enabled ? "On" : "Off")}")
+        SoundStyle sound = new($"TerraVoice/Assets/Sounds/UI/Switch{(setting.Value ? "On" : "Off")}")
         {
             Volume = 0.5f
         };

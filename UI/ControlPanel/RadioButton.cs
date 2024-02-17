@@ -1,6 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
+using Terraria;
 using Terraria.Audio;
 using Terraria.UI;
 using TerraVoice.UI.Abstract;
@@ -12,20 +13,21 @@ internal class RadioButton : SmartUIElement
     public const int ButtonWidth = 56;
     public const int ButtonHeight = 56;
 
-    public bool Enabled { get; private set; }
+    public bool Enabled => setting.Value;
 
     private readonly List<RadioButton> buttons;
 
+    private readonly Ref<bool> setting;
+
     private readonly Texture2D icon;
 
-    public RadioButton(List<RadioButton> buttons, bool enabled, Texture2D icon)
+    public RadioButton(List<RadioButton> buttons, Ref<bool> setting, Texture2D icon)
     {
         this.buttons = buttons;
+        this.setting = setting;
         this.icon = icon;
 
         buttons.Add(this);
-
-        Enabled = enabled;
 
         Width.Set(ButtonWidth, 0);
         Height.Set(ButtonHeight, 0);
@@ -37,19 +39,19 @@ internal class RadioButton : SmartUIElement
 
         Vector2 position = GetDimensions().Position();
 
-        if (!Enabled)
+        if (!setting.Value)
         {
             position -= new Vector2(0, 8);
         }
 
-        Rectangle sourceRectangle = new(Enabled ? 0 : (icon.Width / 2), 0, icon.Width / 2, icon.Height);
+        Rectangle sourceRectangle = new(setting.Value ? 0 : (icon.Width / 2), 0, icon.Width / 2, icon.Height);
 
         spriteBatch.Draw(icon, position, sourceRectangle, Color.White);
     }
 
     public override void SafeMouseDown(UIMouseEvent evt)
     {
-        if (Enabled)
+        if (setting.Value)
         {
             return;
         }
@@ -58,11 +60,11 @@ internal class RadioButton : SmartUIElement
         {
             if (buttons[i] != this)
             {
-                buttons[i].Enabled = Enabled;
+                buttons[i].setting.Value = false;
             }
         }
 
-        Enabled = !Enabled;
+        setting.Value = true;
 
         SoundStyle sound = new("TerraVoice/Assets/Sounds/UI/SwitchOn")
         {

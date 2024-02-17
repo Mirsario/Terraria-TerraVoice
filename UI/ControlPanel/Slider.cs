@@ -10,9 +10,9 @@ namespace TerraVoice.UI.ControlPanel;
 
 internal class Slider : SmartUIElement
 {
-    public int SliderX { get; private set; }
+    private readonly Ref<int> setting;
 
-    private int Range => (int)Math.Floor((float)SliderX / (SliderWidth - KnobWidth) * maxRange);
+    private int Range => (int)Math.Floor((float)setting.Value / (SliderWidth - KnobWidth) * maxRange);
 
     private const int SliderWidth = 530;
     private const int SliderHeight = 32;
@@ -23,11 +23,10 @@ internal class Slider : SmartUIElement
 
     private bool sliding;
 
-    public Slider(int maxRange, int sliderX)
+    public Slider(int maxRange, Ref<int> setting)
     {
         this.maxRange = maxRange;
-
-        SliderX = sliderX;
+        this.setting = setting;
 
         Width.Set(SliderWidth, 0);
         Height.Set(SliderHeight, 0);
@@ -59,7 +58,7 @@ internal class Slider : SmartUIElement
 
         if (sliding)
         {
-            SliderX = (int)Main.MouseScreen.X - drawBox.X;
+            setting.Value = (int)Main.MouseScreen.X - drawBox.X;
         }
 
         if (!Main.mouseLeft)
@@ -67,7 +66,7 @@ internal class Slider : SmartUIElement
             sliding = false;
         }
 
-        SliderX = (int)MathHelper.Clamp(SliderX, 0, drawBox.Width - KnobWidth);
+        setting.Value = (int)MathHelper.Clamp(setting.Value, 0, drawBox.Width - KnobWidth);
     }
 
     private void DrawSlider(SpriteBatch spriteBatch, Rectangle drawBox)
@@ -80,7 +79,7 @@ internal class Slider : SmartUIElement
 
         spriteBatch.Draw(ModAsset.RangeMarks.Value, sliderBasePosition - new Vector2(0, 8), Color.White);
 
-        Vector2 sliderKnobPosition = new(drawBox.X + SliderX, drawBox.Y - 6);
+        Vector2 sliderKnobPosition = new(drawBox.X + setting.Value, drawBox.Y - 6);
 
         spriteBatch.Draw(ModAsset.SliderKnob.Value, sliderKnobPosition, Color.White);
     }

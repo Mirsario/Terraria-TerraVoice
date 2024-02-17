@@ -43,16 +43,16 @@ internal sealed class VoiceProcessingSystem : ModSystem
     {
         UserDataStore data = PersistentDataStoreSystem.GetDataStore<UserDataStore>();
 
-        if (data.NoiseSuppression)
+        if (data.NoiseSuppression.Value)
             rnnoise.rnnoise_process_frame(buffer);
 
-        float dB = AmplifyBuffer(buffer, data.Amplification);
+        float dB = AmplifyBuffer(buffer, data.Amplification.Value);
 
         byte[] encoded = encoder.Encode(buffer);
 
         // When testing, submit the encoded buffer as though it was recieved as a packet.
         // This is more accurate for testing purposes as it factors in the encode/decode other players will hear.
-        if (data.TestMode)
+        if (data.TestMode.Value)
         {
             outputSystem.RecieveBuffer(encoded, Main.myPlayer);
 
@@ -61,7 +61,7 @@ internal sealed class VoiceProcessingSystem : ModSystem
         }
 
         // Don't send voice input if PTT is enabled and the key isn't pressed.
-        if (data.PushToTalk && !TerraVoice.PushToTalkActivated)
+        if (data.PushToTalk.Value && !TerraVoice.PushToTalkActivated)
         {
             return;
         }
