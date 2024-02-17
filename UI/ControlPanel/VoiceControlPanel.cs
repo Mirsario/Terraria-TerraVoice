@@ -22,17 +22,13 @@ internal class VoiceControlPanel : SmartUIElement
     private const int PanelWidth = 640;
     private const int PanelHeight = 448;
 
-    public SwitchButton[] Switches { get; private set; }
-
-    public Slider RangeSlider { get; private set; }
-
     public DualKnob ChannelAmplificationDualKnob { get; private set; }
 
-    public List<RadioButton> RadioButtons { get; private set; }
+    private readonly VoiceControlState parent;
+
+    private readonly List<RadioButton> radioButtons;
 
     private float oldScale;
-
-    private readonly VoiceControlState parent;
 
     public VoiceControlPanel(VoiceControlState parent)
     {
@@ -42,14 +38,13 @@ internal class VoiceControlPanel : SmartUIElement
 
         Recalculate();
 
-        Switches = new SwitchButton[4];
-        RadioButtons = new();
+        radioButtons = new();
 
         int y = Spacing;
 
-        InitialiseSwitches(data, y);
+        int height = InitialiseSwitches(data, y);
 
-        y += (int)Switches[0].Height.Pixels + Spacing + 4;
+        y += height + Spacing + 4;
 
         AudioVisualiserWidget audioVisualiser = new(this);
         audioVisualiser.Left.Set(Spacing, 0);
@@ -61,26 +56,26 @@ internal class VoiceControlPanel : SmartUIElement
         y += (int)audioVisualiser.Height.Pixels + Spacing;
 
         // TODO: Replace magic number with max proximity range.
-        RangeSlider = new(96, data.ProximitySliderX);
-        RangeSlider.Left.Set(Spacing, 0);
-        RangeSlider.Top.Set(y, 0);
-        Append(RangeSlider);
+        Slider rangeSlider = new(96, data.ProximitySliderX);
+        rangeSlider.Left.Set(Spacing, 0);
+        rangeSlider.Top.Set(y, 0);
+        Append(rangeSlider);
 
-        y += (int)RangeSlider.Height.Pixels + Spacing;
+        y += (int)rangeSlider.Height.Pixels + Spacing;
 
         ChannelAmplificationDualKnob = new(0.25f, 3, data.Amplification, data.Channel);
         ChannelAmplificationDualKnob.Left.Set(Spacing, 0);
         ChannelAmplificationDualKnob.Top.Set(y, 0);
         Append(ChannelAmplificationDualKnob);
 
-        RadioButton openMic = new(RadioButtons, data.OpenMic, ModAsset.OpenMic.Value);
+        RadioButton openMic = new(radioButtons, data.OpenMic, ModAsset.OpenMic.Value);
         openMic.Left.Set(Width.Pixels - Spacing - RadioButton.ButtonWidth, 0);
         openMic.Top.Set(y, 0);
         Append(openMic);
 
         y += (int)openMic.Height.Pixels + Spacing;
 
-        RadioButton pushToTalk = new(RadioButtons, data.PushToTalk, ModAsset.PushToTalk.Value);
+        RadioButton pushToTalk = new(radioButtons, data.PushToTalk, ModAsset.PushToTalk.Value);
         pushToTalk.Left.Set(Width.Pixels - Spacing - RadioButton.ButtonWidth, 0);
         pushToTalk.Top.Set(y, 0);
         Append(pushToTalk);
@@ -129,30 +124,32 @@ internal class VoiceControlPanel : SmartUIElement
         DrawRadioButtonIndicators(spriteBatch);
     }
 
-    private void InitialiseSwitches(UserDataStore data, int y)
+    private int InitialiseSwitches(UserDataStore data, int y)
     {
         int index = 0;
 
         AddSwitch(index++, y, ModAsset.Mic.Value, "Mic", data.MicrophoneEnabled);
         AddSwitch(index++, y, ModAsset.Test.Value, "Test", data.TestMode);
         AddSwitch(index++, y, ModAsset.Denoise.Value, "Denoise", data.NoiseSuppression);
-        AddSwitch(index, y, ModAsset.NoIcons.Value, "NoIcons", data.NoIcons);
+
+        return AddSwitch(index, y, ModAsset.NoIcons.Value, "NoIcons", data.NoIcons);
     }
 
-    private void AddSwitch(int i, int y, Texture2D icon, string label, Ref<bool> setting)
+    private int AddSwitch(int i, int y, Texture2D icon, string label, Ref<bool> setting)
     {
         SwitchButton panelSwitch = new(icon, label, setting);
         panelSwitch.Left.Set(Spacing + ((Spacing + SwitchButton.SwitchWidth) * i), 0);
         panelSwitch.Top.Set(y, 0);
-        Switches[i] = panelSwitch;
         Append(panelSwitch);
+
+        return (int)panelSwitch.Height.Pixels;
     }
 
     private void DrawRadioButtonIndicators(SpriteBatch spriteBatch)
     {
         Texture2D indicator = ModAsset.Indicator.Value;
 
-        foreach (RadioButton button in RadioButtons)
+        foreach (RadioButton button in radioButtons)
         {
             Vector2 buttonPosition = button.GetDimensions().Position();
 

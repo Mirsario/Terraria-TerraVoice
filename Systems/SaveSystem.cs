@@ -1,8 +1,9 @@
 ﻿using Terraria.ModLoader;
+using TerraVoice.IO;
 using TerraVoice.UI;
 using TerraVoice.UI.ControlPanel;
 
-namespace TerraVoice.IO;
+namespace TerraVoice.Systems;
 
 internal sealed class UIVoiceInteropSystem : ModSystem
 {
