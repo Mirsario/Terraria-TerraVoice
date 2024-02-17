@@ -49,7 +49,7 @@ internal class VoiceControlPanel : SmartUIElement
         y += (int)audioVisualiser.Height.Pixels + Spacing;
 
         // TODO: Replace magic number with max proximity range.
-        Slider rangeSlider = new(96, data.ProximitySliderX);
+        Slider rangeSlider = new(96, data.ProximityDistance);
         rangeSlider.Left.Set(Spacing, 0);
         rangeSlider.Top.Set(y, 0);
         Append(rangeSlider);

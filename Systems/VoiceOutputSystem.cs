@@ -4,6 +4,7 @@ using POpusCodec.Enums;
 using System;
 using Terraria;
 using Terraria.ModLoader;
+using TerraVoice.IO;
 using TerraVoice.Misc;
 
 namespace TerraVoice.Core;
@@ -56,6 +57,8 @@ internal sealed class VoiceOutputSystem : ModSystem
 
     private void SetPanAndVolume(int whoAmI)
     {
+        UserDataStore data = PersistentDataStoreSystem.GetDataStore<UserDataStore>();
+
         PlayerSpeaker speaker = playerSpeakers[whoAmI];
 
         // In tests, pan and volume are irrelevant.
@@ -67,9 +70,10 @@ internal sealed class VoiceOutputSystem : ModSystem
             return;
         }
 
-        if (!VoiceConfig.Instance.VoiceAttenuation)
+        // TODO: Implement individual player volumes.
+        if (data.ProximityDistance.Value == 0)
         {
-            speaker.Volume = PersonalConfig.Instance.VoiceVolume / 100f;
+            speaker.Volume = 1;
             speaker.Pan = 0;
 
             return;
@@ -81,11 +85,12 @@ internal sealed class VoiceOutputSystem : ModSystem
 
         float playerToCenterX = player.Center.X - screenCenter.X;
 
-        int attenuationDistance = VoiceConfig.Instance.VoiceAttenuationDistance * 16;
+        int attenuationDistance = data.ProximityDistance.Value * 16;
 
         float volume = Math.Clamp(1f - player.Center.Distance(screenCenter) / attenuationDistance, 0f, 1f);
 
-        volume *= PersonalConfig.Instance.VoiceVolume / 100f;
+        // TODO: Implement individual player volumes.
+        // volume *= 1;
 
         float pan = Math.Clamp(playerToCenterX / attenuationDistance, -1f, 1f);
 

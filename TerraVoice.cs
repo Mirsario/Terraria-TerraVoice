@@ -10,7 +10,6 @@ using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using TerraVoice.Core;
-using TerraVoice.Misc;
 using TerraVoice.UI;
 using TerraVoice.UI.ControlPanel;
 
@@ -28,12 +27,12 @@ public partial class TerraVoice : Mod
 
     public static readonly Color Pink = new(226, 114, 175);
 
-    private static ModKeybind voiceBind;
-    private static ModKeybind pushToTalk;
-
     public static TerraVoice Instance { get; private set; }
 
     public static bool PushToTalkActivated { get; private set; }
+
+    private static ModKeybind voiceBind;
+    private static ModKeybind pushToTalk;
 
     public override void Load() 
     {
@@ -46,12 +45,6 @@ public partial class TerraVoice : Mod
 
             customFont = Assets.Request<DynamicSpriteFont>("Assets/Fonts/MP3-12", AssetRequestMode.ImmediateLoad).Value;
         }
-    }
-
-    public override void Unload() 
-    {
-        VoiceConfig.Instance = null;
-        PersonalConfig.Instance = null;
     }
 
     [Autoload(Side = ModSide.Client)]

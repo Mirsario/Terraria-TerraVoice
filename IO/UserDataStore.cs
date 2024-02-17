@@ -17,7 +17,7 @@ internal class UserDataStore : PersistentDataStore
 
     public Ref<float> Amplification = new(1);
 
-    public Ref<int> ProximitySliderX = new();
+    public Ref<int> ProximityDistance = new();
     public Ref<int> Channel = new();
     
     public Ref<string> Device = new();
@@ -33,7 +33,7 @@ internal class UserDataStore : PersistentDataStore
 
         LoadTag(tag, nameof(Amplification), Amplification);
 
-        LoadTag(tag, nameof(ProximitySliderX), ProximitySliderX);
+        LoadTag(tag, nameof(ProximityDistance), ProximityDistance);
         LoadTag(tag, nameof(Channel), Channel);
 
         LoadTag(tag, nameof(Device), Device);
@@ -50,7 +50,7 @@ internal class UserDataStore : PersistentDataStore
 
         tag[nameof(Amplification)] = Amplification.Value;
 
-        tag[nameof(ProximitySliderX)] = ProximitySliderX.Value;
+        tag[nameof(ProximityDistance)] = ProximityDistance.Value;
         tag[nameof(Channel)] = Channel.Value;
 
         tag[nameof(Device)] = Device.Value;
