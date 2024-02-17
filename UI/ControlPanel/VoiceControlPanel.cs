@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
+using TerraVoice.IO;
 using TerraVoice.UI.Abstract;
 
 namespace TerraVoice.UI.ControlPanel;
@@ -23,9 +24,9 @@ internal class VoiceControlPanel : SmartUIElement
 
     public SwitchButton[] Switches { get; private set; }
 
-    public Knob Amplification { get; private set; }
+    public Slider RangeSlider { get; private set; }
 
-    public Knob Threshold { get; private set; }
+    public DualKnob ChannelAmplificationDualKnob { get; private set; }
 
     public List<RadioButton> RadioButtons { get; private set; }
 
@@ -35,6 +36,8 @@ internal class VoiceControlPanel : SmartUIElement
 
     public VoiceControlPanel(VoiceControlState parent)
     {
+        UserDataStore data = PersistentDataStoreSystem.GetDataStore<UserDataStore>();
+
         this.parent = parent;
 
         Recalculate();
@@ -44,11 +47,11 @@ internal class VoiceControlPanel : SmartUIElement
 
         int y = Spacing;
 
-        InitialiseSwitches(y);
+        InitialiseSwitches(data, y);
 
         y += (int)Switches[0].Height.Pixels + Spacing + 4;
 
-        AudioVisualiserWidget audioVisualiser = new();
+        AudioVisualiserWidget audioVisualiser = new(this);
         audioVisualiser.Left.Set(Spacing, 0);
         audioVisualiser.Top.Set(y + 4, 0);
         audioVisualiser.Width.Set(PanelWidth - (Spacing * 2), 0);
@@ -58,31 +61,26 @@ internal class VoiceControlPanel : SmartUIElement
         y += (int)audioVisualiser.Height.Pixels + Spacing;
 
         // TODO: Replace magic number with max proximity range.
-        Slider slider = new(96);
-        slider.Left.Set(Spacing, 0);
-        slider.Top.Set(y, 0);
-        Append(slider);
+        RangeSlider = new(96, data.ProximitySliderX);
+        RangeSlider.Left.Set(Spacing, 0);
+        RangeSlider.Top.Set(y, 0);
+        Append(RangeSlider);
 
-        y += (int)slider.Height.Pixels + Spacing;
+        y += (int)RangeSlider.Height.Pixels + Spacing;
 
-        Amplification = new(0.5f, 2.25f);
-        Amplification.Left.Set(Spacing, 0);
-        Amplification.Top.Set(y, 0);
-        Append(Amplification);
+        ChannelAmplificationDualKnob = new(0.25f, 3, data.Amplification, data.Channel);
+        ChannelAmplificationDualKnob.Left.Set(Spacing, 0);
+        ChannelAmplificationDualKnob.Top.Set(y, 0);
+        Append(ChannelAmplificationDualKnob);
 
-        Threshold = new(-10, 60);
-        Threshold.Left.Set((Spacing * 2) + Knob.KnobWidth, 0);
-        Threshold.Top.Set(y, 0);
-        Append(Threshold);
-
-        RadioButton openMic = new(RadioButtons, true, ModAsset.OpenMic.Value);
+        RadioButton openMic = new(RadioButtons, !data.PushToTalk, ModAsset.OpenMic.Value);
         openMic.Left.Set(Width.Pixels - Spacing - RadioButton.ButtonWidth, 0);
         openMic.Top.Set(y, 0);
         Append(openMic);
 
         y += (int)openMic.Height.Pixels + Spacing;
 
-        RadioButton pushToTalk = new(RadioButtons, false, ModAsset.PushToTalk.Value);
+        RadioButton pushToTalk = new(RadioButtons, data.PushToTalk, ModAsset.PushToTalk.Value);
         pushToTalk.Left.Set(Width.Pixels - Spacing - RadioButton.ButtonWidth, 0);
         pushToTalk.Top.Set(y, 0);
         Append(pushToTalk);
@@ -131,21 +129,22 @@ internal class VoiceControlPanel : SmartUIElement
         DrawRadioButtonIndicators(spriteBatch);
     }
 
-    private void InitialiseSwitches(int y)
+    private void InitialiseSwitches(UserDataStore data, int y)
     {
         int index = 0;
 
-        AddSwitch(index++, y, ModAsset.Mic.Value, "Mic");
-        AddSwitch(index++, y, ModAsset.Test.Value, "Test");
-        AddSwitch(index++, y, ModAsset.Denoise.Value, "Denoise");
-        AddSwitch(index, y, ModAsset.NoIcons.Value, "NoIcons");
+        AddSwitch(index++, y, ModAsset.Mic.Value, "Mic", data.MicrophoneEnabled);
+        AddSwitch(index++, y, ModAsset.Test.Value, "Test", data.TestMode);
+        AddSwitch(index++, y, ModAsset.Denoise.Value, "Denoise", data.NoiseSuppression);
+        AddSwitch(index, y, ModAsset.NoIcons.Value, "NoIcons", data.NoIcons);
     }
 
-    private void AddSwitch(int i, int y, Texture2D icon, string label)
+    private void AddSwitch(int i, int y, Texture2D icon, string label, bool activated)
     {
         SwitchButton panelSwitch = new(icon, label);
         panelSwitch.Left.Set(Spacing + ((Spacing + SwitchButton.SwitchWidth) * i), 0);
         panelSwitch.Top.Set(y, 0);
+        panelSwitch.Enabled = activated;
         Switches[i] = panelSwitch;
         Append(panelSwitch);
     }

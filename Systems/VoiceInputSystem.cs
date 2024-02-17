@@ -1,5 +1,6 @@
-﻿using System.Collections.Generic;
+﻿using Terraria;
 using Terraria.ModLoader;
+using TerraVoice.IO;
 using TerraVoice.Native;
 
 namespace TerraVoice.Core;
@@ -13,29 +14,18 @@ internal sealed class VoiceInputSystem : ModSystem
     // Used for convenience as the opus default frame size is 20ms - https://wiki.xiph.org/Opus_Recommended_Settings.
     public const int MicrophoneInputDurationMs = 20;
 
-    public bool HasValidAudioInput => audioDevices.Count > 0;
-
-    public bool MicrophoneEnabled { get; set; }
-
     private VoiceProcessingSystem processingSystem;
 
     private ALMono16Microphone microphone;
 
-    private List<string> audioDevices;
-
-    private int deviceIndex;
-
     private bool recording;
-
-    public override void Load()
-    {
-        audioDevices = ALMono16Microphone.GetDevices();
-
-        SwitchAudioDevice(0);
-    }
 
     public override void PostSetupContent()
     {
+        UserDataStore data = PersistentDataStoreSystem.GetDataStore<UserDataStore>();
+
+        SwitchAudioDevice(data.Device);
+
         processingSystem = ModContent.GetInstance<VoiceProcessingSystem>();
     }
 
@@ -47,41 +37,35 @@ internal sealed class VoiceInputSystem : ModSystem
 
     public override void PreSaveAndQuit()
     {
-        MicrophoneEnabled = false;
+        microphone.StopRecording();
+        microphone.OnBufferReady -= HandleAudioInputBuffer;
+
+        recording = false;
     }
 
     public override void PostUpdateEverything()
     {
-        if (MicrophoneEnabled && !recording)
+        UserDataStore data = PersistentDataStoreSystem.GetDataStore<UserDataStore>();
+
+        if (data.MicrophoneEnabled && !recording)
         {
             microphone.OnBufferReady += HandleAudioInputBuffer;
             microphone.StartRecording();
 
             recording = true;
         }
-
-        if (!MicrophoneEnabled)
-        {
-            microphone.StopRecording();
-            microphone.OnBufferReady -= HandleAudioInputBuffer;
-
-            recording = false;
-        }
     }
 
     private void HandleAudioInputBuffer(short[] buffer)
     {
-        processingSystem.SubmitBuffer(buffer);
+        if (!Main.gameMenu)
+        {
+            processingSystem.SubmitBuffer(buffer);
+        }
     }
 
-    private void SwitchAudioDevice(int i)
+    private void SwitchAudioDevice(string device)
     {
-        // No audio input devices detected.
-        if (audioDevices == null || audioDevices.Count == 0)
-        {
-            return;
-        }
-
         if (microphone != null)
         {
             microphone.OnBufferReady -= HandleAudioInputBuffer;
@@ -89,7 +73,7 @@ internal sealed class VoiceInputSystem : ModSystem
             microphone.Dispose();
         }
 
-        microphone = new ALMono16Microphone(audioDevices[i], MicrophoneInputDurationMs, SampleRate);
+        microphone = new ALMono16Microphone(device, MicrophoneInputDurationMs, SampleRate);
 
         if (recording)
         {

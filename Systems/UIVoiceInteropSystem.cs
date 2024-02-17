@@ -1,5 +1,5 @@
 ﻿using Terraria.ModLoader;
-using TerraVoice.Core;
+using TerraVoice.IO;
 using TerraVoice.UI;
 using TerraVoice.UI.ControlPanel;
 
@@ -11,17 +11,25 @@ internal sealed class UIVoiceInteropSystem : ModSystem
     {
         VoiceControlPanel panel = TerraVoiceUILoader.GetUIState<VoiceControlState>().Panel;
 
-        VoiceInputSystem inputSystem = ModContent.GetInstance<VoiceInputSystem>();
-        VoiceProcessingSystem processingSystem = ModContent.GetInstance<VoiceProcessingSystem>();
-        IconDrawingSystem iconDrawingSystem = ModContent.GetInstance<IconDrawingSystem>();
+        UserDataStore data = PersistentDataStoreSystem.GetDataStore<UserDataStore>();
 
-        inputSystem.MicrophoneEnabled = panel.Switches[VoiceControlPanel.MicrophoneSwitch].Enabled;
-        processingSystem.TestMode = panel.Switches[VoiceControlPanel.TestSwitch].Enabled;
-        processingSystem.NoiseSuppression = panel.Switches[VoiceControlPanel.NoiseSuppressionSwitch].Enabled;
-        iconDrawingSystem.NoIcons = panel.Switches[VoiceControlPanel.IconSwitch].Enabled;
+        data.MicrophoneEnabled = panel.Switches[VoiceControlPanel.MicrophoneSwitch].Enabled;
+        data.TestMode = panel.Switches[VoiceControlPanel.TestSwitch].Enabled;
+        data.NoiseSuppression = panel.Switches[VoiceControlPanel.NoiseSuppressionSwitch].Enabled;
+        data.NoIcons = panel.Switches[VoiceControlPanel.IconSwitch].Enabled;
 
-        processingSystem.Amplification = panel.Amplification.Volume;
-        processingSystem.Threshold = panel.Threshold.Volume;
-        processingSystem.PushToTalk = panel.RadioButtons[VoiceControlPanel.PushToTalkRadioButton].Enabled;
+        data.Amplification = panel.ChannelAmplificationDualKnob.SmallKnobValue;
+        data.Channel = panel.ChannelAmplificationDualKnob.LargeKnobPosition;
+
+        data.PushToTalk = panel.RadioButtons[VoiceControlPanel.PushToTalkRadioButton].Enabled;
+
+        data.ProximitySliderX = panel.RangeSlider.SliderX;
+    }
+
+    public override void PreSaveAndQuit()
+    {
+        UserDataStore data = PersistentDataStoreSystem.GetDataStore<UserDataStore>();
+
+        data.ForceSave();
     }
 }

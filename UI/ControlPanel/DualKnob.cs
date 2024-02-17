@@ -9,17 +9,19 @@ using TerraVoice.UI.Abstract;
 
 namespace TerraVoice.UI.ControlPanel;
 
-internal class Knob : SmartUIElement
+internal class DualKnob : SmartUIElement
 {
     public const int KnobWidth = 128;
     public const int KnobHeight = 128;
 
-    public float Volume => (float)MathHelper.Lerp(min, max, Math.Abs(InverseLerp(MinAngle, MaxAngle, angle)));
+    public int LargeKnobPosition { get; private set; }
+
+    public float SmallKnobValue => (float)MathF.Round(MathHelper.Lerp(min, max, Math.Abs(InverseLerp(MinAngle, MaxAngle, angle))), 2);
 
     private const float MinAngle = MathHelper.Pi + MathHelper.PiOver2;
-    private const float MaxAngle = -MathHelper.PiOver4;
+    private const float MaxAngle = -MathHelper.PiOver2;
 
-    private const float SpinSensitivity = 2;
+    private const float SpinSensitivity = 1 / 3f;
 
     private float CursorOffsetFromCenterX => Main.MouseScreen.X - (GetDimensions().Position().X + GetDimensions().Width / 2);
 
@@ -31,18 +33,17 @@ internal class Knob : SmartUIElement
 
     private float startAngle;
 
-    private int spriteX;
-    private int oldSpriteX;
-
     private readonly float min;
     private readonly float max;
 
-    public Knob(float min, float max)
+    public DualKnob(float min, float max, float smallValue, int channel)
     {
         this.min = min;
         this.max = max;
 
-        angle = MinAngle;
+        LargeKnobPosition = channel;
+
+        angle = MathHelper.Lerp(MinAngle, MaxAngle, InverseLerp(min, max, smallValue));
 
         Width.Set(KnobWidth, 0);
         Height.Set(KnobHeight, 0);
@@ -82,30 +83,22 @@ internal class Knob : SmartUIElement
 
         angle = MathHelper.Clamp(angle, MaxAngle, MinAngle);
 
-        if (spriteX != oldSpriteX)
-        {
-            PlaySound();
-
-            oldSpriteX = spriteX;
-        }
-
         base.SafeUpdate(gameTime);
     }
 
     public override void SafeScrollWheel(UIScrollWheelEvent evt)
     {
-        /*int sign = Math.Sign(evt.ScrollWheelValue);
+        int sign = Math.Sign(evt.ScrollWheelValue);
 
-        float oldAngle = angle;
+        int oldPosition = LargeKnobPosition;
 
-        angle += (MaxAngle - MinAngle) / 7 * sign;
+        LargeKnobPosition += sign;
+        LargeKnobPosition = (int)MathHelper.Clamp(LargeKnobPosition, 0, 7);
 
-        angle = MathHelper.Clamp(angle, MaxAngle, MinAngle);
-
-        if (oldAngle != angle)
+        if (LargeKnobPosition != oldPosition)
         {
             PlaySound();
-        }*/
+        }
     }
 
     public override void SafeMouseDown(UIMouseEvent evt)
@@ -121,15 +114,11 @@ internal class Knob : SmartUIElement
         }
     }
 
-    private float InverseLerp(float a, float b, float value) => (value - a) / (b - a);
-
     private void DrawIndicator(SpriteBatch spriteBatch, Vector2 position)
     {
         Texture2D turns = ModAsset.KnobTurns.Value;
 
-        spriteX = (int)Math.Ceiling(InverseLerp(MinAngle, MaxAngle, angle) * 7);
-
-        Rectangle sourceRectangle = new(turns.Width / 8 * spriteX, 0, turns.Width / 8, turns.Height);
+        Rectangle sourceRectangle = new(turns.Width / 8 * LargeKnobPosition, 0, turns.Width / 8, turns.Height);
 
         spriteBatch.Draw(turns, position, sourceRectangle, Color.White);
     }
@@ -140,7 +129,7 @@ internal class Knob : SmartUIElement
 
         Vector2 halfSize = markings.Size() / 2;
 
-        spriteBatch.Draw(ModAsset.KnobMarkings.Value, position + halfSize, null, Color.White, angle, halfSize, 1, SpriteEffects.None, 0);
+        spriteBatch.Draw(ModAsset.KnobMarkings.Value, position + halfSize, null, Color.White, -angle, halfSize, 1, SpriteEffects.None, 0);
     }
 
     private void PlaySound()
@@ -153,4 +142,6 @@ internal class Knob : SmartUIElement
 
         SoundEngine.PlaySound(sound);
     }
+
+    private float InverseLerp(float a, float b, float value) => (value - a) / (b - a);
 }

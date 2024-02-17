@@ -78,12 +78,14 @@ Configs: {
 
 UI: {
 	NoInputDevice: No Input Device Detected
-	EnableTestMode: Enable Microphone and Test Mode to Visualize
+	EnableTestMode: Enable Mic and Test to Visualize
 	Mic: Mic
 	Test: Test
 	Denoise: Denoise
 	NoIcons: No Icons
 	AudioVisualizer: Input Visualizer
+	VolumeDisplay: VOL
+	ChannelDisplay: CHNL
 }
 
 Keybinds: {

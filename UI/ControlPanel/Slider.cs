@@ -10,6 +10,10 @@ namespace TerraVoice.UI.ControlPanel;
 
 internal class Slider : SmartUIElement
 {
+    public int SliderX { get; private set; }
+
+    private int Range => (int)Math.Floor((float)SliderX / (SliderWidth - KnobWidth) * maxRange);
+
     private const int SliderWidth = 530;
     private const int SliderHeight = 32;
     private const int BaseHeight = 12;
@@ -17,13 +21,13 @@ internal class Slider : SmartUIElement
 
     private readonly int maxRange;
 
-    private int sliderX;
-
     private bool sliding;
 
-    public Slider(int maxRange)
+    public Slider(int maxRange, int sliderX)
     {
         this.maxRange = maxRange;
+
+        SliderX = sliderX;
 
         Width.Set(SliderWidth, 0);
         Height.Set(SliderHeight, 0);
@@ -55,7 +59,7 @@ internal class Slider : SmartUIElement
 
         if (sliding)
         {
-            sliderX = (int)Main.MouseScreen.X - drawBox.X;
+            SliderX = (int)Main.MouseScreen.X - drawBox.X;
         }
 
         if (!Main.mouseLeft)
@@ -63,7 +67,7 @@ internal class Slider : SmartUIElement
             sliding = false;
         }
 
-        sliderX = (int)MathHelper.Clamp(sliderX, 0, drawBox.Width - KnobWidth);
+        SliderX = (int)MathHelper.Clamp(SliderX, 0, drawBox.Width - KnobWidth);
     }
 
     private void DrawSlider(SpriteBatch spriteBatch, Rectangle drawBox)
@@ -76,7 +80,7 @@ internal class Slider : SmartUIElement
 
         spriteBatch.Draw(ModAsset.RangeMarks.Value, sliderBasePosition - new Vector2(0, 8), Color.White);
 
-        Vector2 sliderKnobPosition = new(drawBox.X + sliderX, drawBox.Y - 6);
+        Vector2 sliderKnobPosition = new(drawBox.X + SliderX, drawBox.Y - 6);
 
         spriteBatch.Draw(ModAsset.SliderKnob.Value, sliderKnobPosition, Color.White);
     }
@@ -89,9 +93,7 @@ internal class Slider : SmartUIElement
 
         spriteBatch.Draw(ModAsset.RangeWidget.Value, new Vector2(indicatorBox.X, indicatorBox.Y), Color.White);
 
-        int range = (int)Math.Floor((float)sliderX / (SliderWidth - KnobWidth) * maxRange);
-
-        string text = range == 0 ? "Inf." : range.ToString();
+        string text = Range == 0 ? "Inf." : Range.ToString();
 
         Vector2 boxMiddle = new(indicatorBox.X + (indicatorBox.Width / 2), indicatorBox.Y + (indicatorBox.Height / 2));
 

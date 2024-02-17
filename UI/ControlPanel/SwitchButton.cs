@@ -10,7 +10,7 @@ namespace TerraVoice.UI.ControlPanel;
 
 internal class SwitchButton : SmartUIElement
 {
-    public bool Enabled { get; private set; }
+    public bool Enabled { get; set; }
 
     public const int SwitchWidth = 140;
     public const int SwitchHeight = 120;

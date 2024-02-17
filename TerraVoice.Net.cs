@@ -12,10 +12,11 @@ public partial class TerraVoice : Mod
     private VoiceOutputSystem outputSystem;
 
     // Sends a voice packet from this client to the server.
-    public void PushVoiceBuffer(byte[] buffer) {
+    public void PushVoiceBuffer(byte[] buffer) 
+    {
         DrawingSystem.PlayerSpeaking[Main.myPlayer] = 20;
 
-        if (Main.netMode is not NetmodeID.MultiplayerClient) 
+        if (Main.netMode != NetmodeID.MultiplayerClient) 
             return;
 
         ModPacket packet = Instance.GetPacket();
@@ -30,15 +31,18 @@ public partial class TerraVoice : Mod
         => outputSystem = ModContent.GetInstance<VoiceOutputSystem>();
 
     // Upon recieving a client voice packet, distribute it to all clients except the sender.
-    public override void HandlePacket(BinaryReader reader, int whoAmI) {
-        switch (reader.ReadByte()) {
+    public override void HandlePacket(BinaryReader reader, int whoAmI) 
+    {
+        switch (reader.ReadByte()) 
+        {
             // 传输中 - audio transmission packet type.
             case 0:
                 int length = reader.ReadInt32();
 
                 byte[] buffer = reader.ReadBytes(length);
 
-                if (Main.netMode is NetmodeID.Server) {
+                if (Main.netMode is NetmodeID.Server)
+                {
                     ModPacket packet = GetPacket();
 
                     packet.Write((byte)0);
@@ -48,7 +52,8 @@ public partial class TerraVoice : Mod
 
                     packet.Send(ignoreClient: whoAmI);
                 }
-                else {
+                else
+                {
                     byte sender = reader.ReadByte();
 
                     outputSystem.RecieveBuffer(buffer, sender);
