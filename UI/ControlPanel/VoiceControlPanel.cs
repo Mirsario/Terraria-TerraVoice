@@ -2,6 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
+using Terraria.Localization;
 using TerraVoice.IO;
 using TerraVoice.UI.Abstract;
 
@@ -9,14 +10,6 @@ namespace TerraVoice.UI.ControlPanel;
 
 internal class VoiceControlPanel : SmartUIElement
 {
-    public const int MicrophoneSwitch = 0;
-    public const int TestSwitch = 1;
-    public const int NoiseSuppressionSwitch = 2;
-    public const int IconSwitch = 3;
-
-    public const int OpenMicRadioButton = 0;
-    public const int PushToTalkRadioButton = 1;
-
     public const int Spacing = 16;
 
     private const int PanelWidth = 640;
@@ -137,7 +130,7 @@ internal class VoiceControlPanel : SmartUIElement
 
     private int AddSwitch(int i, int y, Texture2D icon, string label, Ref<bool> setting)
     {
-        SwitchButton panelSwitch = new(icon, label, setting);
+        SwitchButton panelSwitch = new(icon, Language.GetTextValue($"Mods.TerraVoice.UI.{label}"), setting);
         panelSwitch.Left.Set(Spacing + ((Spacing + SwitchButton.SwitchWidth) * i), 0);
         panelSwitch.Top.Set(y, 0);
         Append(panelSwitch);

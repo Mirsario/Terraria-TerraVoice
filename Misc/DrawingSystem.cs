@@ -40,28 +40,27 @@ public class DrawingSystem : ModSystem
 
         #region Speaking Players
 
-        if (!VoiceConfig.Instance.VoiceAttenuation) {
-            var tex = ModAsset.Speaking;
-            int frameCount = _iconAnimationTimer / 10 % 3;
-            var frame = tex.Frame(horizontalFrames: 1, verticalFrames: 3, frameX: 0, frameY: frameCount);
-            int x = 8;
-            int y = 8;
-            for (var i = 0; i < Main.maxPlayers; i++) {
-                var opacity = _iconOpacity[i];
-                if (opacity <= 0) continue;
+        var tex = ModAsset.Speaking;
+        int frameCount = _iconAnimationTimer / 10 % 3;
+        var frame = tex.Frame(horizontalFrames: 1, verticalFrames: 3, frameX: 0, frameY: frameCount);
+        int x = 8;
+        int y = 8;
+        for (var i = 0; i < Main.maxPlayers; i++)
+        {
+            var opacity = _iconOpacity[i];
+            if (opacity <= 0) continue;
 
-                var position = new Vector2(x, y);
-                var iconColor = i == Main.myPlayer ? Main.OurFavoriteColor : Color.White;
-                iconColor *= opacity;
-                Main.spriteBatch.Draw(tex.Value, position, frame, iconColor, 0f, Vector2.Zero, 1f, SpriteEffects.None,
-                    0f);
+            var position = new Vector2(x, y);
+            var iconColor = i == Main.myPlayer ? Main.OurFavoriteColor : Color.White;
+            iconColor *= opacity;
+            Main.spriteBatch.Draw(tex.Value, position, frame, iconColor, 0f, Vector2.Zero, 1f, SpriteEffects.None,
+                0f);
 
-                position.X += frame.Width + 4;
-                DrawPlayerHead(Main.player[i], ref position, opacity, 0.8f, Color.White);
-                ;
+            position.X += frame.Width + 4;
+            DrawPlayerHead(Main.player[i], ref position, opacity, 0.8f, Color.White);
+            ;
 
-                y += frame.Height + 4;
-            }
+            y += frame.Height + 4;
         }
 
         #endregion
@@ -72,7 +71,7 @@ public class DrawingSystem : ModSystem
     }
 
     private bool DrawSpeakingPlayers() {
-        if (VoiceConfig.Instance.VoiceAttenuation) return true;
+        //if (VoiceConfig.Instance.VoiceAttenuation) return true;
 
         var tex = ModAsset.Speaking;
         int frameCount = _iconAnimationTimer / 10 % 3;
@@ -97,9 +96,9 @@ public class DrawingSystem : ModSystem
     }
 
     private bool DrawMicrophoneIcon() {
-        if (!PersonalConfig.Instance.MicrophoneIcon) return true;
+        /*if (!PersonalConfig.Instance.MicrophoneIcon) return true;
         // 不是按住说话模式，或开启了声音衰减，就会显示图标
-        if (!VoiceConfig.Instance.VoiceAttenuation && PersonalConfig.Instance.TalkMode is TalkMode.Push) return true;
+        if (!VoiceConfig.Instance.VoiceAttenuation && PersonalConfig.Instance.TalkMode is TalkMode.Push) return true;*/
 
         var tex = ModAsset.Microphone;
         int frameCount = 0;

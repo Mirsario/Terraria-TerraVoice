@@ -23,7 +23,7 @@ internal class SwitchButton : SmartUIElement
     public SwitchButton(Texture2D icon, string label, Ref<bool> setting)
     {
         this.icon = icon;
-        this.label = Language.GetTextValue($"Mods.TerraVoice.UI.{label}");
+        this.label = label;
         this.setting = setting;
 
         Width.Set(SwitchWidth, 0);
