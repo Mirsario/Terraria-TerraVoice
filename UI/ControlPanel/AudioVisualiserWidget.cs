@@ -51,12 +51,7 @@ internal class AudioVisualiserWidget : SmartUIElement
 
         string text = "";
 
-        // TODO: Need to detect whether or not there is a valid audio device.
-        if (false)
-        {
-            text = Language.GetTextValue("Mods.TerraVoice.UI.NoInputDevice");
-        }
-        else if (!data.TestMode.Value || !data.MicrophoneEnabled.Value)
+        if (!data.TestMode.Value || !data.MicrophoneEnabled.Value)
         {
             text = Language.GetTextValue("Mods.TerraVoice.UI.EnableTestMode");
         }

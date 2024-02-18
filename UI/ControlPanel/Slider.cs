@@ -19,7 +19,7 @@ internal class Slider : SmartUIElement
 
     private readonly int maxRange;
 
-    private int sliderX;
+    private float factor;
 
     private bool sliding;
 
@@ -28,10 +28,10 @@ internal class Slider : SmartUIElement
         this.maxRange = maxRange;
         this.setting = setting;
 
-        sliderX = (int)MathF.Ceiling(MathHelper.Lerp(0, SliderWidth - KnobWidth, setting.Value / (float)maxRange));
-
         Width.Set(SliderWidth, 0);
         Height.Set(SliderHeight, 0);
+
+        factor = setting.Value / (float)maxRange;
     }
 
     public override void DrawSelf(SpriteBatch spriteBatch)
@@ -46,6 +46,11 @@ internal class Slider : SmartUIElement
 
     public override void SafeMouseDown(UIMouseEvent evt)
     {
+        if (Main.gamePaused)
+        {
+            return;
+        }
+
         Rectangle drawBox = GetDimensions().ToRectangle();
 
         if (drawBox.Contains(Main.MouseScreen.ToPoint()))
@@ -56,11 +61,19 @@ internal class Slider : SmartUIElement
 
     public override void SafeUpdate(GameTime gameTime)
     {
+        if (Main.gamePaused)
+        {
+            return;
+        }
+
         Rectangle drawBox = GetDimensions().ToRectangle();
+
+        float width = GetDimensions().Width - KnobWidth;
 
         if (sliding)
         {
-            sliderX = (int)Main.MouseScreen.X - drawBox.X;
+            factor = ((int)Main.MouseScreen.X - drawBox.X) / width;
+            factor = MathHelper.Clamp(factor, 0, 1);
         }
 
         if (!Main.mouseLeft)
@@ -68,9 +81,7 @@ internal class Slider : SmartUIElement
             sliding = false;
         }
 
-        sliderX = (int)MathHelper.Clamp(sliderX, 0, drawBox.Width - KnobWidth);
-
-        setting.Value = (int)MathF.Floor((float)sliderX / (SliderWidth - KnobWidth) * maxRange);
+        setting.Value = (int)MathF.Floor(factor * maxRange);
     }
 
     private void DrawSlider(SpriteBatch spriteBatch, Rectangle drawBox)
@@ -83,7 +94,7 @@ internal class Slider : SmartUIElement
 
         spriteBatch.Draw(ModAsset.RangeMarks.Value, sliderBasePosition - new Vector2(0, 8), Color.White);
 
-        Vector2 sliderKnobPosition = new(drawBox.X + sliderX, drawBox.Y - 6);
+        Vector2 sliderKnobPosition = new(drawBox.X + (factor * (drawBox.Width - KnobWidth)), drawBox.Y - 6);
 
         spriteBatch.Draw(ModAsset.SliderKnob.Value, sliderKnobPosition, Color.White);
     }

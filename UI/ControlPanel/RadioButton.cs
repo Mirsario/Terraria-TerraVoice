@@ -13,8 +13,6 @@ internal class RadioButton : SmartUIElement
     public const int ButtonWidth = 56;
     public const int ButtonHeight = 56;
 
-    public bool Enabled => setting.Value;
-
     private readonly List<RadioButton> buttons;
 
     private readonly Ref<bool> setting;

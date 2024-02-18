@@ -66,6 +66,16 @@ internal class VoiceControlPanel : SmartUIElement
         openMic.Top.Set(y, 0);
         Append(openMic);
 
+        DeviceSwitcher switcher = new(data.Device);
+        switcher.Left.Set(ChannelAmplificationDualKnob.Width.Pixels + (Spacing * 2), 0);
+        switcher.Top.Set(y, 0);
+        Append(switcher);
+
+        DeviceSwitchButton switcherButton = new(switcher);
+        switcherButton.Left.Set(switcher.Left.Pixels + switcher.Width.Pixels + Spacing, 0);
+        switcherButton.Top.Set(y, 0);
+        Append(switcherButton);
+
         y += (int)openMic.Height.Pixels + Spacing;
 
         RadioButton pushToTalk = new(radioButtons, data.PushToTalk, ModAsset.PushToTalk.Value);
@@ -113,8 +123,6 @@ internal class VoiceControlPanel : SmartUIElement
     private void DrawMainPanel(Vector2 position, SpriteBatch spriteBatch)
     {
         spriteBatch.Draw(ModAsset.MainPanel.Value, position, Color.White);
-
-        DrawRadioButtonIndicators(spriteBatch);
     }
 
     private int InitialiseSwitches(UserDataStore data, int y)
@@ -136,21 +144,5 @@ internal class VoiceControlPanel : SmartUIElement
         Append(panelSwitch);
 
         return (int)panelSwitch.Height.Pixels;
-    }
-
-    private void DrawRadioButtonIndicators(SpriteBatch spriteBatch)
-    {
-        Texture2D indicator = ModAsset.Indicator.Value;
-
-        foreach (RadioButton button in radioButtons)
-        {
-            Vector2 buttonPosition = button.GetDimensions().Position();
-
-            buttonPosition += new Vector2(-40, 10);
-
-            Rectangle sourceRectangle = new(button.Enabled ? (indicator.Width / 2) : 0, 0, indicator.Width / 2, indicator.Height);
-
-            spriteBatch.Draw(ModAsset.Indicator.Value, buttonPosition, sourceRectangle, Color.White);
-        }
     }
 }

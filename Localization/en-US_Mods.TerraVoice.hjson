@@ -1,12 +1,12 @@
 UI: {
-	NoInputDevice: No Input Device Detected
+	NoInputDevice: No Input Device
 	EnableTestMode: Enable Mic and Test to Visualize
 	Mic: Mic
 	Test: Test
 	Denoise: Denoise
 	NoIcons: No Icons
 	AudioVisualizer: Input Visualizer
-	VolumeDisplay: VOL
+	VolumeDisplay: AMP
 	ChannelDisplay: CHNL
 }
 

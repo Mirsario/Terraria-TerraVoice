@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System.Collections.Generic;
+using Terraria;
 using Terraria.ModLoader;
 using TerraVoice.IO;
 using TerraVoice.Native;
@@ -22,10 +23,6 @@ internal sealed class VoiceInputSystem : ModSystem
 
     public override void PostSetupContent()
     {
-        UserDataStore data = PersistentDataStoreSystem.GetDataStore<UserDataStore>();
-
-        SwitchAudioDevice(data.Device.Value);
-
         processingSystem = ModContent.GetInstance<VoiceProcessingSystem>();
     }
 
@@ -56,16 +53,15 @@ internal sealed class VoiceInputSystem : ModSystem
         }
     }
 
-    private void HandleAudioInputBuffer(short[] buffer)
+    public void SwitchAudioDevice(Ref<string> device)
     {
-        if (!Main.gameMenu)
-        {
-            processingSystem.SubmitBuffer(buffer);
-        }
-    }
+        List<string> devices = ALMono16Microphone.GetDevices();
 
-    private void SwitchAudioDevice(string device)
-    {
+        if (devices.Count == 0 || device.Value == null)
+        {
+            return;
+        }
+
         if (microphone != null)
         {
             microphone.OnBufferReady -= HandleAudioInputBuffer;
@@ -73,12 +69,20 @@ internal sealed class VoiceInputSystem : ModSystem
             microphone.Dispose();
         }
 
-        microphone = new ALMono16Microphone(device, MicrophoneInputDurationMs, SampleRate);
+        microphone = new ALMono16Microphone(device.Value, MicrophoneInputDurationMs, SampleRate);
 
         if (recording)
         {
             microphone.OnBufferReady += HandleAudioInputBuffer;
             microphone.StartRecording();
+        }
+    }
+
+    private void HandleAudioInputBuffer(short[] buffer)
+    {
+        if (!Main.gameMenu)
+        {
+            processingSystem.SubmitBuffer(buffer);
         }
     }
 }

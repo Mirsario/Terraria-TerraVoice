@@ -59,6 +59,8 @@ internal class DualKnob : SmartUIElement
 
         Vector2 position = GetDimensions().Position();
 
+        spriteBatch.Draw(ModAsset.KnobBaseplate.Value, position, Color.White);
+
         DrawMarkings(spriteBatch, position);
 
         spriteBatch.Draw(ModAsset.Knob.Value, position, Color.White);
@@ -131,11 +133,7 @@ internal class DualKnob : SmartUIElement
 
     private void DrawMarkings(SpriteBatch spriteBatch, Vector2 position)
     {
-        Texture2D markings = ModAsset.KnobMarkings.Value;
-
-        Vector2 halfSize = markings.Size() / 2;
-
-        spriteBatch.Draw(ModAsset.KnobMarkings.Value, position + halfSize, null, Color.White, -angle, halfSize, 1, SpriteEffects.None, 0);
+        spriteBatch.Draw(ModAsset.KnobMarkings.Value, position + new Vector2(64, 62), null, Color.White, -angle, new Vector2(64, 62), 1, SpriteEffects.None, 0);
     }
 
     private void PlaySound()
