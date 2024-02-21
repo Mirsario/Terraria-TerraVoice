@@ -1,4 +1,4 @@
-The InfraSonic mod allows you and your friends to chat via voice directly in Terraria, with no need for any third-party software!
+﻿The InfraSonic mod allows you and your friends to chat via voice directly in Terraria, with no need for any third-party software!
 
 Some of this mod's features:
 - Background Music Ducking, which automatically lowers the volume of the game's background music when someone is speaking.
@@ -9,3 +9,5 @@ How to use:
 1. Subscribe to this Mod.
 2. Enter the game, go to "Controls", scroll to the bottom, and set a keybind for "Open Voice Control Panel".
 3. Pressing this opens the control panel, which can be used to configure all aspects of the voice chat.
+
+This mod's source is available on [url=https://github.com/Cyrillya/TerraVoice]GitHub[/url].
