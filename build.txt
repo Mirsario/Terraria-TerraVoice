@@ -2,4 +2,4 @@ displayName = InfraSonic
 author = Cyrilly, 轩天一夏, Oli
 version = 2.0.0
 dllReferences = P-OpusCore, OpenTK.Audio.OpenAL, OpenTK.Mathematics
-buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*, TODO.txt
+buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
