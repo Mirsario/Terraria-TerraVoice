@@ -3,7 +3,6 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using Terraria;
 using Terraria.Audio;
-using Terraria.Localization;
 using Terraria.UI;
 using TerraVoice.UI.Abstract;
 
@@ -60,7 +59,7 @@ internal class SwitchButton : SmartUIElement
     {
         // Offset needs to be an even number to prevent weird scaling issues.
         float stringWidth = TerraVoice.Font.MeasureString(label).X;
-        Vector2 textPosition = position + new Vector2((Width.Pixels / 2) - (stringWidth / 2), Height.Pixels - 3);
+        Vector2 textPosition = position + new Vector2((Width.Pixels / 2) - (stringWidth / 2), Height.Pixels + 1);
 
         spriteBatch.DrawString(TerraVoice.Font, label, textPosition, TerraVoice.Pink);
     }

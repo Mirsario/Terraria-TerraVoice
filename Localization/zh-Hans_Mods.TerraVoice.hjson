@@ -6,8 +6,12 @@ UI: {
 	// Denoise: Denoise
 	// NoIcons: No Icons
 	// AudioVisualizer: Input Visualizer
-	// VolumeDisplay: VOL
+	// VolumeDisplay: AMP
 	// ChannelDisplay: CHNL
+	// NotOnline: Currently Offline
+	// NoOtherPlayers: No Players Detected
+	// MutedYes: Muted : Yes
+	// MutedNo: Muted : No
 }
 
 Keybinds: {

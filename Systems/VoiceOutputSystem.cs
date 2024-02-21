@@ -5,13 +5,14 @@ using System;
 using Terraria;
 using Terraria.ModLoader;
 using TerraVoice.IO;
-using TerraVoice.Misc;
 
 namespace TerraVoice.Core;
 
 [Autoload(Side = ModSide.Client)]
 internal sealed class VoiceOutputSystem : ModSystem
 {
+    public const int MaxProximityRange = 96;
+
     private static PlayerSpeaker[] playerSpeakers;
 
     private OpusDecoder decoder;

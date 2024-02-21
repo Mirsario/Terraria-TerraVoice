@@ -8,6 +8,10 @@ UI: {
 	AudioVisualizer: Input Visualizer
 	VolumeDisplay: AMP
 	ChannelDisplay: CHNL
+	NotOnline: Currently Offline
+	NoOtherPlayers: No Players Detected
+	MutedYes: Muted : Yes
+	MutedNo: Muted : No
 }
 
 Keybinds: {

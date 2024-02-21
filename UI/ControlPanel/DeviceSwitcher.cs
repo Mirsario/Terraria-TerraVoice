@@ -77,7 +77,7 @@ internal class DeviceSwitcher : SmartUIElement
 
         spriteBatch.Draw(ModAsset.DeviceSwitcherWidget.Value, position, Color.White);
 
-        deviceLabel?.Draw(spriteBatch, position + new Vector2(4, 5), shrunkBox, TerraVoice.Cyan);
+        deviceLabel?.Draw(spriteBatch, position + new Vector2(7, 5), shrunkBox, TerraVoice.Cyan);
     }
 
     public void NextAudioDevice()

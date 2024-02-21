@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.Localization;
+using TerraVoice.Core;
 using TerraVoice.IO;
 using TerraVoice.UI.Abstract;
 
@@ -48,8 +49,7 @@ internal class VoiceControlPanel : SmartUIElement
 
         y += (int)audioVisualiser.Height.Pixels + Spacing;
 
-        // TODO: Replace magic number with max proximity range.
-        Slider rangeSlider = new(96, data.ProximityDistance);
+        Slider rangeSlider = new(VoiceOutputSystem.MaxProximityRange, data.ProximityDistance);
         rangeSlider.Left.Set(Spacing, 0);
         rangeSlider.Top.Set(y, 0);
         Append(rangeSlider);
@@ -71,10 +71,25 @@ internal class VoiceControlPanel : SmartUIElement
         switcher.Top.Set(y, 0);
         Append(switcher);
 
-        DeviceSwitchButton switcherButton = new(switcher);
-        switcherButton.Left.Set(switcher.Left.Pixels + switcher.Width.Pixels + Spacing, 0);
-        switcherButton.Top.Set(y, 0);
-        Append(switcherButton);
+        ClickButton deviceSwitcherButton = new(ModAsset.DeviceSwitcherButton.Value, switcher.NextAudioDevice);
+        deviceSwitcherButton.Left.Set(switcher.Left.Pixels + switcher.Width.Pixels + Spacing, 0);
+        deviceSwitcherButton.Top.Set(y, 0);
+        Append(deviceSwitcherButton);
+
+        PlayerDisplay display = new();
+        display.Left.Set(switcher.Left.Pixels, 0);
+        display.Top.Set(switcher.Top.Pixels + switcher.Height.Pixels + Spacing, 0);
+        Append(display);
+
+        ClickButton playerSwitcherButton = new(ModAsset.DeviceSwitcherButton.Value, display.NextPlayer);
+        playerSwitcherButton.Left.Set(display.Left.Pixels + display.Width.Pixels + Spacing, 0);
+        playerSwitcherButton.Top.Set(display.Top.Pixels, 0);
+        Append(playerSwitcherButton);
+
+        ClickButton muteButton = new(ModAsset.MuteButton.Value, display.ToggleMuteSelected);
+        muteButton.Left.Set(playerSwitcherButton.Left.Pixels, 0);
+        muteButton.Top.Set(playerSwitcherButton.Top.Pixels + playerSwitcherButton.Height.Pixels + Spacing, 0);
+        Append(muteButton);
 
         y += (int)openMic.Height.Pixels + Spacing;
 

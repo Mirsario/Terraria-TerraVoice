@@ -1,23 +1,28 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Graphics;
+using System;
+using Terraria.Audio;
 using Terraria.UI;
 using TerraVoice.UI.Abstract;
 
 namespace TerraVoice.UI.ControlPanel;
 
-internal class DeviceSwitchButton : SmartUIElement
+internal class ClickButton : SmartUIElement
 {
     private const int ButtonWidth = 32;
     private const int ButtonHeight = 32;
     private const int PressDuration = 7;
 
-    private readonly DeviceSwitcher switcher;
+    private readonly Texture2D texture;
+
+    private readonly Action onClick;
 
     private int pressedTimer;
 
-    public DeviceSwitchButton(DeviceSwitcher switcher)
+    public ClickButton(Texture2D texture, Action onClick)
     {
-        this.switcher = switcher;
+        this.texture = texture;
+        this.onClick = onClick;
 
         Width.Set(ButtonWidth, 0);
         Height.Set(ButtonHeight, 0);
@@ -25,7 +30,15 @@ internal class DeviceSwitchButton : SmartUIElement
 
     public override void SafeMouseDown(UIMouseEvent evt)
     {
-        switcher.NextAudioDevice();
+        onClick?.Invoke();
+
+        SoundStyle sound = new("TerraVoice/Assets/Sounds/UI/SwitchOn")
+        {
+            Volume = 0.5f,
+            Pitch = 0.8f
+        };
+
+        SoundEngine.PlaySound(sound);
 
         pressedTimer = PressDuration;
     }
@@ -43,8 +56,6 @@ internal class DeviceSwitchButton : SmartUIElement
     public override void DrawSelf(SpriteBatch spriteBatch)
     {
         base.DrawSelf(spriteBatch);
-
-        Texture2D texture = ModAsset.DeviceSwitcherButton.Value;
 
         Vector2 position = GetDimensions().Position();
 

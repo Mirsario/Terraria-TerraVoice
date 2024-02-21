@@ -1,4 +1,5 @@
-﻿using Terraria;
+﻿using System.Collections.Generic;
+using Terraria;
 using Terraria.ModLoader.IO;
 
 namespace TerraVoice.IO;
@@ -7,7 +8,6 @@ internal class UserDataStore : PersistentDataStore
 {
     public override string FileName => "voice_settings.dat";
 
-    // I would normally use properties here, but they cannot be used with the keyword.
     public Ref<bool> MicrophoneEnabled = new();
     public Ref<bool> TestMode = new();
     public Ref<bool> NoiseSuppression = new();
@@ -21,6 +21,8 @@ internal class UserDataStore : PersistentDataStore
     public Ref<int> Channel = new();
     
     public Ref<string> Device = new();
+
+    public List<string> TemporaryMuteList { get; private set; } = new();
 
     public override void LoadGlobal(TagCompound tag)
     {

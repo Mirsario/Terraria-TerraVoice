@@ -23,6 +23,12 @@
     <DotNetPath Condition=" '$(DotNetPath)' == '' ">dotnet</DotNetPath>
   </PropertyGroup>
   <ItemGroup>
+    <AdditionalFiles Remove="assets\effects\HeadShader.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Solaestas-EffectFile Remove="assets\effects\HeadShader.fx" />
+  </ItemGroup>
+  <ItemGroup>
 	 <PackageReference Include="Solaestas.tModLoader.ModBuilder" Version="1.1.2" />
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.5" />
   </ItemGroup>

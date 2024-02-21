@@ -25,11 +25,6 @@ public class BgmFadeSystem : ModSystem
     }
 
     public override void PostUpdateTime() {
-        /*if (VoiceConfig.Instance.VoiceAttenuation || !PersonalConfig.Instance.BgmFadeOut) {
-            _bgmFadeOut = 0f;*/
-            //return;
-        //}
-
         bool anyPlayerSpeaking = DrawingSystem.PlayerSpeaking.Any(s => s > 0);
 
         if (anyPlayerSpeaking)
