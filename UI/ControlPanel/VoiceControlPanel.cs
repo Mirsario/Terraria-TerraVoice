@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.Localization;
 using TerraVoice.Core;
 using TerraVoice.IO;
 using TerraVoice.UI.Abstract;
@@ -24,8 +23,10 @@ internal class VoiceControlPanel : SmartUIElement
 
     private float oldScale;
 
-    public VoiceControlPanel(VoiceControlState parent)
+    public VoiceControlPanel(VoiceControlState parent) : base(null)
     {
+        NoTooltip = true;
+
         UserDataStore data = PersistentDataStoreSystem.GetDataStore<UserDataStore>();
 
         this.parent = parent;
@@ -61,7 +62,7 @@ internal class VoiceControlPanel : SmartUIElement
         ChannelAmplificationDualKnob.Top.Set(y, 0);
         Append(ChannelAmplificationDualKnob);
 
-        RadioButton openMic = new(radioButtons, data.OpenMic, ModAsset.OpenMic.Value);
+        RadioButton openMic = new(radioButtons, data.OpenMic, ModAsset.OpenMic.Value, "OpenMic");
         openMic.Left.Set(Width.Pixels - Spacing - RadioButton.ButtonWidth, 0);
         openMic.Top.Set(y, 0);
         Append(openMic);
@@ -93,7 +94,7 @@ internal class VoiceControlPanel : SmartUIElement
 
         y += (int)openMic.Height.Pixels + Spacing;
 
-        RadioButton pushToTalk = new(radioButtons, data.PushToTalk, ModAsset.PushToTalk.Value);
+        RadioButton pushToTalk = new(radioButtons, data.PushToTalk, ModAsset.PushToTalk.Value, "PushToTalk");
         pushToTalk.Left.Set(Width.Pixels - Spacing - RadioButton.ButtonWidth, 0);
         pushToTalk.Top.Set(y, 0);
         Append(pushToTalk);
@@ -153,7 +154,7 @@ internal class VoiceControlPanel : SmartUIElement
 
     private int AddSwitch(int i, int y, Texture2D icon, string label, Ref<bool> setting)
     {
-        SwitchButton panelSwitch = new(icon, Language.GetTextValue($"Mods.TerraVoice.UI.{label}"), setting);
+        SwitchButton panelSwitch = new(icon, label, setting);
         panelSwitch.Left.Set(Spacing + ((Spacing + SwitchButton.SwitchWidth) * i), 0);
         panelSwitch.Top.Set(y, 0);
         Append(panelSwitch);

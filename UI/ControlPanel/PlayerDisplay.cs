@@ -22,7 +22,7 @@ internal class PlayerDisplay : SmartUIElement
 
     private int currentPlayerWhoAmI;
 
-    public PlayerDisplay()
+    public PlayerDisplay() : base("PlayerDisplay")
     {
         headShader = ModContent.Request<Effect>("TerraVoice/Assets/Effects/HeadShader", AssetRequestMode.ImmediateLoad).Value;
 

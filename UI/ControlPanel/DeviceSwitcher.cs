@@ -2,7 +2,6 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
-using Terraria.GameContent;
 using Terraria.Localization;
 using Terraria.ModLoader;
 using TerraVoice.Core;
@@ -26,7 +25,7 @@ internal class DeviceSwitcher : SmartUIElement
 
     private bool updateBanner;
 
-    public DeviceSwitcher(Ref<string> device)
+    public DeviceSwitcher(Ref<string> device) : base("DeviceSwitcher")
     {
         devices = ALMono16Microphone.GetDevices();
 

@@ -40,7 +40,7 @@ internal class DualKnob : SmartUIElement
 
     private readonly Ref<int> channel;
 
-    public DualKnob(float min, float max, Ref<float> smallValue, Ref<int> channel)
+    public DualKnob(float min, float max, Ref<float> smallValue, Ref<int> channel) : base("DualKnob")
     {
         this.min = min;
         this.max = max;

@@ -19,7 +19,7 @@ internal class RadioButton : SmartUIElement
 
     private readonly Texture2D icon;
 
-    public RadioButton(List<RadioButton> buttons, Ref<bool> setting, Texture2D icon)
+    public RadioButton(List<RadioButton> buttons, Ref<bool> setting, Texture2D icon, string tooltip) : base(tooltip)
     {
         this.buttons = buttons;
         this.setting = setting;

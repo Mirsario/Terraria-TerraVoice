@@ -23,7 +23,7 @@ internal class Slider : SmartUIElement
 
     private bool sliding;
 
-    public Slider(int maxRange, Ref<int> setting)
+    public Slider(int maxRange, Ref<int> setting) : base("Slider")
     {
         this.maxRange = maxRange;
         this.setting = setting;

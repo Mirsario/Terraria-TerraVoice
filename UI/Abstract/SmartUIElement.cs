@@ -1,12 +1,27 @@
 ﻿// Credit to Scalie for SmartUIElement - https://github.com/ScalarVector1/DragonLens/blob/407a54e45d7a4828f660b46988feaf86092249b3/Core/Loaders/UILoading/SmartUIElement.cs
 
 using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using Terraria;
+using Terraria.Localization;
 using Terraria.UI;
 
 namespace TerraVoice.UI.Abstract;
 
 public abstract class SmartUIElement : UIElement
 {
+    protected bool NoTooltip { get; set; }
+
+    private readonly string tooltip;
+
+    public SmartUIElement(string key)
+    {
+        if (key != null)
+        {
+            tooltip = Language.GetTextValue($"Mods.TerraVoice.UI.Tooltips.{key}");
+        }
+    }
+
     #region XButton1
     /// <summary>
     /// A Safe wrapper around XButton1MouseUp that allows both an override and the OnXButton1MouseUp event to be used together
@@ -267,6 +282,7 @@ public abstract class SmartUIElement : UIElement
     public sealed override void MouseOver(UIMouseEvent evt)
     {
         base.MouseOver(evt);
+
         SafeMouseOver(evt);
     }
 
@@ -279,6 +295,7 @@ public abstract class SmartUIElement : UIElement
     public sealed override void Update(GameTime gameTime)
     {
         base.Update(gameTime);
+
         SafeUpdate(gameTime);
     }
 
@@ -294,4 +311,14 @@ public abstract class SmartUIElement : UIElement
         SafeScrollWheel(evt);
     }
     #endregion
+
+    public override void Draw(SpriteBatch spriteBatch)
+    {
+        base.Draw(spriteBatch);
+
+        if (!NoTooltip && tooltip != null && GetDimensions().ToRectangle().Contains(Main.MouseScreen.ToPoint()))
+        {
+            Main.hoverItemName = tooltip;
+        }
+    }
 }

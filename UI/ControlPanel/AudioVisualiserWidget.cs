@@ -17,7 +17,7 @@ internal class AudioVisualiserWidget : SmartUIElement
 
     private readonly short[] testBuffer;
 
-    public AudioVisualiserWidget(VoiceControlPanel panel)
+    public AudioVisualiserWidget(VoiceControlPanel panel) : base("Visualizer")
     {
         this.panel = panel;
 

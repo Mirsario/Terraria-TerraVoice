@@ -19,7 +19,7 @@ internal class ClickButton : SmartUIElement
 
     private int pressedTimer;
 
-    public ClickButton(Texture2D texture, Action onClick)
+    public ClickButton(Texture2D texture, Action onClick) : base(null)
     {
         this.texture = texture;
         this.onClick = onClick;

@@ -3,6 +3,7 @@ using Microsoft.Xna.Framework.Graphics;
 using ReLogic.Graphics;
 using Terraria;
 using Terraria.Audio;
+using Terraria.Localization;
 using Terraria.UI;
 using TerraVoice.UI.Abstract;
 
@@ -19,10 +20,10 @@ internal class SwitchButton : SmartUIElement
 
     private readonly Ref<bool> setting;
 
-    public SwitchButton(Texture2D icon, string label, Ref<bool> setting)
+    public SwitchButton(Texture2D icon, string label, Ref<bool> setting) : base(label)
     {
         this.icon = icon;
-        this.label = label;
+        this.label = Language.GetTextValue($"Mods.TerraVoice.UI.{label}");
         this.setting = setting;
 
         Width.Set(SwitchWidth, 0);

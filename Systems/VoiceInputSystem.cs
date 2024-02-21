@@ -51,6 +51,14 @@ internal sealed class VoiceInputSystem : ModSystem
 
             recording = true;
         }
+
+        if (!data.MicrophoneEnabled.Value && recording)
+        {
+            microphone.OnBufferReady -= HandleAudioInputBuffer;
+            microphone.StopRecording();
+
+            recording = false;
+        }
     }
 
     public void SwitchAudioDevice(Ref<string> device)
