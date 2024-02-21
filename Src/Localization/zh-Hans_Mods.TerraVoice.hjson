@@ -23,7 +23,7 @@ UI: {
 		/* DeviceSwitcher:
 			'''
 			Displays the microphone currently in use.
-			Press the button on the right of the screen to switch devices.
+			Press the button right of the screen to switch devices.
 			''' */
 		/* DualKnob:
 			'''
@@ -43,7 +43,7 @@ UI: {
 			''' */
 		/* PushToTalk:
 			'''
-			When this button is pushed, your voice will only be transmitted while a key is pressed.
+			When this button is pushed, your voice will only be transmitted if a key is held.
 			This key can be bound in the controls menu.
 			''' */
 		/* Slider:
@@ -64,6 +64,6 @@ UI: {
 }
 
 Keybinds: {
-	// VoiceControlPanel.DisplayName: Voice Control Panel
+	// VoiceControlPanel.DisplayName: Open Voice Control Panel
 	// PushToTalk.DisplayName: Push To Talk
 }

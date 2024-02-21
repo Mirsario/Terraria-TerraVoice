@@ -24,12 +24,16 @@
   </PropertyGroup>
   <ItemGroup>
     <AdditionalFiles Remove="assets\effects\HeadShader.fx" />
+    <AdditionalFiles Remove="description_workshop.txt" />
+    <AdditionalFiles Remove="LICENSE.txt" />
     <AdditionalFiles Remove="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
     <Solaestas-EffectFile Remove="assets\effects\HeadShader.fx" />
   </ItemGroup>
   <ItemGroup>
+    <Solaestas-TextFile Remove="description_workshop.txt" />
+    <Solaestas-TextFile Remove="LICENSE.txt" />
     <Solaestas-TextFile Remove="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
@@ -43,5 +47,8 @@
     <Reference Include="P-OpusCore">
       <HintPath>lib\P-OpusCore.dll</HintPath>
     </Reference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="Src\" />
   </ItemGroup>
 </Project>
