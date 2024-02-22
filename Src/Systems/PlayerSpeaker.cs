@@ -1,4 +1,5 @@
-﻿using Microsoft.Xna.Framework.Audio;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using System;
 using Terraria.Audio;
 
@@ -7,6 +8,8 @@ namespace TerraVoice.Systems;
 public class PlayerSpeaker : IDisposable
 {
     public const string DummySound = "TerraVoice:PlayerSpeakerDummy";
+
+    public DynamicSoundEffectInstance SoundEffectInstance { get; private set; }
 
     public float Volume
     {
@@ -22,7 +25,7 @@ public class PlayerSpeaker : IDisposable
 
     private readonly int whoAmI;
 
-    public DynamicSoundEffectInstance SoundEffectInstance { get; private set; }
+    private ActiveSound activeSound;
 
     public PlayerSpeaker(int whoAmI) 
     {
@@ -47,6 +50,11 @@ public class PlayerSpeaker : IDisposable
         // The sound path passed in is that of a dummy sound.
         // This notifies the IL edit that the given sound should not be played.
         // Instead, the style's pitch variance (whoAmI) will be used to substitute in a PlayerSpeaker sound.
-        _ = new ActiveSound(dummyStyle);
+        activeSound = new ActiveSound(dummyStyle);
+    }
+
+    public void UpdatePosition(Vector2 playerPosition)
+    {
+        activeSound!.Position = playerPosition;
     }
 }

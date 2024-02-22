@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework.Audio;
-using Mono.Cecil.Cil;
 using MonoMod.Cil;
 using System;
 using System.Reflection;
@@ -8,6 +7,7 @@ using Terraria.ModLoader;
 
 namespace TerraVoice.Systems;
 
+[Autoload(Side = ModSide.Client)]
 internal class ActiveSoundInteropSystem : ModSystem
 {
     public override void Load()

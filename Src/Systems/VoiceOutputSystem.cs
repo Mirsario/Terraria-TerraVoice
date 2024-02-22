@@ -59,6 +59,14 @@ internal sealed class VoiceOutputSystem : ModSystem
         AddDataToPlayerSpeaker(sender, decoded);
     }
 
+    public override void PostUpdateEverything()
+    {
+        for (int i = 0; i < playerSpeakers.Length; i++)
+        {
+            playerSpeakers[i]?.UpdatePosition(Main.player[i].Center);
+        }
+    }
+
     public DynamicSoundEffectInstance GetSoundEffectByPlayer(int whoAmI) => playerSpeakers[whoAmI]?.SoundEffectInstance;
 
     private void AddDataToPlayerSpeaker(int player, byte[] data)
