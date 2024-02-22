@@ -2,7 +2,7 @@
 using Terraria;
 using Terraria.ID;
 using Terraria.ModLoader;
-using TerraVoice.Core;
+using TerraVoice.Systems;
 using TerraVoice.IO;
 using TerraVoice.Misc;
 

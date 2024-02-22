@@ -4,7 +4,7 @@ using System.Collections.Generic;
 using Terraria;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using TerraVoice.Core;
+using TerraVoice.Systems;
 using TerraVoice.Native;
 using TerraVoice.UI.Abstract;
 

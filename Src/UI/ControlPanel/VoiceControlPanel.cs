@@ -2,7 +2,7 @@
 using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
-using TerraVoice.Core;
+using TerraVoice.Systems;
 using TerraVoice.IO;
 using TerraVoice.UI.Abstract;
 

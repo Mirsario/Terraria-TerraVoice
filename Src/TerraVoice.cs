@@ -9,7 +9,7 @@ using Terraria.GameInput;
 using Terraria.ID;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using TerraVoice.Core;
+using TerraVoice.Systems;
 using TerraVoice.UI;
 using TerraVoice.UI.ControlPanel;
 

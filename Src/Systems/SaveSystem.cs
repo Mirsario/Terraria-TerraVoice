@@ -1,7 +1,5 @@
 ﻿using Terraria.ModLoader;
 using TerraVoice.IO;
-using TerraVoice.UI;
-using TerraVoice.UI.ControlPanel;
 
 namespace TerraVoice.Systems;
 

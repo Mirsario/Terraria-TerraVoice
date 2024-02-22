@@ -6,6 +6,8 @@ using System.Runtime.InteropServices;
 using static Terraria.ModLoader.Core.TmodFile;
 using System;
 using Terraria.ModLoader.UI;
+using System.Reflection;
+using POpusCodec;
 
 namespace TerraVoice.Native;
 
@@ -14,17 +16,41 @@ internal class NativeFeatureSystem : ModSystem
 {
     private readonly List<IntPtr> loadedLibs = new();
 
+    private readonly Dictionary<string, Assembly> nativeLibraryToAssembly = new()
+    {
+        ["libopus"] = typeof(OpusEncoder).Assembly,
+        ["librnnoise"] = typeof(rnnoise).Assembly
+    };
+
     public override void Load()
     {
         Interface.loadMods.SetLoadStage($"TerraVoice: Loading native libraries...", -1);
 
         Directory.CreateDirectory(TerraVoice.CachePath);
 
-        List<string> binaries = ExtractPlatformBinaries();
+        Dictionary<string, string> binaryMap = ExtractPlatformBinaries();
 
-        foreach (string path in binaries)
+        foreach (string key in nativeLibraryToAssembly.Keys)
         {
-            loadedLibs.Add(NativeLibrary.Load(path));
+            Assembly assembly = nativeLibraryToAssembly[key];
+
+            NativeLibrary.SetDllImportResolver(assembly, (name, assembly, dllSearchPath) =>
+            {
+                if (binaryMap.ContainsKey(name))
+                {
+                    string path = binaryMap[name];
+
+                    IntPtr handle = NativeLibrary.Load(path);
+
+                    Mod.Logger.Info($"Successfully loaded native library: {path}. Handle: {handle}");
+
+                    loadedLibs.Add(handle);
+
+                    return handle;
+                }
+
+                return IntPtr.Zero;
+            });
         }
     }
 
@@ -49,9 +75,9 @@ internal class NativeFeatureSystem : ModSystem
         Mod.Logger.Info($"Successfully installed native library: {path}.");
     }
 
-    private List<string> ExtractPlatformBinaries()
+    private Dictionary<string, string> ExtractPlatformBinaries()
     {
-        List<string> binaries = new();
+        Dictionary<string, string> binaries = new();
 
         // Don't need to use system path separators as this only refers to the tmod file.
         string path = $"lib/Native/";
@@ -72,7 +98,7 @@ internal class NativeFeatureSystem : ModSystem
         {
             string destinationPath = Path.Combine(TerraVoice.CachePath, Path.GetFileName(fileEntry.Name));
 
-            binaries.Add(destinationPath);
+            binaries.Add(Path.GetFileNameWithoutExtension(fileEntry.Name), destinationPath);
 
             if (!File.Exists(destinationPath))
             {

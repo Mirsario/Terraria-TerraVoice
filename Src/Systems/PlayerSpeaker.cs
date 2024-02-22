@@ -1,7 +1,7 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using System;
 
-namespace TerraVoice.Core;
+namespace TerraVoice.Systems;
 
 public class PlayerSpeaker : IDisposable
 {

@@ -5,7 +5,7 @@ using System;
 using Terraria.GameContent;
 using Terraria.Localization;
 using Terraria.ModLoader;
-using TerraVoice.Core;
+using TerraVoice.Systems;
 using TerraVoice.IO;
 using TerraVoice.UI.Abstract;
 

@@ -169,7 +169,7 @@ internal class PlayerDisplay : SmartUIElement
 
         Vector2 origin = target.Size() / 2f;
 
-        position += new Vector2(11f, 8f);
+        position += new Vector2(10f, 8f);
 
         headShader.Parameters["threshold"].SetValue(0.6f);
         headShader.Parameters["shade"].SetValue(TerraVoice.Pink.ToVector4());
@@ -189,7 +189,7 @@ internal class PlayerDisplay : SmartUIElement
 
         spriteBatch.End();
         spriteBatch.Begin(
-            SpriteSortMode.Immediate,
+            SpriteSortMode.Deferred,
             BlendState.AlphaBlend,
             SamplerState.LinearClamp,
             DepthStencilState.None,

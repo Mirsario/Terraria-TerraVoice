@@ -6,7 +6,7 @@ using Terraria;
 using Terraria.ModLoader;
 using TerraVoice.IO;
 
-namespace TerraVoice.Core;
+namespace TerraVoice.Systems;
 
 [Autoload(Side = ModSide.Client)]
 internal sealed class VoiceOutputSystem : ModSystem
