@@ -1,4 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Audio;
 using POpusCodec;
 using POpusCodec.Enums;
 using System;
@@ -22,6 +23,16 @@ internal sealed class VoiceOutputSystem : ModSystem
         playerSpeakers = new PlayerSpeaker[Main.maxPlayers];
 
         decoder = new(SamplingRate.Sampling48000, Channels.Mono);
+    }
+
+    public override void PreSaveAndQuit()
+    {
+        // Array needs resetting on world exit.
+        for (int i = 0; i < playerSpeakers.Length; i++)
+        {
+            playerSpeakers[i]?.Dispose();
+            playerSpeakers[i] = null;
+        }
     }
 
     public override void Unload()
@@ -48,10 +59,17 @@ internal sealed class VoiceOutputSystem : ModSystem
         AddDataToPlayerSpeaker(sender, decoded);
     }
 
+    public DynamicSoundEffectInstance GetSoundEffectByPlayer(int whoAmI) => playerSpeakers[whoAmI]?.SoundEffectInstance;
+
     private void AddDataToPlayerSpeaker(int player, byte[] data)
     {
-        playerSpeakers[player] ??= new PlayerSpeaker();
-        playerSpeakers[player].SubmitBuffer(data);
+        if (playerSpeakers[player] == null)
+        {
+            playerSpeakers[player] ??= new PlayerSpeaker(player);
+            playerSpeakers[player].PlayAsActiveSound();
+        }
+
+        playerSpeakers[player].SoundEffectInstance.SubmitBuffer(data);
 
         SetPanAndVolume(player);
     }
@@ -62,7 +80,6 @@ internal sealed class VoiceOutputSystem : ModSystem
 
         PlayerSpeaker speaker = playerSpeakers[whoAmI];
 
-        // In tests, pan and volume are irrelevant.
         if (whoAmI == Main.myPlayer)
         { 
             speaker.Volume = 1;
@@ -71,7 +88,6 @@ internal sealed class VoiceOutputSystem : ModSystem
             return;
         }
 
-        // TODO: Implement individual player volumes.
         if (data.ProximityDistance.Value == 0)
         {
             speaker.Volume = 1;
@@ -90,25 +106,9 @@ internal sealed class VoiceOutputSystem : ModSystem
 
         float volume = Math.Clamp(1f - player.Center.Distance(screenCenter) / attenuationDistance, 0f, 1f);
 
-        // TODO: Implement individual player volumes.
-        // volume *= 1;
-
         float pan = Math.Clamp(playerToCenterX / attenuationDistance, -1f, 1f);
 
         speaker.Volume = volume;
         speaker.Pan = pan;
-    }
-
-
-    [Autoload(Side = ModSide.Client)]
-    private class ModPlayerForEnterWorldHook : ModPlayer
-    {
-        public override void OnEnterWorld()
-        {
-            foreach (PlayerSpeaker playerSpeaker in playerSpeakers)
-            {
-                playerSpeaker?.Reset();
-            }
-        }
     }
 }

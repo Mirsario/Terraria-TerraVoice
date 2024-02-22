@@ -14,17 +14,17 @@ namespace TerraVoice.Native;
 [Autoload(Side = ModSide.Client)]
 internal class NativeFeatureSystem : ModSystem
 {
-    private readonly List<IntPtr> loadedLibs = new();
-
-    private readonly Dictionary<string, Assembly> assemblyHints = new()
+    private static readonly Dictionary<string, Assembly> assemblyHints = new()
     {
         ["libopus"] = typeof(OpusEncoder).Assembly,
         ["librnnoise"] = typeof(rnnoise).Assembly
     };
 
+    private readonly List<IntPtr> loadedLibs = new();
+
     public override void Load()
     {
-        Interface.loadMods.SetLoadStage($"TerraVoice: Loading native libraries...", -1);
+        Interface.loadMods.SetLoadStage($"{Mod.DisplayName}: Loading native libraries...", -1);
 
         Directory.CreateDirectory(TerraVoice.CachePath);
 

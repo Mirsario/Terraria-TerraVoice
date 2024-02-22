@@ -37,7 +37,6 @@ internal class AudioVisualiserWidget : SmartUIElement
         DrawScreen(spriteBatch, position);
     }
 
-    // TODO: For visualisation >20ms maybe use a longer queue structure instead of a single array.
     private void SubmitTestBuffer(short[] buffer)
     {
         Buffer.BlockCopy(buffer, 0, testBuffer, 0, buffer.Length * sizeof(short));

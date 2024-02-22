@@ -1,41 +1,52 @@
 ﻿using Microsoft.Xna.Framework.Audio;
 using System;
+using Terraria.Audio;
 
 namespace TerraVoice.Systems;
 
 public class PlayerSpeaker : IDisposable
 {
+    public const string DummySound = "TerraVoice:PlayerSpeakerDummy";
+
     public float Volume
     {
-        get => soundEffectInstance.Volume;
-        set => soundEffectInstance.Volume = value;
+        get => SoundEffectInstance.Volume;
+        set => SoundEffectInstance.Volume = value;
     }
 
     public float Pan
     {
-        get => soundEffectInstance.Pan;
-        set => soundEffectInstance.Pan = value;
+        get => SoundEffectInstance.Pan;
+        set => SoundEffectInstance.Pan = value;
     }
 
-    private DynamicSoundEffectInstance soundEffectInstance;
+    private readonly int whoAmI;
 
-    public PlayerSpeaker() {
+    public DynamicSoundEffectInstance SoundEffectInstance { get; private set; }
 
-        soundEffectInstance = new DynamicSoundEffectInstance(VoiceInputSystem.SampleRate, AudioChannels.Mono);
-        soundEffectInstance.Play();
-    }
-
-    public void SubmitBuffer(byte[] data) => soundEffectInstance.SubmitBuffer(data);
-
-    public void Reset() 
+    public PlayerSpeaker(int whoAmI) 
     {
-        soundEffectInstance.Stop();
-        soundEffectInstance.Play();
+        this.whoAmI = whoAmI;
+
+        SoundEffectInstance = new DynamicSoundEffectInstance(VoiceInputSystem.SampleRate, AudioChannels.Mono);
     }
 
     public void Dispose() 
     {
-        soundEffectInstance?.Dispose();
-        soundEffectInstance = null;
+        SoundEffectInstance?.Dispose();
+        SoundEffectInstance = null;
+    }
+
+    public void PlayAsActiveSound()
+    {
+        SoundStyle dummyStyle = new(DummySound)
+        {
+            PitchVariance = whoAmI
+        };
+
+        // The sound path passed in is that of a dummy sound.
+        // This notifies the IL edit that the given sound should not be played.
+        // Instead, the style's pitch variance (whoAmI) will be used to substitute in a PlayerSpeaker sound.
+        _ = new ActiveSound(dummyStyle);
     }
 }
