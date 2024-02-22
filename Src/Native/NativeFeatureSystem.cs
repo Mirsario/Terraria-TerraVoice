@@ -16,7 +16,7 @@ internal class NativeFeatureSystem : ModSystem
 {
     private readonly List<IntPtr> loadedLibs = new();
 
-    private readonly Dictionary<string, Assembly> nativeLibraryToAssembly = new()
+    private readonly Dictionary<string, Assembly> assemblyHints = new()
     {
         ["libopus"] = typeof(OpusEncoder).Assembly,
         ["librnnoise"] = typeof(rnnoise).Assembly
@@ -30,26 +30,21 @@ internal class NativeFeatureSystem : ModSystem
 
         Dictionary<string, string> binaryMap = ExtractPlatformBinaries();
 
-        foreach (string key in nativeLibraryToAssembly.Keys)
+        foreach (string key in assemblyHints.Keys)
         {
-            Assembly assembly = nativeLibraryToAssembly[key];
+            Assembly assembly = assemblyHints[key];
+
+            string path = binaryMap[key];
 
             NativeLibrary.SetDllImportResolver(assembly, (name, assembly, dllSearchPath) =>
             {
-                if (binaryMap.ContainsKey(name))
-                {
-                    string path = binaryMap[name];
+                IntPtr handle = NativeLibrary.Load(path);
 
-                    IntPtr handle = NativeLibrary.Load(path);
+                Mod.Logger.Info($"Successfully loaded native library: {path}. Handle: {handle}");
 
-                    Mod.Logger.Info($"Successfully loaded native library: {path}. Handle: {handle}");
+                loadedLibs.Add(handle);
 
-                    loadedLibs.Add(handle);
-
-                    return handle;
-                }
-
-                return IntPtr.Zero;
+                return handle;
             });
         }
     }
