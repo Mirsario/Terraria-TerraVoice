@@ -63,7 +63,10 @@ internal sealed class VoiceOutputSystem : ModSystem
     {
         for (int i = 0; i < playerSpeakers.Length; i++)
         {
-            playerSpeakers[i]?.UpdatePosition(Main.player[i].Center);
+            if (Main.player[i].active)
+            {
+                playerSpeakers[i]?.UpdatePosition(Main.player[i].Center);
+            }
         }
     }
 
