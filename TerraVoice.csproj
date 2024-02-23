@@ -23,18 +23,29 @@
     <DotNetPath Condition=" '$(DotNetPath)' == '' ">dotnet</DotNetPath>
   </PropertyGroup>
   <ItemGroup>
-    <PackageReference Include="Solaestas.tModLoader.ModBuilder" Version="1.1.2" />
+    <AdditionalFiles Remove="assets\effects\HeadShader.fx" />
+    <AdditionalFiles Remove="description_workshop.txt" />
+    <AdditionalFiles Remove="LICENSE.txt" />
+    <AdditionalFiles Remove="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+    <Solaestas-EffectFile Remove="assets\effects\HeadShader.fx" />
+  </ItemGroup>
+  <ItemGroup>
+    <Solaestas-TextFile Remove="description_workshop.txt" />
+    <Solaestas-TextFile Remove="LICENSE.txt" />
+    <Solaestas-TextFile Remove="TODO.txt" />
+  </ItemGroup>
+  <ItemGroup>
+	 <PackageReference Include="Solaestas.tModLoader.ModBuilder" Version="1.1.2" />
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.5" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="NAudio">
-      <HintPath>lib\NAudio.dll</HintPath>
+    <Reference Include="OpenTK.Audio.OpenAL">
+      <HintPath>lib\OpenTK.Audio.OpenAL.dll</HintPath>
     </Reference>
-    <Reference Include="NAudio.Core">
-      <HintPath>lib\NAudio.Core.dll</HintPath>
-    </Reference>
-    <Reference Include="NAudio.WinMM">
-      <HintPath>lib\NAudio.WinMM.dll</HintPath>
+    <Reference Include="P-OpusCore">
+      <HintPath>lib\P-OpusCore.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

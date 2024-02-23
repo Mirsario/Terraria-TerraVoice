@@ -1,4 +1,5 @@
-displayName = tVoice
-author = Cyrilly, 轩天一夏
-version = 1.0.1
-dllReferences = NAudio, NAudio.Core, NAudio.WinMM, NAudio.Wasapi
+displayName = InfraSonic
+author = Oli, Cyrilly, 轩天一夏
+version = 2.0.0
+dllReferences = P-OpusCore, OpenTK.Audio.OpenAL, OpenTK.Mathematics
+buildIgnore = *.csproj, *.user, obj\*, bin\*, .vs\*
