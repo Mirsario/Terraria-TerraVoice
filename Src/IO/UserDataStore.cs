@@ -17,7 +17,7 @@ internal class UserDataStore : PersistentDataStore
 
     public Ref<float> Amplification = new(1);
 
-    public Ref<int> ProximityDistance = new();
+    public Ref<int> ProximityDistance = new(64);
     public Ref<int> Channel = new();
     
     public Ref<string> Device = new();

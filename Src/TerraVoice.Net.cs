@@ -60,12 +60,14 @@ public partial class TerraVoice : Mod
                 }
                 else
                 {
+                    UserDataStore data = PersistentDataStoreSystem.GetDataStore<UserDataStore>();
+
                     byte sender = reader.ReadByte();
 
-                    byte receiverChannel = (byte)PersistentDataStoreSystem.GetDataStore<UserDataStore>().Channel.Value;
+                    byte receiverChannel = (byte)data.Channel.Value;
 
                     // Only process voice data received from players on the same voice channel.
-                    if (receiverChannel == senderChannel)
+                    if (receiverChannel == senderChannel && !data.TemporaryMuteList.Contains(Main.player[sender].name))
                     {
                         outputSystem.RecieveBuffer(buffer, sender);
 

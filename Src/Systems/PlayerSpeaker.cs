@@ -42,10 +42,7 @@ public class PlayerSpeaker : IDisposable
 
     public void PlayAsActiveSound()
     {
-        SoundStyle dummyStyle = new(DummySound)
-        {
-            PitchVariance = whoAmI
-        };
+        SoundStyle dummyStyle = new($"{DummySound}:{whoAmI}");
 
         // The sound path passed in is that of a dummy sound.
         // This notifies the IL edit that the given sound should not be played.
@@ -55,6 +52,10 @@ public class PlayerSpeaker : IDisposable
 
     public void UpdatePosition(Vector2 playerPosition)
     {
-        activeSound!.Position = playerPosition;
+        // The constructor isn't called on the same thread as this method, specifically when in test mode (the microphone runs on another thread).
+        if (activeSound != null)
+        {
+            activeSound.Position = playerPosition;
+        }
     }
 }

@@ -35,7 +35,10 @@ internal class ActiveSoundInteropSystem : ModSystem
 
             if (path.StartsWith(PlayerSpeaker.DummySound))
             {
-                int whoAmI = (int)activeSound.Style.PitchVariance;
+                // If the path begins with the dummy sound effect, the latter half is the whoAmI of the talking player.
+                string split = activeSound.Style.SoundPath.Split(':')[2];
+
+                int whoAmI = int.Parse(split);
 
                 return ModContent.GetInstance<VoiceOutputSystem>().GetSoundEffectByPlayer(whoAmI);
             }
