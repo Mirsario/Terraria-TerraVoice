@@ -4,6 +4,7 @@ Some of this mod's features:
 - Background Music Ducking, which automatically lowers the volume of the game's background music when someone is speaking.
 - Proximity Chat, which introduces a positional effect to voices, and the closer the player, the louder the voice.
 - Noise Suppression, to filter out unwanted background sounds.
+- Sound occlusion and reverb support with Terraria Overhaul.
 
 How to use:
 1. Subscribe to this Mod.

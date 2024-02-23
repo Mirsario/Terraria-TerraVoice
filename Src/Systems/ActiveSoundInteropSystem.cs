@@ -37,13 +37,7 @@ internal class ActiveSoundInteropSystem : ModSystem
             {
                 int whoAmI = (int)activeSound.Style.PitchVariance;
 
-                DynamicSoundEffectInstance instance = ModContent.GetInstance<VoiceOutputSystem>().GetSoundEffectByPlayer(whoAmI);
-
-                // If this is reached and is true, then the sound being played is a dummy sound and requires substitution.
-                if (instance != null)
-                {
-                    return instance;
-                }
+                return ModContent.GetInstance<VoiceOutputSystem>().GetSoundEffectByPlayer(whoAmI);
             }
 
             // Default behaviour.

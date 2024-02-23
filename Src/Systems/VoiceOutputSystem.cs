@@ -77,6 +77,12 @@ internal sealed class VoiceOutputSystem : ModSystem
             playerSpeakers[player].PlayAsActiveSound();
         }
 
+        // Dead and inactive players can't speak.
+        if (!Main.player[player].active || Main.player[player].dead)
+        {
+            return;
+        }
+
         playerSpeakers[player].SoundEffectInstance.SubmitBuffer(data);
 
         SetPanAndVolume(player);

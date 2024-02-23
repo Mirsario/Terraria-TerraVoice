@@ -102,8 +102,6 @@ public class DrawingSystem : ModSystem
 
         var tex = ModAsset.Microphone;
         int frameCount = 0;
-        if (SteamUser.GetAvailableVoice(out _) is EVoiceResult.k_EVoiceResultNotRecording)
-            frameCount = 1;
         var frame = tex.Frame(horizontalFrames: 1, verticalFrames: 2, frameX: 0, frameY: frameCount);
         var position = Main.ScreenSize.ToVector2() - frame.Size() - new Vector2(6f);
         Main.spriteBatch.Draw(tex.Value, position, frame, Color.White, 0f, Vector2.Zero, 1f, SpriteEffects.None, 0f);
