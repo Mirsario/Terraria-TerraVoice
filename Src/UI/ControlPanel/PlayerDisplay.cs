@@ -156,7 +156,6 @@ internal class PlayerDisplay : SmartUIElement
             Main.MapPlayerRenderer._playerRenders[drawPlayer.whoAmI];
 
         playerHeadDrawRenderTargetContent.UsePlayer(drawPlayer);
-
         playerHeadDrawRenderTargetContent.Request();
 
         Main.MapPlayerRenderer._anyDirty = true;

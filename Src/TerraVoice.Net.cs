@@ -4,7 +4,6 @@ using Terraria.ID;
 using Terraria.ModLoader;
 using TerraVoice.Systems;
 using TerraVoice.IO;
-using TerraVoice.Misc;
 
 namespace TerraVoice;
 
@@ -15,7 +14,7 @@ public partial class TerraVoice : Mod
     // Sends a voice packet from this client to the server.
     public void PushVoiceBuffer(byte[] buffer) 
     {
-        DrawingSystem.PlayerSpeaking[Main.myPlayer] = 20;
+        ModContent.GetInstance<IconDrawingSystem>().SetPlayerSpeaking(Main.myPlayer, 20);
 
         if (Main.netMode != NetmodeID.MultiplayerClient) 
             return;
@@ -70,7 +69,7 @@ public partial class TerraVoice : Mod
                     {
                         outputSystem.RecieveBuffer(buffer, sender);
 
-                        DrawingSystem.PlayerSpeaking[sender] = 20;
+                        ModContent.GetInstance<IconDrawingSystem>().SetPlayerSpeaking(sender, 20);
                     }
                 }
 
