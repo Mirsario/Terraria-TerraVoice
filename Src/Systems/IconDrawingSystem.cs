@@ -49,15 +49,17 @@ internal class IconDrawingSystem : ModSystem
 
     public void SetPlayerSpeaking(int player, int value) => playerSpeaking[player] = value;
 
-    public bool IsAnyPlayerSpeaking()
+    public List<int> GetSpeakingPlayers()
     {
+        List<int> speaking = new();
+
         for (int i = 0; i < playerSpeaking.Length; i++)
         {
             if (playerSpeaking[i] > 0)
-                return true;
+                speaking.Add(i);
         }
 
-        return false;
+        return speaking;
     }
 
     private bool DrawIcons()

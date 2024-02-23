@@ -1,4 +1,6 @@
 ﻿using System;
+using System.Collections.Generic;
+using Terraria;
 using Terraria.Audio;
 using Terraria.ModLoader;
 
@@ -16,12 +18,19 @@ public class BgmFadeSystem : ModSystem
 
     public override void PostUpdateTime()
     {
-        bool anyPlayerSpeaking = ModContent.GetInstance<IconDrawingSystem>().IsAnyPlayerSpeaking();
+        IconDrawingSystem iconSystem = ModContent.GetInstance<IconDrawingSystem>();
+
+        // Background music ducking is applied if any players are speaking, and they aren't the user.
+        List<int> speakingPlayers = iconSystem.GetSpeakingPlayers();
+
+        int necessaryCountToFade = speakingPlayers.Contains(Main.myPlayer) ? 2 : 1;
+
+        bool anyPlayerSpeaking = speakingPlayers.Count > necessaryCountToFade;
 
         if (anyPlayerSpeaking)
-            bgmFadeOut += 0.06f;
+            bgmFadeOut += 0.05f;
         else
-            bgmFadeOut -= 0.02f;
+            bgmFadeOut -= 0.05f;
 
         bgmFadeOut = Math.Clamp(bgmFadeOut, 0f, 0.5f);
     }
