@@ -20,7 +20,7 @@ internal class NativeFeatureSystem : ModSystem
         ["librnnoise"] = typeof(rnnoise).Assembly
     };
 
-    private readonly List<IntPtr> loadedLibs = new();
+    private readonly Dictionary<string, IntPtr> loadedLibs = new();
 
     public override void Load()
     {
@@ -38,20 +38,23 @@ internal class NativeFeatureSystem : ModSystem
 
             NativeLibrary.SetDllImportResolver(assembly, (name, assembly, dllSearchPath) =>
             {
-                IntPtr handle = NativeLibrary.Load(path);
+                if (!loadedLibs.ContainsKey(key))
+                {
+                    IntPtr handle = NativeLibrary.Load(path);
 
-                Mod.Logger.Info($"Successfully loaded native library: {path}. Handle: {handle}");
+                    Mod.Logger.Info($"Successfully loaded native library: {path}. Handle: {handle}");
 
-                loadedLibs.Add(handle);
+                    loadedLibs[key] = handle;
+                }
 
-                return handle;
+                return loadedLibs[key];
             });
         }
     }
 
     public override void Unload()
     {
-        foreach (IntPtr handle in loadedLibs)
+        foreach (IntPtr handle in loadedLibs.Values)
         {
             NativeLibrary.Free(handle);
         }
