@@ -16,14 +16,14 @@ internal class SwitchButton : SmartUIElement
 
     private readonly Texture2D icon;
 
-    private readonly string label;
+    private readonly LocalizedText label;
 
     private readonly Ref<bool> setting;
 
     public SwitchButton(Texture2D icon, string label, Ref<bool> setting) : base(label)
     {
         this.icon = icon;
-        this.label = Language.GetTextValue($"Mods.TerraVoice.UI.{label}");
+        this.label = Language.GetText($"Mods.TerraVoice.UI.{label}");
         this.setting = setting;
 
         Width.Set(SwitchWidth, 0);
@@ -59,10 +59,10 @@ internal class SwitchButton : SmartUIElement
     private void DrawLabel(SpriteBatch spriteBatch, Vector2 position)
     {
         // Offset needs to be an even number to prevent weird scaling issues.
-        float stringWidth = TerraVoice.Font.MeasureString(label).X;
+        float stringWidth = TerraVoice.Font.MeasureString(label.Value).X;
         Vector2 textPosition = position + new Vector2((Width.Pixels / 2) - (stringWidth / 2), Height.Pixels + 1);
 
-        spriteBatch.DrawString(TerraVoice.Font, label, textPosition, TerraVoice.Pink);
+        spriteBatch.DrawString(TerraVoice.Font, label.Value, textPosition, TerraVoice.Pink);
     }
 
     private void DrawIcon(SpriteBatch spriteBatch, Vector2 position)

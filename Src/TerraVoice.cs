@@ -50,7 +50,7 @@ public partial class TerraVoice : Mod
             pushToTalk = KeybindLoader.RegisterKeybind(this, "PushToTalk", "V");
 
             englishFont = Assets.Request<DynamicSpriteFont>("Assets/Fonts/MP3-12", AssetRequestMode.ImmediateLoad).Value;
-            chineseFont = Assets.Request<DynamicSpriteFont>("Assets/Fonts/LanaPixel-14", AssetRequestMode.ImmediateLoad).Value;
+            chineseFont = Assets.Request<DynamicSpriteFont>("Assets/Fonts/LanaPixel-15", AssetRequestMode.ImmediateLoad).Value;
         }
     }
 

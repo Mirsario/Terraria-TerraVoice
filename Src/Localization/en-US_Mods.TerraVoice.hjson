@@ -13,6 +13,7 @@ UI: {
 	Distance: "{0} ft."
 	MutedYes: Muted : Yes
 	MutedNo: Muted : No
+	Inf: Inf.
 
 	Tooltips: {
 		Visualizer:

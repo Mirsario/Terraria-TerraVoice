@@ -8,11 +8,12 @@ UI: {
 	VolumeDisplay: 音量
 	ChannelDisplay: 频道
 	NotOnline: 离线
-	NoOtherPlayers: 没有检测到玩家
+	NoOtherPlayers: 无可用玩家
 	CurrentlyTracking: 正在监测：
 	Distance: "{0} 英尺"
 	MutedYes: 静音： 是
 	MutedNo: 静音： 否
+	Inf: 无限
 
 	Tooltips: {
 		Visualizer:

@@ -5,6 +5,7 @@ using ReLogic.Graphics;
 using Terraria.UI;
 using Terraria;
 using System;
+using Terraria.Localization;
 
 namespace TerraVoice.UI.ControlPanel;
 
@@ -107,7 +108,8 @@ internal class Slider : SmartUIElement
 
         spriteBatch.Draw(ModAsset.RangeWidget.Value, new Vector2(indicatorBox.X, indicatorBox.Y), Color.White);
 
-        string text = setting.Value == 0 ? "Inf." : setting.Value.ToString();
+        string infText = Language.GetTextValue($"Mods.TerraVoice.UI.Inf");
+        string text = setting.Value == 0 ? infText : setting.Value.ToString();
 
         Vector2 boxMiddle = new(indicatorBox.X + (indicatorBox.Width / 2), indicatorBox.Y + (indicatorBox.Height / 2));
 
