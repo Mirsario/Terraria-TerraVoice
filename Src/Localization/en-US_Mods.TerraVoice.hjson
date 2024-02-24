@@ -1,5 +1,3 @@
-Misc.LoadLibraries: Loading native libraries...
-
 UI: {
 	NoInputDevice: No Input Device
 	EnableTestMode: Enable Mic and Test to Visualize
