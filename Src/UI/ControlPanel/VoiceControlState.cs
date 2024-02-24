@@ -1,5 +1,4 @@
 ﻿using Microsoft.Xna.Framework;
-using Microsoft.Xna.Framework.Graphics;
 using System.Collections.Generic;
 using Terraria;
 using Terraria.UI;
@@ -20,7 +19,7 @@ internal class VoiceControlState : SmartUIState
         Append(Panel);
     }
 
-    public override void Update(GameTime gameTime)
+    public override void SafeUpdate(GameTime gameTime)
     {
         if (Main.gamePaused)
         {
