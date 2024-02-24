@@ -104,7 +104,8 @@ internal class IconDrawingSystem : ModSystem
             DrawPlayerHead(Main.player[i], ref position, opacity, 0.8f);
         }
 
-        DrawMicrophoneIcon(data);
+        // This icon is not necessary. Player head drawn on the left is enough
+        // DrawMicrophoneIcon(data);
 
         return true;
     }
