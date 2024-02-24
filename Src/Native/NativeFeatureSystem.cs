@@ -8,6 +8,7 @@ using System;
 using Terraria.ModLoader.UI;
 using System.Reflection;
 using POpusCodec;
+using Terraria.Localization;
 
 namespace TerraVoice.Native;
 
@@ -25,7 +26,7 @@ internal class NativeFeatureSystem : ModSystem
     public override void Load()
     {
         // Interface.loadMods.SetLoadStage($"{Mod.DisplayName}: Loading native libraries...", -1);
-        Interface.loadMods.SubProgressText = "Loading native libraries...";
+        Interface.loadMods.SubProgressText = Language.GetTextValue("Mods.TerraVoice.Misc.LoadLibraries");;
 
         Directory.CreateDirectory(TerraVoice.CachePath);
 

@@ -1,69 +1,73 @@
+Misc.LoadLibraries: 正在加载本地程序集...
+
 UI: {
-	// NoInputDevice: No Input Device
-	// EnableTestMode: Enable Mic and Test to Visualize
-	// Mic: Mic
-	// Test: Test
-	// Denoise: Denoise
-	// NoIcons: No Icons
-	// VolumeDisplay: AMP
-	// ChannelDisplay: CHNL
-	// NotOnline: Currently Offline
-	// NoOtherPlayers: No Players Detected
-	// MutedYes: Muted : Yes
-	// MutedNo: Muted : No
+	NoInputDevice: 无输入设备
+	EnableTestMode: 打开麦克风和测试以可视化声音
+	Mic: 麦克风
+	Test: 测试
+	Denoise: 降噪
+	NoIcons: 禁用图标
+	VolumeDisplay: 音量
+	ChannelDisplay: 频道
+	NotOnline: 离线
+	NoOtherPlayers: 没有检测到玩家
+	CurrentlyTracking: 正在监测:
+	Distance: "{0} 英尺"
+	MutedYes: 静音：是
+	MutedNo: 静音：否
 
 	Tooltips: {
-		/* Visualizer:
+		Visualizer:
 			'''
-			Allows you to visualize your voice input.
-			AMP is your voice input volume.
-			CHNL is the channel you are using.
-			Other players will only hear you if they are on the same channel as you.
-			''' */
-		/* DeviceSwitcher:
+			您当前的语音输入状态
+			音量是您当前的语音输入音量
+			频道是您当前所在的频道
+            其他玩家只有在与您处于同一频道时才能听到您的声音
+            '''
+		DeviceSwitcher:
 			'''
-			Displays the microphone currently in use.
-			Press the button right of the screen to switch devices.
-			''' */
-		/* DualKnob:
+			显示您当前使用的输入设备
+			按下右侧按钮以切换设备
+            '''
+		DualKnob:
 			'''
-			Click and drag to adjust your input volume.
-			Use the scroll wheel to change voice channels.
-			''' */
-		/* PlayerDisplay:
+			按住拖动以调节您的输入音量
+			使用鼠标滚轮调整您的声音频道
 			'''
-			This screen displays a selected online player.
-			Press the button upper-right of the screen to change players.
-			Press the button lower-right of the screen to mute the player shown.
-			''' */
-		/* OpenMic:
+		PlayerDisplay:
 			'''
-			When this button is pushed, your voice will transmitted constantly.
-			Noise suppression is recommended with this setting.
-			''' */
-		/* PushToTalk:
+			您可在此界面查看选定玩家的状态
+			按下右上侧按钮以切换玩家
+			按下右下侧按钮以屏蔽其声音
 			'''
-			When this button is pushed, your voice will only be transmitted if a key is held.
-			This key can be bound in the controls menu.
-			''' */
-		/* Slider:
+		OpenMic:
 			'''
-			Use this slider to adjust the maximum distance voices will be heard from.
-			The range (in tiles) is shown on the right.
-			When set to 0, the range will be unlimited.
-			''' */
-		// Mic: When activated, your microphone will pick up your voice.
-		/* Test:
+			选定此项后，您的声音将持续传输
+            建议在此设置下使用降噪功能
 			'''
-			When activated, you will be able to hear your own voice.
-			The audio visualizer will be shown if the 'TEST' and 'MIC' switches are on.
-			''' */
-		// Denoise: When activated, noise suppression will be applied to your voice.
-		// NoIcons: When activated, no voice icons will be shown.
+		PushToTalk:
+			'''
+			选定此项后，您的声音只有在按住按键时才会传输
+			您可以在控件设置中绑定按键
+            '''
+		Slider:
+			'''
+			使用此滑块调整声音的最大可听距离
+            距离显示在右侧（以物块为单位）
+            设置为0时，声音传输无距离限制
+			'''
+		Mic: 开启后，你的麦克风会开始录制你的声音
+		Test:
+			'''
+			开启后，你将能够听到自己的声音
+			如果“测试”和“麦克风”开关同时开启，则将显示音频可视化器
+            '''
+		Denoise: 开启后，你的声音将应用降噪效果
+		NoIcons: 开启后，不会显示语音图标
 	}
 }
 
 Keybinds: {
-	// VoiceControlPanel.DisplayName: Open Voice Control Panel
-	// PushToTalk.DisplayName: Push To Talk
+	VoiceControlPanel.DisplayName: 打开声音控制面板
+	PushToTalk.DisplayName: 按住说话
 }

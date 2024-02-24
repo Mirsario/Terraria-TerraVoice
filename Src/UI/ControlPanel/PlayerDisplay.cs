@@ -106,7 +106,7 @@ internal class PlayerDisplay : SmartUIElement
         // One tile in terraria = 2ft.
         int distanceFeet = (int)(Main.LocalPlayer.Distance(player.Center) / 8);
 
-        spriteBatch.DrawString(TerraVoice.Font, "Currently Tracking:", drawPosition, TerraVoice.Pink);
+        spriteBatch.DrawString(TerraVoice.Font, Language.GetTextValue("Mods.TerraVoice.UI.CurrentlyTracking"), drawPosition, TerraVoice.Pink);
 
         drawPosition.Y += 20;
 
@@ -116,7 +116,7 @@ internal class PlayerDisplay : SmartUIElement
 
         DrawPlayerHead(spriteBatch, player, drawPosition + new Vector2(280, -12), TerraVoice.Pink);
 
-        spriteBatch.DrawString(TerraVoice.Font, $"{distanceFeet} ft.", drawPosition, TerraVoice.Pink);
+        spriteBatch.DrawString(TerraVoice.Font, Language.GetTextValue("Mods.TerraVoice.UI.Distance", distanceFeet), drawPosition, TerraVoice.Pink);
 
         drawPosition.Y += 16;
 
