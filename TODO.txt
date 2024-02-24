@@ -4,4 +4,3 @@
 - UltraSonic integration, specifically music sharing/streaming.
 - Package OpenAL Soft when EXT changes are made.
 - Look into packaging MacOS binaries with zig.
-- Localize into other languages, primarily zh-Hans.

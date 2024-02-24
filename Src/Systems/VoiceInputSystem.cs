@@ -88,10 +88,14 @@ internal sealed class VoiceInputSystem : ModSystem
 
     private void HandleAudioInputBuffer(short[] buffer)
     {
-        if (!Main.gameMenu)
+        // The microphone callback occurs on its own worker thread.
+        Main.RunOnMainThread(() =>
         {
-            processingSystem.SubmitBuffer(buffer);
-        }
+            if (!Main.gameMenu)
+            {
+                processingSystem.SubmitBuffer(buffer);
+            }
+        });
     }
 }
 
