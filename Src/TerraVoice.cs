@@ -17,9 +17,15 @@ namespace TerraVoice;
 
 public partial class TerraVoice : Mod
 {
-    public static DynamicSpriteFont Font => Language.ActiveCulture.Name == "en-US" ? customFont : FontAssets.MouseText.Value;
+    public static DynamicSpriteFont Font =>
+        Language.ActiveCulture.Name switch {
+            "en-US" => englishFont,
+            "zh-Hans" => chineseFont,
+            _ => FontAssets.MouseText.Value
+        };
 
-    private static DynamicSpriteFont customFont;
+    private static DynamicSpriteFont englishFont;
+    private static DynamicSpriteFont chineseFont;
 
     public static readonly string CachePath = Path.Combine(Main.SavePath, "TerraVoice");
 
@@ -43,7 +49,8 @@ public partial class TerraVoice : Mod
             voiceBind = KeybindLoader.RegisterKeybind(this, "VoiceControlPanel", "J");
             pushToTalk = KeybindLoader.RegisterKeybind(this, "PushToTalk", "V");
 
-            customFont = Assets.Request<DynamicSpriteFont>("Assets/Fonts/MP3-12", AssetRequestMode.ImmediateLoad).Value;
+            englishFont = Assets.Request<DynamicSpriteFont>("Assets/Fonts/MP3-12", AssetRequestMode.ImmediateLoad).Value;
+            chineseFont = Assets.Request<DynamicSpriteFont>("Assets/Fonts/LanaPixel-15", AssetRequestMode.ImmediateLoad).Value;
         }
     }
 

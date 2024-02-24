@@ -8,6 +8,7 @@ using System;
 using Terraria.ModLoader.UI;
 using System.Reflection;
 using POpusCodec;
+using Terraria.Localization;
 
 namespace TerraVoice.Native;
 
@@ -20,12 +21,19 @@ internal class NativeFeatureSystem : ModSystem
         ["librnnoise"] = typeof(rnnoise).Assembly
     };
 
+    private readonly Dictionary<string, string> _loadLibrariesTextLocalization = new() {
+        {"default", "Loading native libraries..."},
+        {"zh-Hans", "正在加载本地程序集..."}
+    };
+
     private readonly Dictionary<string, IntPtr> loadedLibs = new();
 
     public override void Load()
     {
         // Interface.loadMods.SetLoadStage($"{Mod.DisplayName}: Loading native libraries...", -1);
-        Interface.loadMods.SubProgressText = "Loading native libraries...";
+        Interface.loadMods.SubProgressText = Language.ActiveCulture.Name is "zh-Hans"
+                ? _loadLibrariesTextLocalization["zh-Hans"]
+                : _loadLibrariesTextLocalization["default"];
 
         Directory.CreateDirectory(TerraVoice.CachePath);
 
