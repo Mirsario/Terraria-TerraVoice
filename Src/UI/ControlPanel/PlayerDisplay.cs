@@ -71,7 +71,7 @@ internal class PlayerDisplay : SmartUIElement
             }
         }
 
-        currentPlayerWhoAmI = onlineWhoAmI[index];
+        currentPlayerWhoAmI = onlineWhoAmI.Count > 0 ? onlineWhoAmI[index] : 0;
     }
 
     private void DrawCurrentPlayer(SpriteBatch spriteBatch, Rectangle drawBox)

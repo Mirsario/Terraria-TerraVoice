@@ -1,4 +1,7 @@
-﻿using System.Collections.Generic;
+﻿using Microsoft.Xna.Framework;
+using Microsoft.Xna.Framework.Graphics;
+using System.Collections.Generic;
+using Terraria;
 using Terraria.UI;
 using TerraVoice.UI.Abstract;
 
@@ -15,5 +18,13 @@ internal class VoiceControlState : SmartUIState
         Panel = new(this);
 
         Append(Panel);
+    }
+
+    public override void Update(GameTime gameTime)
+    {
+        if (Main.gamePaused)
+        {
+            Visible = false;
+        }
     }
 }
