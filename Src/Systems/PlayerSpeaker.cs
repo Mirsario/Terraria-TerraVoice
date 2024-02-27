@@ -1,5 +1,7 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
+using POpusCodec;
+using POpusCodec.Enums;
 using System;
 using Terraria.Audio;
 
@@ -25,6 +27,8 @@ public class PlayerSpeaker : IDisposable
 
     private readonly int whoAmI;
 
+    private readonly OpusDecoder decoder;
+
     private ActiveSound activeSound;
 
     public PlayerSpeaker(int whoAmI) 
@@ -32,6 +36,8 @@ public class PlayerSpeaker : IDisposable
         this.whoAmI = whoAmI;
 
         SoundEffectInstance = new DynamicSoundEffectInstance(VoiceInputSystem.SampleRate, AudioChannels.Mono);
+
+        decoder = new(SamplingRate.Sampling48000, Channels.Mono);
     }
 
     public void Dispose() 
@@ -57,5 +63,16 @@ public class PlayerSpeaker : IDisposable
         {
             activeSound.Position = playerPosition;
         }
+    }
+
+    public void SubmitBuffer(byte[] buffer)
+    {
+        short[] samples = decoder.DecodePacket(buffer);
+
+        byte[] decoded = new byte[samples.Length * 2];
+
+        Buffer.BlockCopy(samples, 0, decoded, 0, decoded.Length);
+
+        SoundEffectInstance.SubmitBuffer(decoded);
     }
 }

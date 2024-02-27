@@ -1,7 +1,5 @@
 ﻿using Microsoft.Xna.Framework;
 using Microsoft.Xna.Framework.Audio;
-using POpusCodec;
-using POpusCodec.Enums;
 using System;
 using Terraria;
 using Terraria.ModLoader;
@@ -16,13 +14,9 @@ internal sealed class VoiceOutputSystem : ModSystem
 
     private static PlayerSpeaker[] playerSpeakers;
 
-    private OpusDecoder decoder;
-
     public override void PostSetupContent()
     {
         playerSpeakers = new PlayerSpeaker[Main.maxPlayers];
-
-        decoder = new(SamplingRate.Sampling48000, Channels.Mono);
     }
 
     public override void PreSaveAndQuit()
@@ -50,13 +44,7 @@ internal sealed class VoiceOutputSystem : ModSystem
 
     public void RecieveBuffer(byte[] buffer, int sender)
     {
-        short[] samples = decoder.DecodePacket(buffer);
-
-        byte[] decoded = new byte[samples.Length * 2];
-
-        Buffer.BlockCopy(samples, 0, decoded, 0, decoded.Length);
-
-        AddDataToPlayerSpeaker(sender, decoded);
+        AddDataToPlayerSpeaker(sender, buffer);
     }
 
     public override void PostUpdateEverything()
@@ -86,7 +74,7 @@ internal sealed class VoiceOutputSystem : ModSystem
             return;
         }
 
-        playerSpeakers[player].SoundEffectInstance.SubmitBuffer(data);
+        playerSpeakers[player].SubmitBuffer(data);
 
         SetPanAndVolume(player);
     }
