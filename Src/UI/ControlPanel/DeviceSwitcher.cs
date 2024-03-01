@@ -12,7 +12,10 @@ namespace TerraVoice.UI.ControlPanel;
 
 internal class DeviceSwitcher : SmartUIElement
 {
-    public string DisplayText => devices.Count == 0 ? Language.GetTextValue($"Mods.TerraVoice.UI.NoInputDevice") : device.Value;
+    public string DisplayText => devices.Count == 0 ? Language.GetTextValue($"Mods.TerraVoice.UI.NoInputDevice") : RemovePrefix(device.Value);
+
+    // https://github.com/kcat/openal-soft/blob/7668c35272a1feae7a8d9c6e5b243662a0829a34/alc/backends/wasapi.cpp#L115
+    private const string WasApiBackendPrefix = "OpenAL Soft on ";
 
     private const int ScreenWidth = 344;
     private const int ScreenHeight = 32;
@@ -27,7 +30,7 @@ internal class DeviceSwitcher : SmartUIElement
 
     public DeviceSwitcher(Ref<string> device) : base("DeviceSwitcher")
     {
-        devices = ALMono16Microphone.GetDevices();
+        devices = ALMonoMicrophone.GetDevices();
 
         this.device = device;
 
@@ -95,5 +98,15 @@ internal class DeviceSwitcher : SmartUIElement
         ModContent.GetInstance<VoiceInputSystem>().SwitchAudioDevice(device);
 
         updateBanner = true;
+    }
+
+    private string RemovePrefix(string device)
+    {
+        if (device.StartsWith(WasApiBackendPrefix))
+        {
+            return device.Substring(WasApiBackendPrefix.Length);
+        }
+
+        return device;
     }
 }
