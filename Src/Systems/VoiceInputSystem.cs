@@ -17,7 +17,7 @@ internal sealed class VoiceInputSystem : ModSystem
 
     private VoiceProcessingSystem processingSystem;
 
-    private ALMono16Microphone microphone;
+    private ALMonoMicrophone microphone;
 
     private bool recording;
 
@@ -63,11 +63,17 @@ internal sealed class VoiceInputSystem : ModSystem
 
     public void SwitchAudioDevice(Ref<string> device)
     {
-        List<string> devices = ALMono16Microphone.GetDevices();
+        List<string> devices = ALMonoMicrophone.GetDevices();
 
         if (devices.Count == 0 || device.Value == null)
         {
             return;
+        }
+
+        // Required for in a previously connected audio device is not found.
+        if (!devices.Contains(device.Value))
+        {
+            device.Value = devices[0];
         }
 
         if (microphone != null)
@@ -77,7 +83,7 @@ internal sealed class VoiceInputSystem : ModSystem
             microphone.Dispose();
         }
 
-        microphone = new ALMono16Microphone(device.Value, MicrophoneInputDurationMs, SampleRate);
+        microphone = new ALMonoMicrophone(device.Value, MicrophoneInputDurationMs, SampleRate);
 
         if (recording)
         {

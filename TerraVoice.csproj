@@ -37,15 +37,21 @@
     <Solaestas-TextFile Remove="TODO.txt" />
   </ItemGroup>
   <ItemGroup>
-	 <PackageReference Include="Solaestas.tModLoader.ModBuilder" Version="1.1.2" />
+	<PackageReference Include="Solaestas.tModLoader.ModBuilder" Version="1.1.2" />
     <PackageReference Include="tModLoader.CodeAssist" Version="0.1.5" />
   </ItemGroup>
   <ItemGroup>
-    <Reference Include="OpenTK.Audio.OpenAL">
-      <HintPath>lib\OpenTK.Audio.OpenAL.dll</HintPath>
-    </Reference>
     <Reference Include="P-OpusCore">
       <HintPath>lib\P-OpusCore.dll</HintPath>
+    </Reference>
+    <Reference Include="Silk.NET.Core">
+      <HintPath>lib\Silk.NET.Core.dll</HintPath>
+    </Reference>
+    <Reference Include="Silk.NET.OpenAL">
+      <HintPath>lib\Silk.NET.OpenAL.dll</HintPath>
+    </Reference>
+    <Reference Include="Silk.NET.OpenAL.Extensions.EXT">
+      <HintPath>lib\Silk.NET.OpenAL.Extensions.EXT.dll</HintPath>
     </Reference>
   </ItemGroup>
 </Project>

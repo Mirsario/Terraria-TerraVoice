@@ -46,7 +46,7 @@ internal sealed class VoiceProcessingSystem : ModSystem
         if (data.NoiseSuppression.Value)
             rnnoise.rnnoise_process_frame(buffer);
 
-        float dB = AmplifyBuffer(buffer, data.Amplification.Value);
+        AmplifyBuffer(buffer, data.Amplification.Value);
 
         byte[] encoded = encoder.Encode(buffer);
 
@@ -69,22 +69,13 @@ internal sealed class VoiceProcessingSystem : ModSystem
         TerraVoice.Instance.PushVoiceBuffer(encoded);
     }
 
-    // Will also return the average decibel level of the sample.
-    private float AmplifyBuffer(short[] buffer, float amplification)
+    private void AmplifyBuffer(short[] buffer, float amplification)
     {
-        float sum = 0;
-
         for (int i = 0; i < buffer.Length; i++)
         {
             float sample = buffer[i];
-            sum += sample * sample;
 
             buffer[i] = (short)MathHelper.Clamp(buffer[i] * amplification, short.MinValue, short.MaxValue);
         }
-
-        // Formula for the decibel level of a sample chunk is 20 * log10(RMS), where RMS is the root-mean-square value of the sample.
-        float rms = MathF.Sqrt(sum / buffer.Length);
-
-        return 20 * MathF.Log10(rms);
     }
 }

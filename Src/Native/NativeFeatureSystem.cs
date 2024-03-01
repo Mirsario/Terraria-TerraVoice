@@ -59,6 +59,8 @@ internal class NativeFeatureSystem : ModSystem
                 return loadedLibs[key];
             });
         }
+
+        ALMonoMicrophone.LoadOpenAL(binaryMap["libopenal"]);
     }
 
     public override void Unload()
@@ -67,6 +69,8 @@ internal class NativeFeatureSystem : ModSystem
         {
             NativeLibrary.Free(handle);
         }
+
+        ALMonoMicrophone.UnloadOpenAL();
     }
 
     private void CopyLibFromTmod(FileEntry entry, string path)
