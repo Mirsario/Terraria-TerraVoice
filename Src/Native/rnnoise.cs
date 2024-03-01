@@ -26,7 +26,7 @@ internal sealed class rnnoise
         denoiseState = rnnoise_create(RNNModel.Zero);
     }
 
-    // A few things about rnnoise are important to understand this - it can only process float data (but with a range of -32767..32767, hence the short.MaxValue scaling).
+    // A few things about rnnoise are important to understand this - it can only process float data (but with a range of -32767..32767).
     // Additionally, it only works in chunks of sample length 480 (10ms).
     // Since the audio format is 48KHz 16-bit PCM, it has to convert the short values into floats and split it into 480-length chunks.
     // These chunks are then individually de-noised.
