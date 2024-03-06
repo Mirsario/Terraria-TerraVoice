@@ -41,6 +41,11 @@ internal class ALMonoMicrophone : IDisposable
             using var microphoneNative = NativeString.AllocFromString(microphone);
 
             device = alcCaptureOpenDevice((byte*)microphoneNative.Handle, sampleRate, BufferFormat.Mono16, desiredFrameSize);
+
+            if (device == null)
+            {
+                TerraVoice.Instance.Logger.Warn($"Failed to open device '{microphone}'!");
+            }
         }
 
         buffer = new short[desiredFrameSize];
