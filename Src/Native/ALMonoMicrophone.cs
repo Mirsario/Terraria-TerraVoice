@@ -53,6 +53,8 @@ internal class ALMonoMicrophone : IDisposable
 
             Task.Factory.StartNew(() =>
             {
+                var spinWait = new SpinWait();
+
                 while (true)
                 {
                     if (token.IsCancellationRequested)
@@ -79,6 +81,8 @@ internal class ALMonoMicrophone : IDisposable
 
                         OnBufferReady?.Invoke(copy);
                     }
+
+                    spinWait.SpinOnce();
                 }
             }, source.Token);
         }
